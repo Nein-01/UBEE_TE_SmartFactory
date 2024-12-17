@@ -1,0 +1,11 @@
+﻿@using ATEVersions_Management.Models.HelperModels
+@if (Notification.hasFlash())
+{
+    var notify = Notification.getFlash();
+    // Notify 2s
+    <input type="hidden" name="Msg" value="@notify.Msg" />
+    <input type="hidden" name="MsgType" value="@notify.MsgType" />
+    // Notify 1.5s
+    <input type="hidden" name="Msg1s" value="@notify.Msg1s" />
+    <input type="hidden" name="Msg1sType" value="@notify.Msg1sType" />
+}

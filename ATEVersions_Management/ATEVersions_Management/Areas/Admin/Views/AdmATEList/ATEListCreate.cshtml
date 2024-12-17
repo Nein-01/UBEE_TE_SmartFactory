@@ -1,0 +1,152 @@
+﻿@using ATEVersions_Management.Models.ATEVersionModels
+@model ATE_CHECKLIST
+@{
+    ViewBag.Title = "ATE Checklist Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    IEnumerable<System.Web.Mvc.SelectListItem> vrsSelector = ViewBag.vrsSelector;
+    List<CHECKLIST_ITEM> checkItems = ViewBag.checkItems;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal row">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <!--begin::Content -->
+        <div class="content d-flex flex-column flex-column-fluid col-xl-12">
+            <!--begin::Post-->
+            <div class="card shadow d-flex flex-column-fluid ">
+                <div class="card-header py-3">
+                    <h3 class="m-0 font-weight-bold text-primary">New ATE Checklist</h3>
+                </div>
+                <!--begin::Card body-->
+                <div class="row card-body border-top p-6">
+                    <div class="col-md-3">
+                        <!--begin::Input group-->
+                        <div class="row mb-2">
+                            <!--begin::Label-->
+                            <label class="col-md-11 col-form-label fw-bold fs-6">
+                                <span>@Html.DisplayNameFor(model => model.VERSION.VersionName)</span>
+                                @Html.DropDownListFor(model => model.VersionID, vrsSelector, "-- Select version --", htmlAttributes: new { @class = "form-select" })
+                                @Html.ValidationMessageFor(model => model.VersionID, "", new { @class = "text-danger" })
+                            </label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="row mb-2">
+                            <!--begin::Label-->
+                            <label class="col-md-11 col-form-label fw-bold fs-6">
+                                <span>@Html.DisplayNameFor(model => model.CheckListCode)</span>
+                                @Html.EditorFor(model => model.CheckListCode, new { htmlAttributes = new { @class = "form-control", Value = "FQ3NVA037001A" } })
+                                @*<input type="text" name="CheckListCode" value="FQ3NVA037001A" class="form-control" />*@
+                                @Html.ValidationMessageFor(model => model.CheckListCode, "", new { @class = "text-danger" })
+                            </label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="row mb-2">
+                            <!--begin::Label-->
+                            <label class="col-md-11 col-form-label fw-bold fs-6">
+                                <span>@Html.DisplayNameFor(model => model.ProductHW_SW)</span>
+                                @Html.EditorFor(model => model.ProductHW_SW, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ProductHW_SW, "", new { @class = "text-danger" })
+                            </label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="row mb-2">
+                            <!--begin::Label-->
+                            <label class="col-md-11 col-form-label fw-bold fs-6">
+                                <span>@Html.DisplayNameFor(model => model.StoredTime)</span>
+                                @Html.EditorFor(model => model.StoredTime, new { htmlAttributes = new { @class = "form-control", Value = 1 } })
+                                @Html.ValidationMessageFor(model => model.StoredTime, "", new { @class = "text-danger" })
+                            </label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Input group-->
+                        <div class="row mb-2">
+                            <!--begin::Label-->
+                            <label class="col-md-11 col-form-label fw-bold fs-6">
+                                <span>@Html.DisplayNameFor(model => model.PreparerNote)</span>
+                                <textarea name="PreparerNote" class="form-control" style="height:100px">Please check</textarea>
+                                @Html.ValidationMessageFor(model => model.PreparerNote, "", new { @class = "text-danger" })
+                            </label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <!--end::Col-->
+                        </div>
+                        <!--end::Input group-->
+                        <!--begin::Action group-->
+                        <div class="form-group">
+                            <div class="col-md-offset-2">
+                                <input type="submit" value="Create" class="btn btn-outline-primary" />
+                                <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                            </div>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("ATEListIndex", "AdmATEList")">
+                                <i class="fas fa-fw fa-arrow-circle-left"></i>
+                                <span>ATEList Index</span>
+                            </a>
+                        </div>
+                        <!--end::Action group-->
+                    </div>
+                    <div class="col-md-9 table-responsive">
+                        <table class="table table-bordered text-black" width="100%" cellspacing="0">
+                            <tr>
+                                <th class="text-center">
+                                    No.
+                                </th>
+                                <th class="text-center">
+                                    Check items
+                                </th>
+                                <th class="text-center">
+                                    Check method
+                                </th>
+
+                            </tr>
+
+                            @foreach (var item in checkItems)
+                            {
+                                <tr>
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.ItemID)
+                                    </td>
+                                    <td>
+                                        <span class="breakLine">@Html.DisplayFor(modelItem => item.ItemName)</span>
+                                    </td>
+                                    <td>
+                                        <span class="breakLine">@Html.DisplayFor(modelItem => item.CheckMethod)</span>
+                                    </td>
+                                </tr>
+                            }
+
+                        </table>
+                    </div>
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Post-->
+        </div>
+        <!--end::Content-->
+    </div>
+}
+
+
+

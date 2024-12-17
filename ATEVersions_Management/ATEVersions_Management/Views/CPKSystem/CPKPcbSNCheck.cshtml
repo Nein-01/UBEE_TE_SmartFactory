@@ -1,0 +1,91 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model CPKTableDTO
+@{
+    ViewBag.Title = Model.MODEL_NAME +"-"+ Model.STATION_NAME + "-" + Model.PCB_SN;
+    Layout = "~/Views/Shared/LayoutClient.cshtml";
+
+    //int size = Model.RawContents.name.Count;
+    int size = Model.CPKContentObjects.Count;
+}
+
+<h4 class="text-center font-weight-bold text-black "> Model: @Model.MODEL_NAME - Station: @Model.STATION_NAME - PCB_SN : @Model.PCB_SN </h4>
+<div class="row mb-2 justify-content-center">
+    @*    <div class="col-sm-2">
+            <h6>Name (@Model.ContentList.name.Count)</h6>
+            @foreach (var item in Model.ContentList.name)
+            {
+                <p>@item</p>
+            }
+        </div>
+        <div class="col-sm-2">
+            <h6>Value (@Model.ContentList.value.Count)</h6>
+            @foreach (var item in Model.ContentList.value)
+            {
+                <p>@item</p>
+            }
+        </div>
+        <div class="col-sm-2">
+            <h6>SpecL (@Model.ContentList.specL.Count)</h6>
+            @foreach (var item in Model.ContentList.specL)
+            {
+                <p>@item</p>
+            }
+        </div>
+        <div class="col-sm-2">
+            <h6>SpecH (@Model.ContentList.specH.Count)</h6>
+            @foreach (var item in Model.ContentList.specH)
+            {
+                <p>@item</p>
+            }
+        </div>*@
+@*    <div class="table-responsive ">
+        <table class="table table-bordered text-black" id="dataTable">
+            <thead>
+                <tr>
+                    <th>Name (@Model.RawContents.name.Count)</th>
+                    <th>Value (@Model.RawContents.value.Count)</th>
+                    <th>SpecL (@Model.RawContents.specL.Count)</th>
+                    <th>SpecH (@Model.RawContents.specH.Count)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < size; i++)
+                {
+                    <tr>
+                        <td>@Model.RawContents.name[i]</td>
+                        <td>@Model.RawContents.value[i]</td>
+                        <td>@Model.RawContents.specL[i]</td>
+                        <td>@Model.RawContents.specH[i]</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>*@
+
+    <div class="table-responsive ">
+        <table class="table table-bordered text-black" id="dataTable">
+            <thead>
+                <tr>
+                    <th>Name (@size)</th>
+                    <th>Value (@size)</th>
+                    <th>SpecL (@size)</th>
+                    <th>SpecH (@size)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < size; i++)
+                {
+                    <tr>
+                        <td>@Model.CPKContentObjects[i].Name</td>
+                        <td>@Model.CPKContentObjects[i].Value</td>
+                        <td>@Model.CPKContentObjects[i].SpecL</td>
+                        <td>@Model.CPKContentObjects[i].SpecH</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+</div>

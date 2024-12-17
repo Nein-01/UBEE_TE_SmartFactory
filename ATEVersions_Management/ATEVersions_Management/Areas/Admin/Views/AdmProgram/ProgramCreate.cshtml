@@ -1,0 +1,115 @@
+﻿@using ATEVersions_Management.Models.ATEVersionModels
+@model PROGRAM
+
+@{
+    ViewBag.Title = "Program Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    //
+    SelectList listProjectType = ViewBag.listProjectType as SelectList;
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal row justify-content-center">
+    
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <!--begin::Content -->
+    <div class="content d-flex flex-column flex-column-fluid col-xl-6">       
+        <!--begin::Post-->
+        <div class="card shadow d-flex flex-column-fluid ">
+            <div class="card-header py-3">
+                <h3 class="m-0 font-weight-bold text-primary">New Program Information</h3>
+            </div>
+            <!--begin::Card body-->
+            <div class="card-body border-top p-9">
+                <!--begin::Input group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-sm-4 col-form-label fw-bold fs-6">
+                        <span>@Html.DisplayNameFor(model => model.ModelName)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-sm-8 fv-row">
+                        @Html.EditorFor(model => model.ModelName, new { htmlAttributes = new { @class = "form-control upperText", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.ModelName, "", new { @class = "text-danger col-form-label" })
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-sm-4 col-form-label fw-bold fs-6">
+                        <span>@Html.DisplayNameFor(model => model.ProgramName)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-sm-8 fv-row">
+                        @Html.EditorFor(model => model.ProgramName, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.ProgramName, "", new { @class = "text-danger" })
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6">
+                        <span>@Html.DisplayNameFor(model => model.ProjectType)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 fv-row">
+                        @Html.DropDownListFor(model => model.ProjectType, listProjectType, "--- Select type ---", htmlAttributes: new { @class = "form-select", @id = "" })
+                        @Html.ValidationMessageFor(model => model.ProjectType, "", new { @class = "text-danger" })
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-sm-4 col-form-label fw-bold fs-6">
+                        <span>@Html.DisplayNameFor(model => model.DevelopTool)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-sm-8 fv-row">
+                        @Html.EditorFor(model => model.DevelopTool, new { htmlAttributes = new { @class = "form-control", Value = "C++ Builder", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.DevelopTool, "", new { @class = "text-danger" })
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Action group-->
+                <div class="form-group">
+                    <div class="col-md-offset-2" align="center">
+                        <input type="submit" value="Create" class="btn btn-outline-primary" />
+                        <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                    </div>
+                </div>
+                <div align="center">
+                    <a href="@Url.Action("ProgramIndex", "AdmProgram")">
+                        <i class="fas fa-fw fa-arrow-circle-left"></i>
+                        <span>Program List</span>
+                    </a>
+                </div>
+                <!--end::Action group-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Post-->
+       
+    </div>
+    <!--end::Content-->
+</div>
+}
+<div>
+    @ViewBag.Error
+</div>
+

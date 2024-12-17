@@ -1,0 +1,91 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@{
+    List<TETestDataATETime> listATETime = ViewBag.ListATETime;
+    List<string> listStation = ViewBag.ListStation;
+}
+@foreach (var item in listStation)
+{
+    <div class="fii-frame-subcontent fii-chart-container mb-2 ">
+        <div class=" fii-content-title d-flex justify-content-center align-items-center"> 
+            <span class="custom-header">@ViewBag.Model - @item </span> 
+            <button class="btn btn-sm btn-outline-light ml-2" onclick="GetDataToModal('@ViewBag.Model','@item')"
+                    data-toggle="modal" data-target="#ATETimeListModal">
+                <i class="fas fa-list"></i>
+            </button>
+        </div>
+        
+        <div class="d-flex justify-content-around w-100 mt-1 p-2">
+            @{
+                string pieChartID = item + "_PieChart";
+                string lineChartID = item + "_LineChart"; }
+            <div id="@pieChartID" class=" fii-border rounded w-20" >
+
+            </div>
+            <div id="@lineChartID" class=" fii-border rounded w-80" >
+
+            </div>
+        </div>
+
+    </div>
+}
+
+
+<!-- ATE Time List Modal-->
+<div class="modal fade ChartModal " id="ATETimeListModal" tabindex="-1" role="dialog" aria-labelledby="ATETimeListModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content bg-black">
+            <div class="modal-header ">
+                <h4 class="modal- fw-bold text-center" id="spanStationAVG" style="color:darkorange"></h4>                
+                <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div align="center" id="ATETimeListModalBody">                                                                                       
+                    <input type="hidden" id="URL_POST_ATETimeByWorkDate" value="@Url.Action("POST_ATETimeByWorkDate")" />
+                    <div class="table-responsive mt-2 table-scrollable" id="divTableATETimeList">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ATE Time Chart Modal-->
+<div class="modal fade SubChartModal" id="ATETimeChartModal" tabindex="-1" role="dialog" aria-labelledby="ATETimeChartModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header ">                
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div align="center" id="ATETimeChartModalBody">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        _listATETime = @Html.Raw(Json.Encode(listATETime));
+        _listStation = @Html.Raw(Json.Encode(listStation));
+
+        window.localStorage.setItem('listATETime', JSON.stringify(_listATETime));
+
+        DrawATETimeCharts(_listStation, _listATETime);
+    });
+    URL_POST_ATETimeByWorkDate = $('#URL_POST_ATETimeByWorkDate').val();
+    
+</script>
+
+

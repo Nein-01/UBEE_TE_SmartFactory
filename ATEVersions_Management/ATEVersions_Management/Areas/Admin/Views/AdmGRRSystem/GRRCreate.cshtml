@@ -1,0 +1,402 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model GRRTableDTO
+@{
+    ViewBag.Title = "GRR Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    IEnumerable<SelectListItem> ListModel = ViewBag.ListGRRModel;
+
+    DateTime fromDate = DateTime.Now.AddDays(-1);
+    string strFromDate = fromDate.ToString("yyyy-MM-dd") + "T" + fromDate.ToString("07:30");
+    DateTime toDate = DateTime.Now;
+    string strToDate = toDate.ToString("yyyy-MM-dd") + "T" + toDate.ToString("07:30");
+
+}
+
+<!-- Page level script -->
+<script src="~/Assets/Vendor/highcharts_js/highcharts.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/highcharts-more.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/modules/accessibility.js"></script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal row text-black">
+    <input type="hidden" name="JSON_OperTestResult" id="json_OperTestResult" />
+    <input type="hidden" name="ARR_TestDataPosRange" id="arr_TestDataPosRange" />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <!--begin::Content -->
+    <div class="content d-flex flex-column flex-column-fluid ">
+        <!--begin::Post-->
+        <div class="card shadow d-flex flex-column-fluid ">
+            <div class="card-header py-3">
+                <h3 class="m-0 font-weight-bold text-primary">Create New GR&R Report</h3>
+            </div>
+            <div class="text-danger">@ViewBag.ErrorMessage</div>
+            <!--begin::Card body-->
+            <div class="row justify-content-center border-top p-3">
+                <!--=== BEGIN::GR&R Gage Model Selection ===-->
+                <div class="col-sm-3 rounded border-black text-primary" style="max-height:600px;">
+                    <!--begin::Input group-->
+                    <div class="d-flex justify-content-center pb-2 border-bottom">
+                        <div class="m-auto">
+                            <label class=" col-form-label fw-bold fs-6">
+                                <span>@Html.DisplayNameFor(model => model.GageModel)</span>
+                            </label>
+                            <div>
+                                @Html.DropDownListFor(model => model.GageModel, ListModel, "=== Select ===", new { @class = "form-select-sm text-center", @id = "cboGageModel" })
+                            </div>
+                        </div>
+
+                        <div class="m-auto">
+                            <label class=" col-form-label fw-bold fs-6">
+                                <span>@Html.DisplayNameFor(model => model.GageName)</span>
+
+                            </label>
+                            <div>
+                                <select name="GageName" id="cboGageName" class="form-select-sm text-center">
+                                    <option value="0"> === Select === </option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="d-flex justify-content-center pb-2 border-bottom">
+                        <div class="row w-90">
+                            <!--begin::Label-->
+                            <label class="col-form-label fw-bold fs-6">
+                                <span>@Html.DisplayNameFor(model => model.PartName)</span>
+                            </label>
+
+                            <!--end::Label-->
+                            <!--begin::Col-->
+
+                            @Html.EditorFor(model => model.PartName, new { htmlAttributes = new { @class = "form-select w-100 border-black text-black", @id = "txtPartName", list = "dtlGRRParts" } })
+                            <datalist id="dtlGRRParts">
+                                <option value="=== Select ===">
+                            </datalist>
+
+                            <!--end::Col-->
+                        </div>
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="d-flex justify-content-center pb-2 border-bottom">
+                        <div class="m-auto w-40">
+                            <!--begin::Label-->
+                            <label class=" col-form-label fw-bold fs-6">
+                                <span>@Html.DisplayNameFor(model => model.Specification)</span>
+
+                            </label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div align="center">
+                                @Html.EditorFor(model => model.Specification, new { htmlAttributes = new { @class = "form-control-sm w-100 text-center border-black text-black", @id = "txtSpecification" } })
+                            </div>
+                            <!--end::Col-->
+                        </div>
+                        <div class="m-auto w-40">
+                            <!--begin::Label-->
+                            <label class=" col-form-label fw-bold fs-6">
+                                <span>@Html.DisplayNameFor(model => model.GageNo)</span>
+                            </label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <div>
+                                @Html.EditorFor(model => model.GageNo, new { htmlAttributes = new { @class = "form-control-sm w-100 text-center border-black text-black", @id = "txtGageNo" } })
+                            </div>
+                            <!--end::Col-->
+                        </div>
+
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="d-flex justify-content-center pb-2 border-bottom">
+                        <div class="row w-90">
+                            <!--begin::Label-->
+                            <label class=" col-form-label fw-bold fs-6">
+                                <span>@Html.DisplayNameFor(model => model.Characteristic)</span>
+
+                            </label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+
+                            @Html.EditorFor(model => model.Characteristic, new { htmlAttributes = new { @class = "form-control w-100 border-black text-black", @id = "txtCharacteristic" } })
+
+                            <!--end::Col-->
+                        </div>
+
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="d-flex justify-content-center pb-2 border-bottom">
+                        <div class="row w-90">
+                            <!--begin::Label-->
+                            <label class=" col-form-label fw-bold fs-6">
+                                <span>@Html.DisplayNameFor(model => model.PreparedNote)</span>
+                            </label>
+                            <!--end::Label-->
+                            <!--begin::Col-->
+                            <textarea name="PreparedNote" class="form-control w-100 border-black text-black" style="height:100px">Please check</textarea>
+
+                            <!--end::Col-->
+                        </div>
+
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Action group-->
+                    <div class="form-group mt-1" align="center">
+                        <div class="col-md-offset-2">
+                            <input type="submit" value="Create" class="btn btn-outline-primary" />
+                            <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                        </div>
+                        <a href="@Url.Action("GRRIndex", "AdmGRRSystem")">
+                            <i class="fas fa-fw fa-arrow-circle-left"></i>
+                            <span>GRR Index</span>
+                        </a>
+                    </div>
+                    <!--end::Action group-->
+                </div>
+                <!--=== END::GR&R Gage Model Selection ===-->
+                <!--=== BEGIN::GR&R Operator Sample Data Display Section ===-->
+                <div class="col-sm-9 table-responsive rounded border-black">
+                    <div class="d-flex justify-content-center  p-2 mb-2 ">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                        </div>
+                        <input type="text" id="timeSpan" class="form-control form-control-sm w-25 text-center text-black">
+                        <button id="btnTimeSpan" type="button" class=" btn btn-sm btn-primary" onclick="GetGRRResult()">
+                            <i class="fa fa-chart-line"></i>
+                            <span>GR&R</span>
+                        </button>
+                        <button type="button" id="btnGRResultModal" class="btn btn-sm btn-outline-primary"
+                                data-toggle="modal" data-target="#GRRResultModal">
+                            <span>Result</span>
+                        </button>
+                        <br />
+                        @*<label>From: </label>
+                            <input type="datetime-local" id="fromDay" value="@strFromDate" />
+                            <label>To: </label>
+                            <input type="datetime-local" id="toDay" value="@strToDate" />
+                            <br />
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="btnGetGRRResult"
+                                    onclick="GetGRRResult()">
+                                <i class="fas fa-calculator"></i>
+                                <span></span>
+                            </button>
+                            <button type="button" id="btnGRResultModal" class="btn btn-sm btn-outline-primary"
+                                    data-toggle="modal" data-target="#GRRResultModal">
+                                <span>GRR</span>
+                            </button>*@
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <table class="table table-bordered text-black">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">
+
+                                        <label class="col-form-label fw-bold text-center">Operator A</label><br />
+                                        <button type="button" class="btn btn-sm btn-outline-primary mb-1"
+                                                title="Get Sample"
+                                                onclick="GetSamplesToOperTable(0,'tbodyOperASamples','txtOperA')">
+                                            <i class="fas fa-table"></i>
+                                            <span></span>
+                                        </button>
+                                        <input type="text" name="OperA" id="txtOperA" class="form-control-sm" required="required" />
+
+                                    </th>
+                                    <th class="text-center">
+
+                                        <label class="col-form-label fw-bold">Operator B</label><br />
+                                        <button type="button" class="btn btn-sm btn-outline-primary mb-1"
+                                                title="Get Sample"
+                                                onclick="GetSamplesToOperTable(1,'tbodyOperBSamples','txtOperB')">
+                                            <i class="fas fa-table"></i>
+                                            <span></span>
+                                        </button>
+                                        <input type="text" name="OperB" id="txtOperB" class="form-control-sm" required="required" />
+
+                                    </th>
+                                    <th class="text-center">
+
+                                        <label class="col-form-label fw-bold">Operator C</label><br />
+                                        <button type="button" class="btn btn-sm btn-outline-primary mb-1"
+                                                title="Get Sample"
+                                                onclick="GetSamplesToOperTable(2,'tbodyOperCSamples','txtOperC')">
+                                            <i class="fas fa-table"></i>
+                                            <span></span>
+                                        </button>
+                                        <input type="text" name="OperC" id="txtOperC" class="form-control-sm" required="required" />
+
+                                    </th>
+                                    @*<th>
+                                            <div align="center">
+                                                <button type="button" class="btn btn-sm btn-outline-primary" id="btnGetGRRResult"
+                                                        onclick="GetGRRResult()">
+                                                    <i class="fas fa-calculator"></i>
+                                                    <span></span>
+                                                </button>
+                                            </div>
+
+                                        </th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <table id="tblOperASamples" class="table table-bordered-black text-black">
+                                            <thead>
+                                                <tr class="bg-blue-opa75 text-center text-white">
+                                                    <th>1</th>
+                                                    <th>2</th>
+                                                    <th>3</th>
+                                                    <th class="bg-pastelred">Ra</th>
+                                                    <th class="bg-pastelred">AVG</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbodyOperASamples" class="text-center">
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table id="tblOperBSamples" class="table table-bordered-black text-black">
+                                            <thead>
+                                                <tr class="bg-blue-opa75 text-center text-white">
+                                                    <th>1</th>
+                                                    <th>2</th>
+                                                    <th>3</th>
+                                                    <th class="bg-pastelred">Rb</th>
+                                                    <th class="bg-pastelred">AVG</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbodyOperBSamples" class="text-center">
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table id="tblOperCSamples" class="table table-bordered-black text-black">
+                                            <thead>
+                                                <tr class="bg-blue-opa75 text-center text-white">
+                                                    <th>1</th>
+                                                    <th>2</th>
+                                                    <th>3</th>
+                                                    <th class="bg-pastelred">Rc</th>
+                                                    <th class="bg-pastelred">AVG</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tbodyOperCSamples" class="text-center">
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    @*<td>
+                                            <table id="tblAVGSamples" class="table table-bordered text-black">
+                                                <thead>
+                                                    <tr>
+                                                        <th>X&#772;p</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbodyAVGSamples">
+                                                </tbody>
+                                            </table>
+                                        </td>*@
+                                </tr>
+                                <tr>
+                                    <td id="0_SampleExt" align="center">
+                                        <label>
+
+                                        </label>
+                                        <br />
+                                    </td>
+                                    <td id="1_SampleExt" align="center">
+                                        <label class="col-form-label-sm fw-bold">
+
+                                        </label>
+                                    </td>
+                                    <td id="2_SampleExt" align="center">
+                                        <label class="col-form-label-sm fw-bold">
+
+                                        </label>
+                                    </td>
+                                    @*<td>
+                                            <div align="center">
+                                                <button type="button" id="btnGRResultModal" class="btn btn-sm btn-outline-primary"
+                                                        data-toggle="modal" data-target="#GRRResultModal">
+                                                    <span>GRR</span>
+                                                </button>
+                                            </div>
+
+                                        </td>*@
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <!--=== END::GR&R Operator Sample Data Display Section ===-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Post-->
+    </div>
+    <!--end::Content-->
+</div>
+}
+
+
+<!-- GRR Result Modal-->
+<div class="modal fade BasicModal-lg" id="GRRResultModal" tabindex="-1" role="dialog" aria-labelledby="GRRResultModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center fw-bold" id="GRRResultModalTitle">
+                    GRR Variations of
+                    <span id="modalTilGRRPartName" class="text-black "></span>
+                </h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-black">
+                        <tr>
+                            <td id="tdDataEV"></td>
+                            <td id="tdDataAV"></td>
+                            <td id="tdDataRR"></td>
+                            <td id="tdDataPV"></td>
+                            <td id="tdDataTV" rowspan="2"></td>
+                        </tr>
+                        <tr>
+                            <td id="tdPercentEV"></td>
+                            <td id="tdPercentAV"></td>
+                            <td id="tdPercentRR"></td>
+                            <td id="tdPercentPV"></td>
+                            @*<td id="tdDataNDC"></td>*@
+                        </tr>
+                    </table>
+                </div>
+                <div class="row d-flex">
+                    <div id="divChartOPInteraction" class="col-sm-6"></div>
+                    <div id="divChartVariationComponent" class="col-sm-6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <input type="hidden" id="URL_GETListStation" value="@Url.Action("GETListStationByModel")" />
+    <input type="hidden" id="URL_GETListItemInStation" value="@Url.Action("GETListItemInStation")" />
+    <input type="hidden" id="URL_GETOperSampleFromCPKTable" value="@Url.Action("GETOperGRRSampleFromCPKTable")" />
+    <input type="hidden" id="URL_POSTGrrCalculateResult" value="@Url.Action("POSTGrrCalculateResult")" />
+    
+</div>
+
+<!--Page level script-->
+<script src="~/Assets/JS/MyJS/GRRModule/GRRCommonFuncs.js"></script>
+<script src="~/Assets/JS/MyJS/GRRModule/GRRCharts.js"></script>

@@ -1,0 +1,162 @@
+﻿@using ATEVersions_Management.Models.HelperModels;
+@if (User.Identity.IsAuthenticated)
+{
+    <div id="chatSystemSection" class="chat-system-section ">
+        <div id="chatFloatIcon" class="chat-floaticon " loggedUserId="@User.Identity.GetUserId()" loggedUserName="@User.Identity.GetUserName()">
+            <div class="rounded-circle p-2 bg-black">
+                <h1>
+                    <i class="fa fa-comment-dots"></i>
+                </h1>
+
+            </div>
+        </div>
+        <div id="chatMainContainer" class="chat-maincontainer d-none">
+            <div id="chatSection" class="chat-section rounded-1">
+                <div class="chat-header fii-content-title clearfix">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div id="chatHeaderRecipient" class="chat-about ">
+                                <h5 class="fw-bold">Aiden Chavez</h5>
+                                <small id="">Last seen: 2 hours ago</small>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 hidden-sm text-right">
+                            <a href="javascript:void(0);" class="btn btn-outline-warning"><i class="fa fa-paperclip"></i></a>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="chatHistory" class="chat-history">
+                    <ul id="chatHistoryContent" class="m-b-0">
+                        <li class="clearfix">
+                            <div class="message-data ">
+                                <span class="message-data-time">10:10 AM, Today</span>
+                            </div>
+                            <div class="message other-message "> Hi Aiden, how are you? How is the project coming along? </div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="message-data text-right">
+                                <span class="message-data-time">10:12 AM, Today</span>
+                            </div>
+                            <div class="message my-message float-right">Are we meeting today?</div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="message-data text-right">
+                                <span class="message-data-time">10:15 AM, Today</span>
+                            </div>
+                            <div class="message my-message float-right">Project has been already finished and I have results to show you.</div>
+                        </li>
+                        <li class="clearfix">
+                            <div class="message-data ">
+                                <span class="message-data-time">10:10 AM, Today</span>
+                            </div>
+                            <div class="message other-message ">
+                                Hi Aiden, how are you? How is the project coming along?
+                                Hi Aiden, how are you? How is the project coming along?
+                                Hi Aiden, how are you? How is the project coming along?
+                                Hi Aiden, how are you? How is the project coming along?
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="fii-form chat-message clearfix">
+                    <div class="input-group mb-0 justify-content-center">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-paper-plane"></i></span>
+                        </div>
+                        <textarea id="messageContent" class="form-control " placeholder="Your messages..." messageType="text"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div id="recipientSection" class="recipient-section fii-form rounded-1">
+                <div class="input-group mb-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Search...">
+                </div>
+                <!-- begin::List Invidual Recipient -->
+                <div class="fii-content-title position-sticky">
+                    <i class="fas fa-user"></i>
+                    <span class="custom-header">INVIDUAL</span>
+                </div>
+                <ul id="listSingleRecipient" class=" list-unstyled chat-list mt-2 mb-0">
+                    <li class="clearfix">
+                        <div class="about">
+                            <div class="name">Vincent Porter</div>
+                            <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>
+                        </div>
+                    </li>
+                    <li class="clearfix active">
+                        <div class="about">
+                            <div class="name">Aiden Chavez</div>
+                            <div class="status"> <i class="fa fa-circle online"></i> online </div>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="about">
+                            <div class="name">Mike Thomas</div>
+                            <div class="status"> <i class="fa fa-circle online"></i> online </div>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="about">
+                            <div class="name">Christian Kelly</div>
+                            <div class="status"> <i class="fa fa-circle offline"></i> left 10 hours ago </div>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="about">
+                            <div class="name">Monica Ward</div>
+                            <div class="status"> <i class="fa fa-circle online"></i> online </div>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="about">
+                            <div class="name">Dean Henry</div>
+                            <div class="status"> <i class="fa fa-circle offline"></i> offline since Oct 28 </div>
+                        </div>
+                    </li>
+                </ul>
+                <!-- end::List Invidual Recipient -->
+                <!-- begin::List Group Recipient -->
+                <div class="fii-content-title position-sticky">
+                    <i class="fas fa-users"></i>
+                    <span class="custom-header">GROUP</span>
+                </div>
+                <ul id="listGroupRecipient" class=" list-unstyled chat-list mt-2 mb-0">
+                    <li class="clearfix">
+                        <div class="about">
+                            <div class="name">Vincent Porter</div>
+                            <div class="status"> <i class="fa fa-circle offline"></i> left 7 mins ago </div>
+                        </div>
+                    </li>
+                    <li class="clearfix active">
+                        <div class="about">
+                            <div class="name">Aiden Chavez</div>
+                            <div class="status"> <i class="fa fa-circle online"></i> online </div>
+                        </div>
+                    </li>
+                    <li class="clearfix">
+                        <div class="about">
+                            <div class="name">Mike Thomas</div>
+                            <div class="status"> <i class="fa fa-circle online"></i> online </div>
+                        </div>
+                    </li>
+
+                </ul>
+                <!-- end::List Group Recipient -->
+            </div>
+        </div>
+    </div>
+    <div>
+        <input type="hidden" id="URL_GET_ListAllUser" value="@Url.Action("GET_ListAllUser","MessageSystem")" />
+        <input type="hidden" id="URL_GET_ListUserExceptLoggedUser" value="@Url.Action("GET_ListUserExceptLoggedUser","MessageSystem")" />
+        <input type="hidden" id="URL_GET_MessageRecordBetween2Users" value="@Url.Action("GET_MessageRecordBetween2Users","MessageSystem")" />
+        <input type="hidden" id="URL_GET_ListGroupContainLoggedUser" value="@Url.Action("GET_ListGroupContainLoggedUser","MessageSystem")" />
+        <input type="hidden" id="URL_GET_MessageRecordOfUsersInGroup" value="@Url.Action("GET_MessageRecordOfUsersInGroup","MessageSystem")" />
+        <input type="hidden" id="URL_POST_SendMessageBetween2User" value="@Url.Action("POST_SendMessageBetween2User","MessageSystem")" />
+    </div>
+    <script src="~/Assets/JS/MyJS/MessageSystem/MessageSystemCommonFuncs.js"></script>
+}
+

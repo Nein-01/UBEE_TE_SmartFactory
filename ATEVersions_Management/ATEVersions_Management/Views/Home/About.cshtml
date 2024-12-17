@@ -1,0 +1,30 @@
+﻿@using ATEVersions_Management.Models.DTOModels  
+@{
+    ViewBag.Title = "About";
+    Layout = "~/Views/Shared/LayoutClient.cshtml";
+
+    //List<TETestDataDTO> listVersionModel = ViewBag.ModelVersion;
+    Dictionary<string, string> dicLatestVersionModel = ViewBag.LatestModelVer;
+    List<VersionDTO> listVersionDTOs = ViewBag.LatestCurrentModelVer;
+}
+<main aria-labelledby="title">
+    <h2 id="title">@ViewBag.Title.</h2>
+    <h3>@ViewBag.Message</h3>
+
+    <p>Use this area to provide additional information.</p>
+    
+    <hr />
+    <div>
+        @foreach (var item in dicLatestVersionModel)
+        {
+            <p> @item.Key | @item.Value </p>
+        }
+    </div>
+    <hr />
+    <div>
+        @foreach (var item in listVersionDTOs)
+        {
+            <p> @item.ModelName | @item.VersionName | @item.IsLastest | @item.Usage</p>
+        }
+    </div>
+</main>

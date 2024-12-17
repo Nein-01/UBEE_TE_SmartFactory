@@ -1,0 +1,98 @@
+﻿@using ATEVersions_Management.Models.CPKModels
+@using ATEVersions_Management.Models.DTOModels
+@model CPKModelStationContent
+@{    
+    //
+    int no = 0;
+    int count = 0;
+
+    //    
+}
+
+<div class="fii-frame-subcontent d-flex justify-content-center mb-1">
+    <button type="button" id="btnReCPKTable" class="btn fii-btn fii-btn-primary ">
+        <i class="fas fa-table"></i>
+        <span>Re CPK</span>
+    </button>
+    <form action="@Url.Action("POST_ExportCPKToExcel")" target="_blank">
+        <button class="btn fii-btn fii-btn-success " onclick="">
+            <i class="fas fa-file-excel"></i>
+            <span>Export</span>
+        </button>
+    </form>
+</div>
+<div class="fii-frame-card p-3 text-white">
+    <table class="table-custom  text-white" id="dataTable">
+        <thead>
+            <tr>
+                <th class="fii-frame-rectangle">No</th>
+                <th class="fii-frame-rectangle">
+                    Item
+                </th>
+                <th class="fii-frame-rectangle">
+                    SpecL
+                </th>
+                <th class="fii-frame-rectangle">
+                    SpecH
+                </th>
+                <th class="fii-frame-rectangle text-center">
+                    CPK Value
+                </th>
+                <th class="fii-frame-rectangle text-center">
+                    CPK Graph
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ContentGroup)
+            {
+                string cpkStatus = "";
+                <tr>
+                    <td class="fii-frame-box ">@{no = count + 1;} @no</td>
+                    <td class="fii-frame-box">
+                        @Html.DisplayFor(modelItem => item.ItemName)
+                    </td>
+                    <td class="fii-frame-box">
+                        @Html.DisplayFor(modelItem => item.SpecL)
+                    </td>
+                    <td class="fii-frame-box">
+                        @Html.DisplayFor(modelItem => item.SpecH)
+                    </td>
+                    @if (item.CPKResult.Cpk <= 0.8)
+                    {
+                        cpkStatus = "danger";
+                    }
+                    @if (item.CPKResult.Cpk > 0.8 & item.CPKResult.Cpk < 1.33)
+                    {
+                        cpkStatus = "warning";
+                    }
+                    <td class="fii-frame-box fw-bold text-center text-@cpkStatus">
+                        @Html.DisplayFor(modelItem => item.CPKResult.Cpk)
+                    </td>
+                    <td class="fii-frame-box" align="center">
+                        <div class="" style="cursor:pointer;"
+                           title="Graphing CPK"
+                           onclick="EVT_DrawCPKChartOfSelectedItem(this,'@Model.ModelName','@Model.Station',@count)">
+                            <i class="fas fa-fw fa-chart-line text-white"></i>
+                        </div>
+                        @*<a href="@Url.Action("CPKItemData", "CPKSystem", new {model = Model.ModelName, station = Model.Station, pos = count})" title="Item Data" target="_blank">
+            <i class="fas fa-fw fa-list-alt text-info"></i>
+        </a>
+                        @Url.Action("CPKDrawing", "CPKSystem", new {model = Model.ModelName, station = Model.Station, pos = count, itemName = item.ItemName})
+                        *@
+                    </td>
+                </tr>
+                { count++; }
+            }
+        </tbody>
+    </table>
+
+</div>
+<div>
+    
+</div>
+<script>
+    $('#VAR_Model').val('@Model.ModelName');
+    $('#VAR_Station').val('@Model.Station');
+    $('#txtCPKNum').val('@Model.ListPCBSN.Count');
+</script>

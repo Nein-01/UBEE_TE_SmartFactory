@@ -1,0 +1,250 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model TestPlanDTO
+@using ATEVersions_Management.Models.HelperModels
+@{
+    ViewBag.Title = "Detail: " + Model.ModelName + "_" + Model.TestPlanVersion;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="form-horizontal row justify-content-center">
+    <!--begin::Content -->
+    <div class="content d-flex flex-column flex-column-fluid col-xl-6">
+        <!--begin::Post-->
+        <div class="card shadow d-flex flex-column-fluid ">
+            <div class="card-header py-3">
+                <h3 class="m-0 font-weight-bold text-primary">Test Plan Detail</h3>
+            </div>
+            <!--begin::Card body-->
+            <div class="card-body border-top p-9">
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.ModelName)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.ModelName)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.UserName)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.UserName)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.TestPlanVersion)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.TestPlanVersion)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.TestPlanVersion)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.TestPlanVersion)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.Author)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.Author)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.StoredDir)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        <a href="#" title="Preview"
+                           data-toggle="modal" data-target="#TestPlanPreviewModal"
+                           onclick="GetTestPlanFileData('@Model.StoredDir')">
+                            <i class="fas fa-fw fa-file-pdf"></i>
+                            <span id="preFileName"></span>
+                        </a>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.ModifiedAt)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.ModifiedAt)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.ModifyNote)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        <span class="breakLine">@Html.DisplayFor(model => model.ModifyNote)</span>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.Status)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @switch (Model.Status)
+                        {
+                            case 0:<span class="text-danger">Disable</span> break;
+                            case 1: <span class="text-success">Enable</span>break;
+                        }
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Tracking section-->
+                <h4 class="row mb-2 font-weight-bold text-primary border p-2">Tracking changes</h4>
+                <!--end::Tracking section-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.CreatedAt)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.CreatedAt)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.UpdatedAt)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        <span>@Html.DisplayFor(model => model.UpdatedAt)</span>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.UpdatedBy)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        <span>@Html.DisplayFor(model => model.UpdatedBy)</span>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Action group-->
+                <div align="center">
+                    <a href="@Url.Action("TestPlanIndex", "AdmTestPlan")">
+                        <i class="fas fa-fw fa-arrow-circle-left"></i>
+                        <span>Test Plan List</span>
+                    </a> |
+                    @if (User.Identity.GetUserId() == Model.UserID)
+                    {
+
+                        <a href="@Url.Action("TestPlanEdit", "AdmTestPlan", new { id = Model.TestPlanID })">
+                            <i class="fas fa-fw fa-pen-square"></i>
+                            <span>Edit</span>
+                        </a>
+                    }
+
+                </div>
+                <!--end::Action group-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Post-->
+
+    </div>
+    <!--end::Content-->
+</div>
+
+<!-- PDF file preview modal-->
+<div class="modal fade ChartModal" id="TestPlanPreviewModal" tabindex="-1" role="dialog" aria-labelledby="TestPlanPreviewModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div align="center" id="TestPlanPreviewModalBody">
+                    <iframe src="" id="FilePreviewSection" style="width:900px; height:800px"></iframe>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="~/Assets/JS/MyJS/TestPlanModule/TestPlanCommonFuncs.js"></script>
+<script>
+    _filePath = '@Model.StoredDir';
+    DisplayPreFileName(_filePath);
+</script>

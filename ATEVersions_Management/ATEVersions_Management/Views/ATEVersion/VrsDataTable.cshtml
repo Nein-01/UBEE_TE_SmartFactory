@@ -1,0 +1,122 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model IEnumerable<VersionDTO>
+@{ 
+    int NoATEListCount = int.Parse(TempData["NoATEListCount"].ToString());
+    int UnchekedCount = int.Parse(TempData["UnchekedCount"].ToString());
+}
+<div class="d-flex align-items-center justify-content-center">
+    @if (NoATEListCount > 0 || UnchekedCount > 0)
+    {
+        <label class="p-1 m-1 fw-bold rounded bg-danger text-white text-center">No ATEList: @NoATEListCount</label>
+        <label class="p-1 m-1 fw-bold rounded bg-warning text-white text-center">Unchecked: @UnchekedCount</label>
+    }
+</div>
+
+<table id="dtblVersion" class="table table-bordered text-black" width="100%" cellspacing="0">
+    <thead>
+        <tr class="bg-blue-opa75 text-white">
+            <th>
+                @Html.DisplayNameFor(model => model.ModelName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VersionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Engineer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BuildTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseNote)
+            </th>
+            <th class="text-center ">
+                @Html.DisplayNameFor(model => model.LastestVersionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Usage)
+            </th>
+            <th class="print-disable text-center">
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModelName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VersionName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Engineer)
+                </td>
+                <td>
+                    @if (item.BuildTime.HasValue)
+                    {
+                        @Html.DisplayFor(modelItem => item.BuildTime.Value)
+                    }
+                </td>
+                <td>
+                    @if (item.ReleaseTime.HasValue)
+                    {
+                        @Html.DisplayFor(modelItem => item.ReleaseTime.Value)
+                    }
+                </td>
+                <td>
+                    <span class="breakLine">@Html.DisplayFor(modelItem => item.ReleaseNote)</span>
+                </td>
+                <td class="text-center">
+                    @if (item.IsLastestDBVersion == 1)
+                    {
+                        if (item.IsLastest == 1)
+                        {
+                            <span class="fw-bold rounded p-1 badge-success">@Html.DisplayFor(modelItem => item.LastestVersionName)</span>
+                        }
+                        else
+                        {
+                            <span class="fw-bold rounded p-1 badge-danger">@Html.DisplayFor(modelItem => item.LastestVersionName)</span>
+                        }
+                    }
+
+                </td>
+                <td class="text-center">
+                    @if (item.Usage == 0)
+                    {
+                        <span class="fw-bold rounded p-1 badge-secondary">Unused</span>
+                    }
+                    @if (item.Usage == 1)
+                    {
+                        <span class="fw-bold rounded p-1 badge-success">In use</span>
+                    }
+                </td>
+                <td class="print-disable" align="center">
+                    @*<a href="@Url.Action("CltATEList", "ATEVersion", new { verID = item.VersionID })" *@
+                    <a href="#" title="@item.ModelName - @item.VersionName ATE List" 
+                       id="" class="version-atelist "
+                       data-toggle="modal" data-target="#modalVersionAteList"
+                       ateVerID = "@item.VersionID" ateListTitle = "@item.ModelName - @item.VersionName ATE List">
+                        <i class="fas fa-fw fa-file-pdf text-danger"></i>
+                    </a><br />
+                    @if (item.IsATEListAvailable == 1)
+                    {
+                        if (item.IsATEListChecked == 0)
+                        {
+                            <span class="fw-bold text-warning">(Unchecked)</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="fw-bold text-danger">(No ATEList)</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

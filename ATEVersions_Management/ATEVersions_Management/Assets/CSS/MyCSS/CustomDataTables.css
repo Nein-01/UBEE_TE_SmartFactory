@@ -1,0 +1,24 @@
+﻿/* === Custom pagination color === */
+/*=Test Plan=*/
+#dtblTestPlan_paginate .pagination .paginate_button.page-item .page-link {
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: red;
+    background-color: #fff;
+    border: 1px solid #dddfeb;
+}
+#dtblTestPlan_paginate .pagination .paginate_button.page-item.active .page-link {
+    color: #fff;
+    background-color: rgba(250,160,160,1);
+    border-color: rgba(250,160,160,1);
+}
+#dtblTestPlan_paginate .pagination .paginate_button.page-item.disabled .page-link {
+    cursor: auto;
+    pointer-events: none;
+    color: #858796;
+    background-color: #fff;
+    border-color: #dddfeb;
+}

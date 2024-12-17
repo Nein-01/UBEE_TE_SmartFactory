@@ -1,0 +1,177 @@
+﻿@model ATEVersions_Management.Models.ATEVersionModels.USER
+@using ATEVersions_Management.Models.HelperModels
+@{
+    ViewBag.Title = "Edit User";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    IEnumerable<System.Web.Mvc.SelectListItem> RoleSelector = ViewBag.RoleSelector;
+    IEnumerable<System.Web.Mvc.SelectListItem> StatusSelector = ViewBag.StatusSelector;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal row justify-content-center">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.UserID)
+        <!--begin::Content -->
+        <div class="content d-flex flex-column flex-column-fluid col-xl-6">
+            <!--begin::Post-->
+            <div class="card shadow d-flex flex-column-fluid ">
+                <div class="card-header py-3">
+                    <h3 class="m-0 font-weight-bold text-primary">Update User Information</h3>
+                </div>
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+                    <!--begin::Display group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.UserName)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 col-form-label fv-row ">
+                            <span class="text-bg-primary text-gray-100 fw-bold p-1 rounded-2">@Model.UserName</span>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Display group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.FullName)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.ROLE.RoleName)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 col-form-label fv-row">
+                            @Html.DropDownListFor(model => model.RoleID, RoleSelector, new { @class = "form-select" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.Department)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @Html.EditorFor(model => model.Department, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.Email)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.PhoneNumber)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.Status)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @if (Model.ROLE.RoleName != "Admin")
+                            {
+                                @Html.DropDownListFor(model => model.Status, StatusSelector, new { @class = "form-select" })
+                            }
+                            else
+                            {
+                                <span class="text-success p-1">Enable</span>
+                                @Html.HiddenFor(model => model.Status)
+                            }
+
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Action group-->
+                    <div class="form-group">
+                        <div class="col-md-offset-2" align="center">
+                            <input type="submit" value="Update" class="btn btn-outline-primary" />
+                            <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                        </div>
+                    </div>
+                    <div align="center">
+                        <a href="@Url.Action("UserIndex", "AdmUser")">
+                            <i class="fas fa-fw fa-arrow-circle-left"></i>
+                            <span>User List</span>
+                        </a>
+                    </div>
+                    <!--end::Action group-->
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Post-->
+
+
+        </div>
+        <!--end::Content-->
+    </div>
+}
+
+
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

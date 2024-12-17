@@ -1,0 +1,55 @@
+﻿@model ATEVersions_Management.Models.AccountModels.MyResetPassword
+@using ATEVersions_Management.Models.ATEVersionModels
+@using ATEVersions_Management.Models.HelperModels
+@{
+    ViewBag.Title = "Reset Password";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    USER user = ViewBag.User;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-5 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+
+                        <div class=" p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Reset password for @user.UserName</h1>
+                            </div>
+                            @Html.Hidden("userID",user.UserID)
+                            <div class="form-group row">
+                                @Html.EditorFor(model => model.NewPassword, new { htmlAttributes = new { @class = "form-control form-control-user", placeholder = "New password" } })
+                                @Html.ValidationMessageFor(model => model.NewPassword, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group row">
+                                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control form-control-user", placeholder = "Confirm password" } })
+                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group row">
+                                <input type="submit" class="btn btn-primary btn-user btn-block" value="Reset password" />
+                            </div>
+                            <div align="center">
+                                <a href="#" onclick="history.back()">
+                                    <i class="fas fa-fw fa-arrow-circle-left"></i>
+                                    <span>User Infor</span>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+

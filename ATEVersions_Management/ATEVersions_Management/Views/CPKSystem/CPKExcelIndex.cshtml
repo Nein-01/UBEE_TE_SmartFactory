@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "CPK Excel Index";
+    Layout = "~/Views/Shared/LayoutClient.cshtml";
+}
+<!-- Page level script section -->
+<script src="~/Assets/JS/FrameworkJS/jquery-3.4.1.min.js"></script>
+<script src="~/Assets/Vendor/html2canvas/html2canvas.min.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/highcharts.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/highcharts-more.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/modules/accessibility.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/modules/histogram-bellcurve.js"></script>
+<!-- Page content section -->
+
+<form id="cpkExcelUpload" action="@Url.Action("CPKExcelFileUpload","CPKSystem")" method="post" enctype="multipart/form-data">
+    <div class=" row justify-content-center">
+        <!--begin::Content -->
+        <div class="content d-flex flex-column flex-column-fluid">
+            <!--begin::Post-->
+            <div class="card d-flex flex-column-fluid ">
+                <div class="card-header py-3">
+                    <h3 class="m-0 font-weight-bold text-center text-info">CPK From Excel</h3>
+                </div>
+                <!--begin::Card body-->
+                <div class="card-body border-top">
+
+                    <!--begin::Input group-->
+                    <div class="row mb-2 justify-content-center">
+                        <!--begin::Label-->
+                        <label class="col-sm-1 col-form-label fw-bold fs-6 text-center">
+                            <span>File</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-sm-3 fv-row d-flex">
+                            <input type="file" name="uploadFile" formenctype="multipart/form-data" class="form-control" size="100" />
+                        </div>
+                        <!--end::Col-->
+                        <!--begin::Action group-->
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-outline-info">
+                                <i class="fas fa-download"></i>
+                                <span>Submit</span>
+                            </button>
+                            <input type="reset" value="Reset" class="btn btn-outline-info" />
+                        </div>
+
+                        <!--end::Action group-->
+                    </div>
+                    <!--end::Input group-->
+
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Post-->
+        </div>
+        <!--end::Content-->
+    </div>
+</form>
+<div class="table-responsive mb-2" id="cpkItemTableSection" style="height:400px;">
+    <table class="table table-bordered text-black">
+        <thead>
+            <tr>
+                <th class="text-center">No.</th>
+                <th>Item</th>
+                <th>SpecL</th>
+                <th>SpecH</th>
+                <th class="text-center">Draw</th>
+            </tr>
+        </thead>
+        <tbody id="excelItemList">
+        </tbody>
+    </table>
+</div>
+
+
+<!-- CPK Chart Modal-->
+<div class="modal fade ChartModal" id="CPKChartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title text-center">Chart Panel</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div align="center" id="CPKChartSection">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Manually script section -->
+<script src="~/Assets/JS/FrameworkJS/jquery-3.4.1.min.js"></script>
+<script>
+    var cpkChartSectionUrl = '@Url.Action("ExcelCPKChart","CPKSystem")';
+</script>
+<script src="~/Assets/JS/MyJS/CPKModule/CPKExcelFuncs.js"></script>

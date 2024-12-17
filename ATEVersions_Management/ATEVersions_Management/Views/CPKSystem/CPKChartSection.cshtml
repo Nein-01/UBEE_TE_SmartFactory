@@ -1,0 +1,218 @@
+﻿@using ATEVersions_Management.Models.CPKModels
+@model CPKCalculate
+@{
+    List<string> pcbSNList = Model.PcbSNList;
+    List<double> dataSet = Model.DataSet;
+    int listSize = dataSet.Count;
+    List<WithinPoint> wthLine = Model.WithinData;
+}
+
+<!-- Page content section -->
+<div class="fii-frame-card d-flex justify-content-center p-3">
+    @if (pcbSNList.Count != 0)
+    {
+        <div class="col-sm-2 text-black table-responsive div-scrollable-sm">
+            <table class="fii-table ">
+                <thead>
+                    <tr>
+                        <th>PCB_SN</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < listSize; i++)
+                    {
+                        <tr>
+                            <td>@pcbSNList[i]</td>
+                            <td>@dataSet[i]</td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        </div>
+    }
+
+    <div class="col-sm-9" id="contentHolder">
+        <div class="text-black p-1" style="border:1px solid; background-color:#ebe5da;">
+
+            <div class="row mb-2 justify-content-center">
+                <h5 class="text-center font-weight-bold text-black "> Process Capability of @Model.ItemName </h5>
+                <div class="col-sm-3">
+                    <div class="card mb-2 table-responsive text-black" style="border:1px solid;">
+                        <h6 class="text-center">Data process</h6>
+                        <table class="">
+                            <tr>
+                                <td>LSL:</td>
+                                <td>@Model.SpecL</td>
+                            </tr>
+                            <tr>
+                                <td>USL:</td>
+                                <td>@Model.SpecH</td>
+                            </tr>
+                            <tr>
+                                <td>Sample Mean:</td>
+                                <td>@Model.Average</td>
+                            </tr>
+                            <tr>
+                                <td>Sample N:</td>
+                                <td>@Model.DataSize</td>
+                            </tr>
+                            <tr>
+                                <td>StDev(Within):</td>
+                                <td>@Model.WithinSigma</td>
+                            </tr>
+                            <tr>
+                                <td>StDev(Overall):</td>
+                                <td>@Model.OverallSigma</td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+
+                    <!-- Area Chart -->
+                    <div class="card mb-2 text-black" style="height: 500px; border: 1px solid;">
+                        <div class="chart-area">
+                            <div id="CPKChart" style="height:450px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 ">
+                    <div class="card table-responsive text-black" style="border:1px solid;">
+                        <h6 class="text-center">Potential (Within) Capability</h6>
+                        <table class="">
+                            <tr>
+                                <td>Cp:</td>
+                                <td>@Model.Cp</td>
+                            </tr>
+                            <tr>
+                                <td>CPL:</td>
+                                <td>@Model.Cpl</td>
+                            </tr>
+                            <tr>
+                                <td>CPU:</td>
+                                <td>@Model.Cpu</td>
+                            </tr>
+                            <tr>
+                                <td>Cpk:</td>
+                                <td>@Model.Cpk</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="card mb-2 table-responsive text-black" style="border:1px solid;">
+                        <h6 class="text-center">Overall Capability</h6>
+                        <table class="">
+                            <tr>
+                                <td>Pp:</td>
+                                <td>@Model.Pp</td>
+                            </tr>
+                            <tr>
+                                <td>PPL:</td>
+                                <td>@Model.Ppl</td>
+                            </tr>
+                            <tr>
+                                <td>PPU:</td>
+                                <td>@Model.Ppu</td>
+                            </tr>
+                            <tr>
+                                <td>Ppk:</td>
+                                <td>@Model.Ppk</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2 justify-content-center">
+                <div class="col-sm-3 p-2">
+                    <div class="card table-responsive text-black " style="border:1px solid;">
+                        <h6 class="text-center">Exp. Within Performance</h6>
+                        <table class="">
+                            <tr>
+                                <td>PPM_LSL:</td>
+                                <td>@Model.WtPpm_Lsl</td>
+                            </tr>
+                            <tr>
+                                <td>PPM_USL:</td>
+                                <td>@Model.WtPpm_Usl</td>
+                            </tr>
+                            <tr>
+                                <td>PPM Total:</td>
+                                <td>@Model.WtPpm_Total</td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                </div>
+                <div class="col-sm-3 p-2">
+                    <div class="card table-responsive text-black" style="border:1px solid;">
+                        <h6 class="text-center">Exp. Overall Performance</h6>
+                        <table class="">
+                            <tr>
+                                <td>PPM_LSL:</td>
+                                <td>@Model.OvPpm_Lsl</td>
+                            </tr>
+                            <tr>
+                                <td>PPM_USL:</td>
+                                <td>@Model.OvPpm_Usl</td>
+                            </tr>
+                            <tr>
+                                <td>PPM Total:</td>
+                                <td>@Model.OvPpm_Total</td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    //Chart drawing data prepare script
+
+    var dataName = '@Model.ItemName';
+    var lsl = parseFloat(@Model.SpecL), usl = parseFloat(@Model.SpecH);
+
+    var binCount = parseInt(@Model.BinCount);
+    var binWidth = parseFloat(@Model.BinWidth);
+
+
+    //get data from form
+    var dataSet = @Html.Raw(Json.Encode(dataSet));
+    var wthSet = @Html.Raw(Json.Encode(wthLine));
+    var _data = [];
+    var _wth = [];
+
+    for (var i = 0; i < dataSet.length; i++) {
+        _data.push(parseFloat(dataSet[i]));
+    }
+    for (var i = 0; i < wthSet.length; i++) {
+        _wth.push([parseFloat(wthSet[i].x), parseFloat(wthSet[i].y)]);
+    }
+</script>
+<script src="~/Assets/JS/MyJS/CPKModule/CPKChartCustom.js"></script>
+<script>
+    //Copy img to clipboard
+    $(document).ready(function () {
+        var element = $('#contentHolder')[0];
+        var getCanvas;
+        $('#btnCopyImg').on('click', function () {
+            html2canvas(element).then(
+                (canvas) => canvas.toBlob(
+                    blob => navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })])
+                )
+            );
+        });
+    });
+</script>

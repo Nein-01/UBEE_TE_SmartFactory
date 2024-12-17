@@ -1,0 +1,401 @@
+﻿@using ATEVersions_Management.Models.DTOModels.TestMonitorDTOs;
+@{
+    ViewBag.Title = "Energy Saving";
+    //Layout = "~/Views/Shared/LayoutClient.cshtml";
+    Layout = "~/Views/Shared/_LayoutFiiTheme.cshtml";
+
+}
+<div class="card">
+    <!-- Page level script section -->
+    <script src="~/Assets/Vendor/highcharts_js/highcharts.js"></script>
+    <script src="~/Assets/Vendor/highcharts_js/highcharts-more.js"></script>
+    <script src="~/Assets/Vendor/highcharts_js/modules/accessibility.js"></script>
+    <!-- Page content section -->
+
+    <ul class="nav nav-tabs d-flex justify-content-center mb-1" role="tablist">
+        <li class="nav-item">
+            <button type="button" id="tabWOL" class="nav-link active fw-bold"
+                    data-bs-toggle="tab" data-bs-target="#tpaneWOL"
+                    role="tab" aria-controls="tpaneWOL" aria-selected="true"
+                    onclick="ReloadOnTabChange('WOL')">
+                Wake up on line
+            </button>
+        </li>
+        <li class="nav-item">
+            <button type="button" id="tabAIR" class="nav-link fw-bold"
+                    data-bs-toggle="tab" data-bs-target="#tpaneAIR"
+                    role="tab" aria-controls="tpaneAIR" aria-selected="false"
+                    onclick="ReloadOnTabChange('AIR')">
+                Air controller
+            </button>
+        </li>
+    </ul>
+
+    <div class="d-flex justify-content-center mb-1">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+        </div>
+        <input type="text" id="search_hostname" class="form-control form-control-sm w-25"
+               placeholder="Enter keyword...">
+    </div>
+    <div class="tab-content">
+        <!-- Begin::WOL Control Section -->
+        <div class="tab-pane fade show active" id="tpaneWOL" role="tabpanel" aria-labelledby="tabWOL">
+            <div id="divHeaderWOL" class="d-flex text-black mb-2">
+                <div class="col-sm-6 rounded header">
+                    <div class="header__title">
+                        <span>OVERVIEW INFO</span>
+                    </div>
+                    <div class="header__total d-flex justify-content-center">
+                        <div class="header__item all " onclick="filterByStatus(-1)">
+                            <span class="total total-all" onclick="filterByStatus(-1)">N/A</span>
+                            <span class="name">All Machine</span>
+                        </div>
+
+                        <div class="header__item normal" onclick="filterByStatus(0)">
+                            <span class="total total-normal" onclick="filterByStatus(0)">N/A</span>
+                            <span class="name">Normal</span>
+                        </div>
+
+                        <div class="header__item warning" onclick="filterByStatus(1)">
+                            <span class="total total-warning" onclick="filterByStatus(1)">N/A</span>
+                            <span class="name">Warning</span>
+                        </div>
+
+                        <div class="header__item idle" onclick="filterByStatus(2)">
+                            <span class="note total-idle" onclick="filterByStatus(2)">N/A</span>
+                            <span class="name">Idle</span>
+                        </div>
+
+                        <div class="header__item hrisk" onclick="filterByStatus(3)">
+                            <span class="total total-hrisk" onclick="filterByStatus(3)">N/A</span>
+                            <span class="name">High Risk</span>
+                        </div>
+
+                        <div class="header__item abnormal" onclick="filterByStatus(4)">
+                            <span class="total total-abnormal" onclick="filterByStatus(4)">N/A</span>
+                            <span class="name">Abnormal</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 rounded header">
+                    <div class="header__title">
+                        <span>POWER SAVED</span>
+                    </div>
+                    <div class="header__power">
+                        <div class="header__item time">
+                            <span class="ribbon">Date Time</span>
+                            <span id="erDate" class="cont">N/A</span>
+                        </div>
+                        <div class="header__item equip-qty">
+                            <span class="ribbon">Machine Qty</span>
+                            <span id="erMachineQty" class="cont">N/A</span>
+                        </div>
+                        <div class="header__item working-time">
+                            <span class="ribbon">Working Time</span>
+                            <span id="erWorkTime" class="cont">N/A</span>
+                        </div>
+                        <div class="header__item idle-time">
+                            <span class="ribbon">Idle Time</span>
+                            <span id="erIdleTime" class="cont">N/A</span>
+                        </div>
+                        <div class="header__item power-save">
+                            <span class="ribbon">Power Saved</span>
+                            <span id="erPowerSave" class="cont">N/A</span>
+                        </div>
+                        <div class="header__item cost-down">
+                            <span class="ribbon">Cost Down</span>
+                            <span id="erCostDown" class="cont">N/A</span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <a type="button" href="#" class=" btn-power-history"
+                           onclick="loadPowerHistoryChart()" data-toggle="modal" data-target="#modal-power-history">
+                            <i class="fa fa-chart-bar"></i>
+                            <span>Show History</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Begin::WOL Machine Content -->
+            <div id="divContentWOL" class="row px-2">
+                <div class="col-sm-12 tb-custom">
+
+                </div>
+            </div>
+            <!-- End::WOL Machine Content -->
+            <!-- Begin::Modal Machine Content Detail -->
+            <div class="modal fade" id="modal-detail">
+                <div class="modal-dialog modal-lg modal-lg-custom">
+                    <div class="modal-content" style="background: #424040; box-shadow: 0px 1px 10px #4c4c4c;">
+                        <div class="modal-header py-2">
+                            <h5 class="modal-title text-white">IP/Host Name: <span class="title-modal"></span></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-sm-12 pb-3">
+                                <div class="row">
+                                    <div class="col-sm-4 mb-2 ">
+                                        <button class="btn btn-warning btn-wakeup"><i class="fa fa-clock"></i>Awake</button>
+                                        <button class="btn btn-primary btn-sleep"><i class="fa fa-moon"></i>Sleep</button>
+                                        @*<button class="btn btn-secondary btnLockTester" onclick="lockTester(this);">
+                                                <i class="fa fa-lock"></i> Lock
+                                            </button>*@
+                                    </div>
+                                </div>
+                                @*<div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-6 d-flex">
+                                                    <textarea name="" id="txtReason" class="form-control form-control-sm"
+                                                              style="height:30px;" placeholder="Enter idle reason..."></textarea>
+                                                    <button class="btn btn-sm btn-success mr-2 btnUpdateIdleReason"
+                                                            onclick="updateIdleReason(this)">
+                                                        Update
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                <div class="row">
+                                    <div class="col-sm-12 pt-2 ">
+                                        <fieldset class="row d-flex justify-content-center"
+                                                  style="width: 100%;border: 1px solid #161616;box-shadow: 0 0 5px #000000;padding:10px 0px;margin: 0;border-radius: 5px;color:#fff;">
+                                            <legend class="fw-bold text-center">
+                                                @*style="margin-bottom: 0;margin-left: .5rem;width: auto;font-size: 16px;font-weight: bold;"*@
+                                                Tester Information
+                                            </legend>
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    @*<div class="col-sm-3 flex-tester-info">
+                                                            <span class="title-tester">Stage: </span>
+                                                            <span class="stage-info"></span>
+                                                        </div>*@
+                                                    <div class="col-sm-3 flex-tester-info">
+                                                        <span class="title-tester">Line: </span>
+                                                        <span class="line-info"></span>
+                                                    </div>
+                                                    <div class="col-sm-3 flex-tester-info">
+                                                        <span class="title-tester">Host Name: </span>
+                                                        <span class="host-info"></span>
+                                                    </div>
+                                                    <div class="col-sm-3 flex-tester-info">
+                                                        <span class="title-tester">Ip Address: </span>
+                                                        <span class=" ipaddress-info"></span>
+                                                    </div>
+
+                                                    <div class="col-sm-3 flex-tester-info">
+                                                        <span class="title-tester">Mac: </span>
+                                                        <span class="mac-info"></span>
+                                                    </div>
+                                                    <div class="col-sm-3 flex-tester-info">
+                                                        <span class="title-tester">OS Name: </span>
+                                                        <span class="osname-info"></span>
+                                                    </div>
+                                                    <div class="col-sm-3 flex-tester-info">
+                                                        <span class="title-tester">OS Version: </span>
+                                                        <span class="osversion-info"></span>
+                                                    </div>
+                                                    <div class="col-sm-3 flex-tester-info">
+                                                        <span class="title-tester">Owner: </span>
+                                                        <span class="owner-info"></span>
+                                                    </div>
+                                                    <div class="col-sm-3 flex-tester-info text-orange">
+                                                        <span class="title-tester">Idle Time: </span>
+                                                        <span class="idle-info"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!--<div class="col-sm-4">
+                                            <div class="row">-->
+                                            @*<div class="col-sm-12 flex-tester-info">
+                                                    <span class="title-tester" style="color: #fd7e14;">Idle Time: </span>
+                                                    <span class="col-sm-12  idleTime">
+
+                                                    </span>
+                                                </div>*@
+                                            <!--</div>
+                                            </div>-->
+
+                                        </fieldset>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 table-responsive">
+                                <table class="table table-sm" id="tblListIssues">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            @*<th>Building</th>*@
+                                            <th>Line</th>
+                                            <th>Machine Name</th>
+                                            <th>IP</th>
+                                            <th>MAC</th>
+                                            <th>Issue</th>
+                                            <!-- <th>Software</th>
+                                            <th>Window Version</th>
+                                            <th>Port</th>
+                                            <th>Antivirus</th> -->
+                                            <th>Owner</th>
+                                            <th>Detect Time</th>
+                                            <th>Deal Time</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-12 table-responsive">
+                                <table class="table table-sm" id="tblListHardwareChanged">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Machine Name</th>
+                                            <th>Changed Record</th>
+                                            <th>Time Check</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer py-1">
+                            <button type="button" class="btn btn-outline-light btn-sm" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End::Modal Machine Content Detail -->
+            <!-- Begin::Modal Energy Saving Record -->
+            <div class="modal fade" id="modal-power-history">
+                <div class="modal-dialog modal-lg modal-lg-custom">
+                    <div class="modal-content" style="background-color: #1c1c1c;box-shadow: 0px 1px 10px #4c4c4c;">
+                        <div class="modal-header py-2 text-white">
+                            <h5 class="modal-title">Power Saving History<span class="title-modal"></span></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                    </div>
+                                    <input type="text" id="timeSpan" class="form-control form-control-sm text-center text-black w-">
+                                    <button class=" btn btn-sm btn-primary btn-filter-history">
+                                        <i class="fa fa-filter"></i>
+                                        Filter
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset class="row"
+                                          style="width: 100%;border: 1px solid #161616;box-shadow: 0 0 5px #000000;padding:10px 0px;margin: 0;border-radius: 5px;color:#fff;margin-top: 10px">
+                                    <legend class="fw-bold text-center">
+                                        Overview Info
+                                    </legend>
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-2 flex-power-info">
+                                                <span class="title-tester">Date Time: </span>
+                                                <span class="date-time">N/A</span>
+                                            </div>
+                                            <div class="col-md-2 flex-power-info">
+                                                <span class="title-tester">Total Machine Qty: </span>
+                                                <span class="machine-qty">N/A</span>
+                                            </div>
+                                            <div class="col-md-2 flex-power-info">
+                                                <span class="title-tester">Total Working Time: </span>
+                                                <span class="tr-working-time">N/A</span>
+                                            </div>
+                                            <div class="col-md-2 flex-power-info">
+                                                <span class="title-tester">Total Idle Time: </span>
+                                                <span class="tr-idle-time">N/A</span>
+                                            </div>
+                                            <div class="col-md-2 flex-power-info">
+                                                <span class="title-tester">Total Power Saved: </span>
+                                                <span class="tr-power-save">N/A</span>
+                                            </div>
+                                            <div class="col-md-2 flex-power-info">
+                                                <span class="title-tester">Total Cost Down: </span>
+                                                <span class="tr-cost-down">N/A</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div id="power-history-chart" style="height: 30vh;"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer py-1">
+                            <button type="button" class="btn btn-outline-light btn-sm" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End::Modal Energy Saving Record -->
+
+        </div>
+        <!-- End::WOL Control Section -->
+        <!-- Begin::AIR Control Section -->
+        <div class="tab-pane fade" id="tpaneAIR" role="tabpanel" aria-labelledby="tabAIR">
+            <div id="divHeaderAIR" class="d-flex text-black mb-2">
+                <div class="col-sm-12 rounded header">
+                    <div class="header__title">
+                        <span>OVERVIEW INFO</span>
+                    </div>
+                    <div class="header__total d-flex justify-content-center">
+                        <div class="header__item all " onclick="filterByStatus(-1)">
+                            <span class="total total-air-all" onclick="filterByStatusAIR(-1)">N/A</span>
+                            <span class="name">All Machine</span>
+                        </div>
+
+                        <div class="header__item normal" onclick="filterByStatus(0)">
+                            <span class="total total-air-on" onclick="filterByStatusAIR(0)">N/A</span>
+                            <span class="name">AIR ON</span>
+                        </div>
+
+                        <div class="header__item idle" onclick="filterByStatus(1)">
+                            <span class="total total-air-off" onclick="filterByStatusAIR(1)">N/A</span>
+                            <span class="name">AIR OFF</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Begin::AIR Control Content -->
+            <div id="divContentAIR" class="row px-2">
+                <div class="col-sm-12 tb-air-custom">
+
+                </div>
+            </div>
+            <!-- End::AIR Control Content -->
+        </div>
+        <!-- End::AIR Control Section -->
+    </div>
+
+
+    <div>
+        <input type="hidden" id="URL_POST_MQTTPublishMessage" value="@Url.Action("POST_MQTTPublishMessage")" />
+        <!-- WOL Module AJAX Requesting URL -->
+        <input type="hidden" id="URL_GET_TodayAllMachineInfor" value="@Url.Action("GET_TodayAllMachineInfor")" />
+        <input type="hidden" id="URL_GET_MachineOwner" value="@Url.Action("GET_MachineOwner")" />
+        <input type="hidden" id="URL_GET_IssueRecordByHostName" value="@Url.Action("GET_IssueRecordByHostName")" />
+        <input type="hidden" id="URL_GET_MachineChangeRecordByHostName" value="@Url.Action("GET_MachineChangeRecordByHostName")" />
+        <input type="hidden" id="URL_GET_TodayEnergyTotal" value="@Url.Action("GET_TodayEnergyTotal")" />
+        <input type="hidden" id="URL_GET_TimeRangeEnergyTotal" value="@Url.Action("GET_TimeRangeEnergyTotal")" />
+        <!-- AIR Module AJAX Requesting URL -->
+        <input type="hidden" id="URL_GET_CurrentAirEnableMachine" value="@Url.Action("GET_CurrentAirEnableMachine")" />
+    </div>
+    <script src="~/Assets/Vendor/MQTT/mqtt.min.js"></script>
+    <script src="~/Assets/JS/MyJS/EnergySaving/EnergySavingCommonFuncs.js"></script>
+    <script src=""></script>
+    <link href="" rel="stylesheet" />
+    <link href="" rel="stylesheet" />
+</div>

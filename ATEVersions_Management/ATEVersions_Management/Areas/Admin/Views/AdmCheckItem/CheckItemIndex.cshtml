@@ -1,0 +1,104 @@
+﻿@model IEnumerable<ATEVersions_Management.Models.ATEVersionModels.CHECKLIST_ITEM>
+@using ATEVersions_Management.Models.HelperModels
+@{
+    ViewBag.Title = "Check Item Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+
+
+<!-- DataTables -->
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3">
+        <h3 class="m-0 font-weight-bold text-primary">Checklist Item Index</h3>
+        @if (User.Identity.GetRoleName() != "Checker" && User.Identity.GetRoleName() != "Approver")
+        {
+            <div style="padding-top:10px">
+                @Html.ActionLink("Create New", "ItemCreate", "", new { @class = "btn btn-outline-primary" })
+            </div>
+        }
+        
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered text-black" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th class="text-center">No.</th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CheckMethod)
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.ItemID)
+                            </td>
+                            <td>
+                                <span class="breakLine">@Html.DisplayFor(modelItem => item.ItemName)</span>                                
+                            </td>
+                            <td>
+                                <span class="breakLine">@Html.DisplayFor(modelItem => item.CheckMethod)</span>                                
+                            </td>
+                            <td>
+                                <a href="@Url.Action("ItemDetail", "AdmCheckItem", new { id = item.ItemID })">
+                                    <i class="fas fa-fw fa-info-circle"></i>
+                                </a>
+                                @if (User.Identity.GetRoleName() != "Checker" && User.Identity.GetRoleName() != "Approver")
+                                {
+                                    <a href="@Url.Action("ItemEdit", "AdmCheckItem", new { id = item.ItemID })">
+                                        <i class="fas fa-fw fa-pen-square"></i>
+                                    </a>
+                                    <a href="#" data-toggle="modal" data-target="#deleteModal" onclick="DltConfirm(@item.ItemID,'@item.ItemName')">
+                                        <i class="fas fa-fw fa-trash"></i>
+                                    </a>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="@Url.Action("ItemDelete","AdmCheckItem")" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure want to delete this record?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id" class="idValModal" />
+
+                    <label>Item ID: <span class="idTxtModal"></span></label><br />
+                    <label>Item name: <span class="nameTxtModal"></span> </label>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="CancelBtn" data-dismiss="modal">Cancel</button>
+                    @*<a id="deleteBtn" class="btn btn-primary" href="#">Delete</a>*@
+                    <input type="submit" value="Delete" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/Assets/JS/AdminJS/helperIndexModals.js"></script>

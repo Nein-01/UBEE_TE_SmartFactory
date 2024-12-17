@@ -1,0 +1,161 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@{
+    ViewBag.Title = "All Notify";
+    Layout = "~/Views/Shared/LayoutClient.cshtml";
+
+    ATESignNotifyDTO ATESignNotify = ViewBag.NotifyATEList;
+    List<ATEListDTO> NotifyATEList = ATESignNotify.ATEListNotify;
+    List<GRRTableDTO> NotifyGRR = ATESignNotify.GRRNotify;
+}
+
+<div class="form-horizontal row justify-content-center">
+    <!--begin::Content -->
+    <div class="content d-flex flex-column flex-column-fluid col-xl-7">
+        <!--begin::Post-->
+        <div class="card shadow d-flex flex-column-fluid ">
+            <div class="card-header py-3">
+                <h3 class="m-0 font-weight-bold text-center text-info">All Notifications</h3>                
+            </div>
+            <div class="tab">
+                <div class="">
+                    <button class="tabLinks fw-bold" onclick="tabChange(event,'ATEList')">
+                        ATEList 
+                        <span class="fas bg-danger text-white rounded-circle p-sm-1">
+                            @NotifyATEList.Count
+                        </span>
+                    </button>                    
+                </div>
+                <div class="">
+                    <button class="tabLinks fw-bold" onclick="tabChange(event,'GRR')">
+                        GR&R 
+                        <span class="fas bg-danger text-white rounded-circle p-sm-1">
+                            @NotifyGRR.Count
+                        </span>
+                    </button>                    
+                </div>
+            </div>
+            <!--begin::ATEList notifications-->
+            <div id="divTabATEList" class="tabcontent card-body p-9">
+                @for (int i = 0; i < NotifyATEList.Count; i++)
+                {
+                    string txtStatus = "",
+                            txtVerModel = NotifyATEList[i].ModelName + "_" + NotifyATEList[i].VersionName,
+                            txtPre = NotifyATEList[i].PreparedBy,
+                            txtCheck = "Checker",
+                            txtAppr = "Approver",
+                            txtPrNote = "...",
+                            txtChkNote = "...",
+                            txtAprNote = "...",
+                            color = "";
+
+                    if (NotifyATEList[i].PreparerNote != null)
+                    {
+                        txtPrNote = NotifyATEList[i].PreparerNote;
+                    }
+
+                    switch (NotifyATEList[i].Status)
+                    {
+                        case 1:
+                            txtStatus = "fa-file-alt";
+                            color = "bg-warning";
+                            if ((NotifyATEList[i].CheckerNote != null))
+                            {
+                                txtCheck = NotifyATEList[i].CheckedBy;
+                                txtChkNote = NotifyATEList[i].CheckerNote;
+                            }
+                            if ((NotifyATEList[i].ApproverNote != null))
+                            {
+                                txtAppr = NotifyATEList[i].ApprovedBy;
+                                txtAprNote = NotifyATEList[i].ApproverNote;
+                            }
+                            break;
+                        case 2:
+                            txtStatus = "fa-pen-square";
+                            color = "bg-info";
+                            txtCheck = NotifyATEList[i].CheckedBy;
+                            txtChkNote = NotifyATEList[i].CheckerNote;
+                            if ((NotifyATEList[i].ApproverNote != null))
+                            {
+                                txtAppr = NotifyATEList[i].ApprovedBy;
+                                txtAprNote = NotifyATEList[i].ApproverNote;
+                            }
+                            break;
+                    }
+                    <div>
+                        <a href="@Url.Action("ATEListEdit", "AdmATEList", new {area = "Admin", id = NotifyATEList[i].CheckListID})"
+                           class="dropdown-item d-flex align-items-center border-bottom" target="_blank">
+                            <div class="mr-3">
+                                <div class="icon-circle @color">
+                                    <i class="fas @txtStatus text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="small text-gray-600">
+                                    Updated at: @NotifyATEList[i].UpdatedAt
+                                    <br />
+                                    By: @NotifyATEList[i].UpdatedBy
+                                </div>
+                                <span class="font-weight-bold">
+                                    Version: <span class="text-primary">@txtVerModel</span>
+                                    <br />
+                                    @txtPre: @txtPrNote
+                                    <br />
+                                    @txtCheck: @txtChkNote
+                                    <br />
+                                    @txtAppr: @txtAprNote
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+
+                }
+
+            </div>
+            <!--end::ATEList notifications-->
+            <!--begin::GRR notifications-->
+            <div id="divTabGRR" class="tabcontent card-body border-top p-9">
+                @for (int i = 0; i < NotifyGRR.Count; i++)
+                {
+
+                    string txtGageModel = NotifyGRR[i].GageModel + "_" + NotifyGRR[i].GageName + "_" + NotifyGRR[i].PartName,
+                                        txtPre = NotifyGRR[i].PreparedBy,
+                                        txtAppr = "Approver",
+                                        txtPrNote = "...",
+                                        txtAprNote = "...";
+
+                    if (NotifyGRR[i].PreparedNote != null)
+                    {
+                        txtPrNote = NotifyGRR[i].PreparedNote;
+                    }
+
+                    <div>
+                        <a href="@Url.Action("GRRDetail", "AdmGRRSystem", new {area = "Admin", id = NotifyGRR[i].GRR_ID})"
+                           class="dropdown-item d-flex align-items-center border-bottom" target="_blank">
+                            <div class="mr-3">
+                                <div class="icon-circle bg-secondary">
+                                    <i class="fas fa-chart-pie text-white"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="small text-gray-600">
+                                    Updated at: @NotifyGRR[i].UpdatedAt
+                                    <br />
+                                    By: @NotifyGRR[i].UpdatedBy
+                                </div>
+                                <span class="font-weight-bold">
+                                    Gage Report For: <span class="text-primary">@txtGageModel</span>
+                                    <br />
+                                    @txtPre: @txtPrNote
+                                    <br />
+                                    @txtAppr: @txtAprNote
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+            <!--end::GRR notifications-->
+        </div>
+    </div>
+</div>
+<script src="~/Assets/JS/MyJS/TabViewFuncs.js"></script>

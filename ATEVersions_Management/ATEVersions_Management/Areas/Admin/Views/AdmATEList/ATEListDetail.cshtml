@@ -1,0 +1,403 @@
+﻿@model ATEVersions_Management.Models.ATEVersionModels.ATE_CHECKLIST
+@using ATEVersions_Management.Models.ATEVersionModels
+@{
+    ViewBag.Title = "ATE_Checklist_" + Model.VERSION.PROGRAM.ModelName +"_"+ Model.VERSION.VersionName;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    
+
+    List<CHECKLIST_ITEM> checkItems = ViewBag.ChecklistItems;
+    
+}
+<div class="print-disable" align="center">
+    <div class="card d-flex flex-column-fluid ">
+        @if(Model.Status == 3) { 
+            <a href="#" class="btn btn-danger" onclick="window.print();">
+                <i class="fas fa-file-pdf" ></i>
+                Export
+            </a>
+        }        
+        <div class="print-disable" align="center">
+            <a href="@Url.Action("ATEListIndex", "AdmATEList")">
+                <i class="fas fa-fw fa-arrow-circle-left"></i>
+                <span>ATEList Index</span>
+            </a> |
+            <a href="@Url.Action("ATEListEdit", "AdmATEList", new { id = Model.CheckListID })">
+                <i class="fas fa-fw fa-pen-square"></i>
+                <span>Edit</span>
+            </a> |
+            <a href="@Url.Action("VersionDetail", "AdmVersion", new { id = Model.VersionID })">
+                <i class="fas fa-fw fa-arrow-circle-right"></i>
+                <span>@Model.VERSION.PROGRAM.ModelName _@Model.VERSION.VersionName</span>
+            </a>
+        </div>
+    </div>
+    
+</div>
+<div class="print-disable">
+    <div class="card d-flex flex-column-fluid ">
+        <div class="card-header p-9">
+            <h4 class="m-0 font-weight-bold text-center text-primary">Sign process</h4>
+        </div>
+        <div class="row mb-2 justify-content-center">
+            <!--begin::Card body-->
+            <div class="card-body d-flex flex-column-fluid border-top p-9 justify-content-center">
+                <!--begin::Input group-->
+                <div class="col-sm-auto mb-2">
+                    <!--begin::Label-->
+                    <label class=" col-form-label fw-bold">
+                        <i class="fas fa-paper-plane rounded-circle p-2 bg-warning text-light"></i>
+                        <span>Preparer</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="border-left-primary">
+                        <div class="col-sm-auto col-form-label fv-row" style="background-color:aliceblue;">
+                            @if (Model.IsPrepared != 0 && Model.IsPrepared.HasValue)
+                            {
+                                <label style="font-size:small;">
+                                    <span class="fw-bold">
+                                        @Model.PreparedBy
+                                    </span>
+                                    <i class="fas fa-check-circle text-success"></i>
+                                </label>
+                                <p style="font-size: small;">
+                                    @Model.PreparerNote <br />
+                                    <span class="text-success fw-bold">@Model.PreparedAt</span>
+                                </p>
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(Model.PreparerNote))
+                                {
+                                    <label style="font-size:small;">
+                                        <span class="fw-bold">
+                                            @Model.PreparedBy
+                                        </span>
+                                        <i class="fas fa-exclamation-circle text-warning"></i>
+                                    </label>
+                                    <p style="font-size: small;">
+                                        @Model.PreparerNote <br />
+                                        <span class="text-warning fw-bold">@Model.PreparedAt</span>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <label style="font-size:small;">
+                                        <span class="fw-bold">
+                                            Waiting for Preparer...
+                                        </span>
+                                        <i class="fas fa-exclamation-circle text-warning"></i>
+                                    </label>
+                                }
+
+
+                            }
+
+                        </div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Follow group-->
+                <div class="col-form-label fv-row mb-2">
+                    <!--begin::Label-->
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <i class="fas fa-2x fa-arrow-right text-primary"></i>
+                    <!--end::Col-->
+                </div>
+                <!--end::Follow group-->
+                <!--begin::Input group-->
+                <div class="col-sm-auto mb-2">
+                    <!--begin::Label-->
+                    <label class=" col-form-label fw-bold">
+                        <i class="fas fa-user-edit rounded-circle p-2 bg-info text-light"></i>
+                        <span>Checker</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="border-left-primary">
+                        <div class="col-sm-auto col-form-label fv-row" style="background-color:aliceblue;">
+                            @if (Model.IsChecked != 0 && Model.IsChecked.HasValue)
+                            {
+                                <label style="font-size:small;">
+                                    <span class="fw-bold">
+                                        @Model.CheckedBy
+                                    </span>
+                                    <i class="fas fa-check-circle text-success"></i>
+                                </label>
+                                <p style="font-size: small;">
+                                    @Model.CheckerNote <br />
+                                    <span class="text-success fw-bold">@Model.CheckedAt</span>
+                                </p>
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(Model.CheckerNote))
+                                {
+                                    <label style="font-size:small;">
+                                        <span class="fw-bold">
+                                            @Model.CheckedBy
+                                        </span>
+                                        <i class="fas fa-exclamation-circle text-warning"></i>
+                                    </label>
+                                    <p style="font-size: small;">
+                                        @Model.CheckerNote <br />
+                                        <span class="text-warning fw-bold">@Model.CheckedAt</span>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <label style="font-size:small;">
+                                        <span class="fw-bold">
+                                            Waiting for checker...
+                                        </span>
+                                        <i class="fas fa-exclamation-circle text-warning"></i>
+                                    </label>
+                                }
+
+
+                            }
+
+                        </div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Follow group-->
+                <div class="col-form-label fv-row mb-2">
+                    <!--begin::Label-->
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <i class="fas fa-2x fa-arrow-right text-primary"></i>
+                    <!--end::Col-->
+                </div>
+                <!--end::Follow group-->
+                <!--begin::Input group-->
+                <div class="col-sm-auto mb-2">
+                    <!--begin::Label-->
+                    <label class=" col-form-label fw-bold">
+                        <i class="fas fa-user-check rounded-circle p-2 bg-success text-light"></i>
+                        <span>Approver</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="border-left-primary">
+                        <div class="col-sm-auto col-form-label fv-row" style="background-color:aliceblue;">
+                            @if (Model.IsApproved != 0 && Model.IsApproved.HasValue)
+                            {
+                                <label style="font-size:small;">
+                                    <span class="fw-bold">
+                                        @Model.ApprovedBy
+                                    </span>
+                                    <i class="fas fa-check-circle text-success"></i>
+                                </label>
+                                <p style="font-size: small;">
+                                    @Model.ApproverNote <br />
+                                    <span class="text-success fw-bold">@Model.ApprovedAt</span>
+                                </p>
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(Model.ApproverNote))
+                                {
+                                    <label style="font-size:small;">
+                                        <span class="fw-bold">
+                                            @Model.ApprovedBy
+                                        </span>
+                                        <i class="fas fa-exclamation-circle text-warning"></i>
+                                    </label>
+                                    <p style="font-size: small;">
+                                        @Model.ApproverNote <br />
+                                        <span class="text-warning fw-bold">@Model.ApprovedAt</span>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <label style="font-size:small;">
+                                        <span class="fw-bold">
+                                            Waiting for approver...
+                                        </span>
+                                        <i class="fas fa-exclamation-circle text-warning"></i>
+                                    </label>
+
+                                }
+
+                            }
+
+                        </div>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Input group-->
+            </div>
+            <!--begin::Display group-->
+            
+                <!--begin::Label-->
+                <label class="col-lg-2 col-form-label fw-bold border">
+                    <span>@Html.DisplayNameFor(model => model.Status)</span>
+                </label>
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-2 col-form-label fv-row border border-left-primary">
+                    @switch (Model.Status)
+                    {
+                        case 0:<span class="text-danger fw-bold">Disable</span> break;
+                        case 1: <span class="text-warning fw-bold">Prepared</span>break;
+                        case 2: <span class="text-info fw-bold">Checked</span>break;
+                        case 3: <span class="text-success fw-bold">Approved</span>break;
+                    }
+                </div>
+                <!--end::Col-->
+            
+            <!--end::Display group-->
+        </div>
+        
+    </div>
+</div>
+
+<div class="table-responsive mb-2 mt-2 d-flex align-items-center justify-content-center">
+    <table class="text-black" style="border: 1px solid">
+        <tr>
+            <th colspan="4" class="fw-bold" style="border: 1px solid">
+                <section class="d-flex justify-content-center">
+                    <h4 class="fw-bold">ATE Test Program Checklist</h4>
+                    <h4 class="fw-bold" style="padding-left: 200px">Danh mục kiểm tra chương trình Test</h4>
+                </section>
+            </th>
+        </tr>
+        <tr>
+            <th colspan="4" style="border: 1px solid">
+                <section class="d-flex justify-content-center">
+                    <h5>Program Name: @Model.VERSION.PROGRAM.ProgramName</h5>
+                    <h5 style="padding-left: 50px">Version: @Model.VERSION.VersionName</h5>
+                    <h5 style="padding-left: 50px">Product HW/SW: @Model.ProductHW_SW</h5>
+                    <h5 style="padding-left: 50px">Developed With: @Model.VERSION.PROGRAM.DevelopTool</h5>
+                </section>
+            </th>
+        </tr>
+        <tr align="center">
+            <th style="border: 1px solid">
+                No
+            </th>
+            <th class="w-50" style="border: 1px solid">
+                Check Items
+            </th>
+            <th style="border: 1px solid">
+                Check Method
+            </th>
+            <th style="border: 1px solid">
+                Result
+            </th>
+        </tr>
+
+        @foreach (var item in Model.CHECKLIST_DETAIL)
+        {
+            foreach (var ckitem in checkItems)
+            {
+                if (item.ItemID == ckitem.ItemID)
+                {
+
+                    <tr>
+                        <td align="center" style="border: 1px solid">
+                            @ckitem.ItemID
+                        </td>
+                        <td style="border: 1px solid">
+                            @ckitem.ItemName
+                        </td>
+                        <td style="border: 1px solid">
+                            @ckitem.CheckMethod
+                        </td>
+                        <td align="center" style="border: 1px solid">
+                            @if (item.Result == null || item.Result == 0)
+                            {
+                                <p>Unchecked</p>
+                            }
+                            @if (item.Result == 1)
+                            {
+                                <p>OK</p>
+                            }
+                            @if (item.Result == 2)
+                            {
+                                <p>NG</p>
+                            }
+                        </td>
+
+                    </tr>
+                }
+
+            }
+
+        }
+
+        <tr>
+            <th colspan="4" style="border: 1px solid">
+                <section class="d-flex justify-content-center">
+                    <h5>Approved: @Model.ApprovedBy</h5>
+                    <h5 style="padding-left: 250px">Checked: @Model.CheckedBy</h5>
+                    <h5 style="padding-left: 250px">Prepared: @Model.PreparedBy</h5>
+                </section>
+            </th>
+        </tr>
+        <tr>
+            <th colspan="4" style="border: 1px solid">
+                <section class="d-flex justify-content-center">
+                    <h5>Stored Time: @Model.StoredTime Year</h5>
+                    <h5 style="padding-left: 560px">Application Code: @Model.CheckListCode</h5>
+                </section>
+            </th>
+        </tr>
+    </table>
+</div>
+<div class="print-disable">
+    <div class="card d-flex flex-column-fluid justify-content-center">
+        <div class="card-body border-top p-9">
+            
+            <!--begin::Tracking section-->
+            <h4 class="row mb-2 font-weight-bold text-primary border p-2">Tracking changes</h4>
+            <!--end::Tracking section-->
+            <!--begin::Display group-->
+            <div class="row mb-2">
+                <!--begin::Label-->
+                <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                    <span>@Html.DisplayNameFor(model => model.CreatedAt)</span>
+                </label>
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                    @Html.DisplayFor(model => model.CreatedAt)
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Display group-->
+            <!--begin::Display group-->
+            <div class="row mb-2">
+                <!--begin::Label-->
+                <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                    <span>@Html.DisplayNameFor(model => model.UpdatedAt)</span>
+                </label>
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                    @Html.DisplayFor(model => model.UpdatedAt)
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Display group-->
+            <!--begin::Display group-->
+            <div class="row mb-2">
+                <!--begin::Label-->
+                <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                    <span>@Html.DisplayNameFor(model => model.UpdatedBy)</span>
+                </label>
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                    @Html.DisplayFor(model => model.UpdatedBy)
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Display group-->
+        </div>
+    </div>
+</div>

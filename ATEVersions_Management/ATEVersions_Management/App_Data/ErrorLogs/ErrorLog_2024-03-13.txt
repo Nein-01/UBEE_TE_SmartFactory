@@ -1,0 +1,10 @@
+==============================
+MQTTConnection-MQTTPublishMessage
+3/13/2024 4:05:50 PM
+Error detail: Exception connecting to the broker
+==============================
+==============================
+MQTTConnection-MQTTPublishMessage
+3/13/2024 4:15:07 PM
+Error detail: Exception connecting to the broker
+==============================

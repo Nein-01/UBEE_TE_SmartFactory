@@ -1,0 +1,135 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model IEnumerable<TestPlanDTO>
+@using ATEVersions_Management.Models.HelperModels
+@{
+    ViewBag.Title = "ATE Test Plan Management";
+    //Layout = "~/Views/Shared/LayoutClient.cshtml";
+    Layout = "~/Views/Shared/_LayoutFiiTheme.cshtml";
+}
+<!-- Page Content -->
+<!--
+    <div class="card shadow mb-4">
+
+    <div class="card-header py-3">
+        <h4 class="m-0 mb-1 p-1 rounded font-weight-bold text-blue text-center border-black">
+            <span>Test Plans Management</span>
+        </h4>
+        <div class="d-flex justify-content-center mb-1">
+            <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+            </div>
+            <input type="text" id="txtKeyWord" class="form-control form-control-sm w-25"
+                   placeholder="Enter keyword...">
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div id="divShowTestPlan" class="d-flex flex-wrap rounded border-black p-2">
+        </div>
+    </div>
+</div>
+-->
+<!-- #region ======== New Layout ======== -->
+<div id="" class="">
+    <div id="" class="">
+        <div id="divHeaderVERSION" class="fii-border text-black mb-1">
+            <h4 class="fii-content-title fii-font-fantasy text-center text-warning">
+                <span>ATE TEST PLAN MFG DOCS MANAGEMENT</span>
+            </h4>
+            <div class="fii-form d-flex justify-content-center mb-1">
+                <div class="input-group-prepend ">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+                <input type="text" id="txtKeyWord" class="form-control fw-bold"
+                       placeholder="Keyword...">
+            </div>
+        </div>
+    </div>
+    <div id="containerAllTestPlan" class="d-flex ">
+        <div id="" class="header fii-border rounded w-40">
+            <div class="fii-chart-title text-center">
+                <span class="text-white">CABLE</span>
+            </div>
+            <div id="containerTestPlanCABLE" class=" ">
+                <div class="fii-loader d-flex justify-content-center align-items-center">
+                    <img src="/Images/loaderGifs/Blue-tick.gif" width="60" />
+                </div>
+            </div>
+        </div>
+        <div id="" class="header fii-border rounded ml-auto w-40">
+            <div class="fii-chart-title text-center">
+                <span class="text-white">GPON</span>
+            </div>
+            <div id="containerTestPlanGPON" class=" ">
+                <div class="fii-loader d-flex justify-content-center align-items-center">
+                    <img src="/Images/loaderGifs/Blue-tick.gif" width="60" />
+                </div>
+            </div>
+        </div>
+        <div id="" class="header fii-border rounded ml-auto w-40">
+            <div class="fii-chart-title text-center">
+                <span class="text-white">WIRELESS</span>
+            </div>
+            <div id="containerTestPlanWIRELESS" class=" ">
+                <div class="fii-loader d-flex justify-content-center align-items-center">
+                    <img src="/Images/loaderGifs/Blue-tick.gif" width="60" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion ======== New Layout ======== -->
+<!-- Modal Testplan List -->
+<div class="modal fade BasicModal-lg" id="testPlanModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modalLblTestPlan" class="fw-bold text-blue">
+                    ...
+                </h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body ">
+                <div id="divTableTestPlan" class="table-responsive table-scrollable-lg">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal PDF File View -->
+<div id="TestPlanPreviewModal" class="modal fade BasicModal" tabindex="-1" role="dialog" aria-labelledby="TestPlanPreviewModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content bg-black">
+            <div class="modal-header ">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div align="center" id="TestPlanPreviewModalBody">
+                    <iframe src="" id="FilePreviewSection" style="width:90%; height:1000px"></iframe>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="">
+    <input type="hidden" id="URL_GET_PartialTestPlanTable" value="@Url.Action("_PartialTestPlanTable")" />
+    <input type="hidden" id="URL_GET_ListModelOfTestPlan" value="@Url.Action("GET_ListModelOfTestPlan")" />
+    <input type="hidden" id="URL_GET_ListTestPlanPreview" value="@Url.Action("GET_ListTestPlanPreview")" />
+    <input type="hidden" id="URL_GET_ListTestPlanPreviewByProjectType" value="@Url.Action("GET_ListTestPlanPreviewByProjectType")" />
+
+</div>
+<!-- Page JS -->
+<script src="~/Assets/JS/MyJS/TestPlanModule/TestPlanCommonFuncs.js"></script>

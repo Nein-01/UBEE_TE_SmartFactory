@@ -1,0 +1,94 @@
+﻿@using ATEVersions_Management.Models.AccountModels
+@model MyRegister
+@{
+    ViewBag.Title = "Create User";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    IEnumerable<System.Web.Mvc.SelectListItem> RoleSelector = ViewBag.RoleSelector;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-7 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5 ">
+                    <div class="card-header py-3">
+                        <h3 class="m-0 font-weight-bold text-primary text-center">User Create</h3>                        
+                    </div>
+                    <div class="card-body p-3">
+                        <!-- Nested Row within Card Body -->
+                        
+                        <div class="text-center">
+                            <p class="text-danger">@ViewBag.Notify</p>
+                        </div>
+                        <form class="user">
+                            <div class="form-group row ">
+                                <!--begin::Col-->
+                                <div class="col-sm-6 ">
+                                    @Html.DropDownListFor(model => model.RoleID, RoleSelector, "-- Select role --", new { @class = "form-select" })
+                                </div>
+                                <!--end::Col-->
+                                <div class="col-sm-6">
+
+                                    @Html.EditorFor(model => model.Department, new { htmlAttributes = new { @class = "form-control form-control-user", placeholder = "Department" } })
+                                    @Html.ValidationMessageFor(model => model.Department, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+
+                                    @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control form-control-user upperText", placeholder = "Username" } })
+                                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-6">
+
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control form-control-user", placeholder = "Full name" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+
+                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control form-control-user", placeholder = "Password" } })
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-6">
+                                    @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control form-control-user", placeholder = "Confirm password" } })
+                                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row d-flex justify-content-center">
+                                <div class="col-sm-4">
+                                    <input type="submit" class="btn btn-primary btn-user btn-block" value="Create user" />                                   
+                                </div>
+                                <div class="col-sm-4">                                    
+                                    <input type="reset" class="btn btn-primary btn-user btn-block" value="Reset" />
+                                </div>
+                            </div>
+                            <hr>
+                        </form>
+                        <hr>
+                        <div class="text-center">
+                            <a href="@Url.Action("UserIndex","AdmUser")">
+                                <i class="fas fa-arrow-circle-left"></i>
+                                <span>User List</span>
+                            </a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+}
+
+
+
+
+

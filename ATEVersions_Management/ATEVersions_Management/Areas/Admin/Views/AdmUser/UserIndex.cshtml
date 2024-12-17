@@ -1,0 +1,125 @@
+﻿@model IEnumerable<ATEVersions_Management.Models.ATEVersionModels.USER>
+
+@{
+    ViewBag.Title = "User Index";
+    //Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = "~/Views/Shared/_LayoutFiiTheme.cshtml";
+}
+
+<!-- DataTables -->
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h3 class="m-0 font-weight-bold text-primary">User Index</h3>       
+            <div style="padding-top:10px">
+                @Html.ActionLink("Create New", "UserCreate", "", new { @class = "btn btn-outline-primary" })
+            </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered text-black" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ROLE.RoleName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Department)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PhoneNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ROLE.RoleName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Department)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                            </td>
+                            <td>
+                                @switch (item.Status)
+                                {
+                                    case 0:<span class="text-danger">Disable</span> break;
+                                    case 1: <span class="text-success">Enable</span>break;
+                                }
+                                @* @Html.DisplayFor(modelItem => item.Status)*@
+                            </td>
+                            <td>
+                                <a href="@Url.Action("UserDetail", "AdmUser", new { id = item.UserID })">
+                                    <i class="fas fa-fw fa-info-circle"></i>
+                                </a>
+                                <a href="@Url.Action("UserEdit", "AdmUser", new { id = item.UserID })">
+                                    <i class="fas fa-fw fa-pen-square"></i>
+                                </a>
+                                <a href="#" data-toggle="modal" data-target="#deleteModal" onclick="DltConfirm(@item.UserID,'@item.UserName')">
+                                    <i class="fas fa-fw fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="@Url.Action("UserDelete","AdmUser")" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure want to delete this record?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id" class="idValModal" />
+
+                    <label>User ID: <span class="idTxtModal"></span></label><br />
+                    <label>User name: <span class="nameTxtModal"></span> </label>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    @*<a id="deleteBtn" class="btn btn-primary" href="#">Delete</a>*@
+                    <input type="submit" value="Delete" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/Assets/JS/AdminJS/helperIndexModals.js"></script>

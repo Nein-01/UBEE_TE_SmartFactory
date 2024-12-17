@@ -1,0 +1,53 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@{
+    ViewBag.Title = "ATE Time Analysis";
+    //Layout = "~/Views/Shared/LayoutClient.cshtml";
+    Layout = "~/Views/Shared/_LayoutFiiTheme.cshtml";
+    
+    //    
+    List<string> listModel = ViewBag.ListModel;
+}
+
+<!-- Page level script -->
+<script src="~/Assets/Vendor/highcharts_js/highcharts.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/highcharts-more.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/modules/accessibility.js"></script>
+
+<!-- Page content -->
+
+<div id="" class="fii-form d-flex justify-content-center mb-2">
+    <div class="input-group justify-content-center">
+        <div class="input-group-prepend ">
+            <span class="input-group-text  text-"><i class="fas fa-calendar"></i></span>
+        </div>
+        <input type="text" id="timeSpan" class="form-control text-center fw-bold">
+        <div class="input-group-prepend ">
+            <span class="input-group-text"><i class="fas fa-search"></i></span>
+        </div>
+        <input type="text" id="txtKeyWord" class="form-control fw-bold"
+               placeholder="Enter keyword...">
+    </div>
+    
+</div>
+
+<div id="divATETimePreview" class="d-flex flex-wrap just w-100">
+    
+</div>
+<div id="divATETimeChart" class=" mb-2">
+
+</div>
+<div>
+    <input type="hidden" id="URL_GET_ATETimeModels" value="@Url.Action("GET_ATETimeModels")" />
+    <input type="hidden" id="URL_GET_ATETimeModelStations" value="@Url.Action("GET_ATETimeModelStations")" />
+    <input type="hidden" id="URL_GET_ATETimeModelStationData" value="@Url.Action("GET_ATETimeModelStationData")" />
+    <input type="hidden" id="URL_ATETimeChartSection" value="@Url.Action("ATETimeChartSection")" />
+    <input type="hidden" id="URL_POST_ReplaceTETestData" value="@Url.Action("POST_ReplaceTETestData")" />
+    <!-- === Testing === -->
+    <input type="hidden" id="URL_GET_ATETimeOfMachine" value="@Url.Action("GET_ATETimeOfMachine")" />
+</div>
+<script>
+    var _listATEModel = @Html.Raw(Json.Encode(listModel));
+</script>
+<script src="~/Assets/JS/MyJS/TestTimeSystem/ATETimeCommonFuncs.js"></script>
+<script src="~/Assets/JS/MyJS/TestTimeSystem/ATETimeDataProcess.js"></script>
+<script src="~/Assets/JS/MyJS/TestTimeSystem/ATETimeCharts.js"></script>

@@ -1,0 +1,158 @@
+﻿@using ATEVersions_Management.Models.HelperModels;
+@if (User.Identity.IsAuthenticated)
+{
+    <div id="chatSystemSection" class="chat-system-section ">
+        <div id="chatFloatIcon" class="chat-floaticon " loggedUserId="@User.Identity.GetUserId()" loggedUserName="@User.Identity.GetUserName()" loggedUserFullName="@User.Identity.GetName()">
+            <div class="rounded-circle p-2 bg-black">
+                <h1>
+                    <i class="fa fa-comment-dots"></i>
+                    <span id="chatFloatIconUnreadNum" class="badge badge-danger badge-counter">0</span>
+                </h1>
+                
+            </div>
+        </div>
+        <div id="chatMainContainer" class="chat-maincontainer d-none">
+            <!-- begin::Group Members Section-->
+            <div id="groupMembersSection" class="group-members-section fii-form rounded-1 d-none">
+                <div id="containerSearchGroupMember" class="input-group mb-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                    </div>
+                    <input type="text" id="searchGroupMember" class="form-control" placeholder="Search member...">
+                </div>
+                <div id="containerInputGroupName" class="input-group mb-1 d-none">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-pencil-alt"></i></span>
+                    </div>
+                    <input type="text" id="inputGroupName" class="form-control" placeholder="New group...">
+                </div>
+                <div class="modify-member-error pre-line mb-1 fw-bold border-danger text-danger text-center d-none">
+
+                </div>
+                <!-- begin::List Member In Group -->
+                <div class="container-group-member">
+                    <div id="titleGroupMember" class="title-group-member fii-content-title rounded-1">
+                        <i class="fas fa-user-friends"></i>
+                        <span class="custom-header">Group Members</span>
+                        <button type="button" id="btnAddMember" class="btn btn-sm" title="Add member">
+                            <i class="fa fa-user-plus"></i>
+                        </button>
+                    </div>
+                    <ul id="listGroupMember" class=" list-unstyled chat-list mt-1 mb-0 ">
+                        
+                    </ul>
+                </div>
+                <!-- end::List Member In Group  -->
+                <!-- begin::List Member To Add To Group -->
+                <div class="container-add-member d-none">
+                    <div id="titleAddMember" class="title-add-member fii-content-title rounded-1">
+                        <i class="fas fa-user-plus"></i>
+                        <span class="custom-header">Add Member</span>
+                        <div id="selectedMemberNum" class="btn btn-sm border-info">
+                            0
+                        </div>
+                        <button id="btnSubmitAddMember" class="btn btn-sm border-warning " title="Submit" submitType="">
+                            <i class="fas fa-check-square"></i>
+                        </button>
+
+                    </div>
+                    <ul id="listAddMember" class=" list-unstyled chat-list mt-1 mb-0 ">
+                        
+                    </ul>
+                </div>
+                <!-- end::List Member To Add To Group -->
+            </div>
+            <!-- end::Group Members Section-->
+            <!-- begin::Message Action Section-->
+            <div id="chatSection" class="chat-section rounded-1">
+                <div class="chat-header fii-content-title clearfix">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div id="chatHeaderRecipient" class="chat-about " recipientTarget="none">
+                                <h5 class="fw-bold"></h5>
+                                <small id=""></small>
+                            </div>
+                        </div>
+                        <div id="chatHeaderExtension" class="col-lg-6 fii-form hidden-sm text-right">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div id="chatHistory" class="chat-history">
+                    <ul id="chatHistoryContent" class="m-b-0">
+                        
+                    </ul>
+                </div>
+                <div class="fii-form chat-message clearfix">
+                    <div id="inputChatMessage" class="input-group mb-0 justify-content-center">
+                        <div class="input-group-prepend">
+                            <!--<span class="input-group-text"><i class="fa fa-paper-plane"></i></span>-->
+                            <span id="btnGetMessageFile" class="input-group-text"><i class="fa fa-paperclip"></i></span>
+                            <input type="file" id="valMessageFile" name="" class="d-none" />
+                        </div>
+                        <textarea id="messageContent" class="form-control " placeholder="Your message..." messageType="text" sendTarget=""></textarea>                   
+                        <div class="input-group-prepend">
+                            <span id="btnSendMessageContent" class="input-group-text"><i class="fa fa-paper-plane"></i></span>                                                   
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- end::Message Action Section-->
+            <!-- begin::Recipient Section-->
+            <div id="recipientSection" class="recipient-section fii-form rounded-1">
+                <div class="input-group mb-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                    </div>
+                    <input type="text" id="searchRecipient" class="form-control" placeholder="Search receiver...">
+                </div>
+                <!-- begin::List Invidual Recipient -->
+                <div class="fii-content-title position-sticky">
+                    <i class="fas fa-user"></i>
+                    <span class="custom-header">INVIDUAL</span>
+                </div>
+                <ul id="listSingleRecipient" class=" list-unstyled chat-list mt-1 mb-0">
+                    
+                </ul>
+                <!-- end::List Invidual Recipient -->
+                <!-- begin::List Group Recipient -->
+                <div class="fii-content-title position-sticky">
+                    <i class="fas fa-users"></i>
+                    <span class="custom-header">GROUP</span>
+                    <button id="btnCreateNewGroup" class="btn btn-sm " title="Create new group">
+                        <i class="fas fa-plus-square"></i>
+                    </button>
+                </div>
+                <ul id="listGroupRecipient" class=" list-unstyled chat-list mt-1 mb-0">
+                    
+
+                </ul>
+                <!-- end::List Group Recipient -->
+            </div>
+            <!-- end::Recipient Section-->
+        </div>
+    </div>
+    <div>
+        <input type="hidden" id="URL_GET_ListAllUser" value="@Url.Action("GET_ListAllUser","MessageSystem", new {area = ""})" />
+        <input type="hidden" id="URL_GET_ListUserExceptLoggedUser" value="@Url.Action("GET_ListUserExceptLoggedUser","MessageSystem", new {area = ""})" />
+        <input type="hidden" id="URL_GET_ListSingleRecipientOfLoggedUser" value="@Url.Action("GET_ListSingleRecipientOfLoggedUser","MessageSystem", new {area = ""})" />
+        <input type="hidden" id="URL_GET_MessageRecordBetween2Users" value="@Url.Action("GET_MessageRecordBetween2Users","MessageSystem", new {area = ""})" />
+        <input type="hidden" id="URL_GET_ListGroupContainLoggedUser" value="@Url.Action("GET_ListGroupContainLoggedUser","MessageSystem", new {area = ""})" />
+        <input type="hidden" id="URL_GET_MessageRecordOfUsersInGroup" value="@Url.Action("GET_MessageRecordOfUsersInGroup","MessageSystem", new {area = ""})" />
+        <input type="hidden" id="URL_GET_ListUserInGroup" value="@Url.Action("GET_ListUserInGroup","MessageSystem", new {area = ""})" />
+        <input type="hidden" id="URL_GET_ListUserNotInGroup" value="@Url.Action("GET_ListUserNotInGroup","MessageSystem", new {area = ""})" />
+        <input type="hidden" id="URL_GET_MessageUnreadCountOfLoggedUser" value="@Url.Action("GET_MessageUnreadCountOfLoggedUser","MessageSystem", new {area = ""})" />
+        <!-- -->
+        <input type="hidden" id="URL_POST_SendMessageBetween2User" value="@Url.Action("POST_SendMessageBetween2User","MessageSystem", new {area = ""})" />
+        <input type="hidden" id="URL_POST_UpdateUnreadMessagesBetween2User" value="@Url.Action("POST_UpdateUnreadMessagesBetween2User","MessageSystem", new {area = ""})" />
+        <input type="hidden" id="URL_POST_SendMessageToGroup" value="@Url.Action("POST_SendMessageToGroup","MessageSystem", new {area = ""})" />
+        <input type="hidden" id="URL_POST_UpdateUnreadMessagesInGroup" value="@Url.Action("POST_UpdateUnreadMessagesInGroup","MessageSystem", new {area = ""})" />
+        <input type="hidden" id="URL_POST_CreateNewMessageGroup" value="@Url.Action("POST_CreateNewMessageGroup","MessageSystem", new {area = ""})" />
+        <input type="hidden" id="URL_POST_AddNewMemberToGroup" value="@Url.Action("POST_AddNewMemberToGroup","MessageSystem", new {area = ""})" />
+        <!-- -->
+        <input type="hidden" id="URL_MQTT_SendNoticeMessage" value="@Url.Action("MQTT_SendNoticeMessage","MessageSystem", new {area = ""})" />
+    </div>
+}
+<script src="~/Assets/JS/MyJS/MessageSystem/MessageSystemCommonFuncs.js"></script>
+

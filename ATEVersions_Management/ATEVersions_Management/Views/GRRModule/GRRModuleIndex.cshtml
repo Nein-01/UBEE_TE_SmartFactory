@@ -1,0 +1,162 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model IEnumerable<GRRTableDTO>
+@{
+    ViewBag.Title = "GRR Module Index";
+    //Layout = "~/Views/Shared/LayoutClient.cshtml";
+    Layout = "~/Views/Shared/_LayoutFiiTheme.cshtml";
+}
+
+<!-- Page level scripts -->
+<script src="~/Assets/Vendor/highcharts_js/highcharts.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/highcharts-more.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/modules/accessibility.js"></script>
+
+<!-- DataTables -->
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3">
+        <h3 class="m-0 font-weight-bold text-center text-info">GR&R Report Index</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered text-black" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.GageModel)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.GageName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PartName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PreparedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ApprovedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.GRR_Result)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GageModel)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GageName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PartName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PreparedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ApprovedBy)
+                            </td>
+                            @{
+                                string color = "success";
+                                double percentGRR = item.GRR_Result.PercentGRR;
+                                if (percentGRR >= 60)
+                                {
+                                    color = "danger";
+                                }
+                                if (percentGRR >= 30 && percentGRR < 60)
+                                {
+                                    color = "warning";
+                                }
+
+                            }
+                            <td class="fw-bold text-@color">
+                                @percentGRR%
+                            </td>
+                            <td>
+                                @switch (item.Status)
+                                {
+                                    case 0:<span class="text-danger fw-bold">Rejected</span> break;
+                                    case 1: <span class="text-warning fw-bold">Prepared</span>break;
+                                    case 2: <span class="text-info fw-bold">Approved</span>break;
+                                }
+                            </td>
+                            <td>
+                                <a href="@Url.Action("GRRModuleDetail", "GRRModule", new { id = item.GRR_ID })"
+                                   title="Detail">
+                                    <i class="fas fa-fw fa-info-circle"></i>
+                                </a>
+                                <a href="#" class="" title="Chart"
+                                        data-toggle="modal" data-target="#GRRResultModal"
+                                        onclick="GetGRRResultAtDetail('@item.JSON_OperTestResult')">
+                                    <i class="fas fa-fw fa-chart-line"></i>
+                                    <span></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div>
+    <input type="hidden" id="URL_POSTGrrCalculateResult" value="@Url.Action("POSTGrrCalculateResult","AdmGRRSystem", new {area = "Admin"})" />
+</div>
+
+<!-- GRR Result Modal-->
+<div class="modal fade ChartModal" id="GRRResultModal" tabindex="-1" role="dialog" aria-labelledby="GRRResultModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="GRRResultModalTitle">
+                    GRR Variations of
+                    <span id="modalTilGRRPartName" class="text-black fw-bold"></span>
+                </h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-black">
+                        <tr>
+                            <td id="tdDataEV"></td>
+                            <td id="tdDataAV"></td>
+                            <td id="tdDataRR"></td>
+                            <td id="tdDataPV"></td>
+                            <td id="tdDataTV"></td>
+                        </tr>
+                        <tr>
+                            <td id="tdPercentEV"></td>
+                            <td id="tdPercentAV"></td>
+                            <td id="tdPercentRR"></td>
+                            <td id="tdPercentPV"></td>
+                            <td id="tdDataNDC"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="row d-flex">
+                    <div id="divChartOPInteraction" class="col-sm-6"></div>
+                    <div id="divChartVariationComponent" class="col-sm-6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Page level script-->
+<script src="~/Assets/JS/MyJS/GRRModule/GRRCommonFuncs.js"></script>
+<script src="~/Assets/JS/MyJS/GRRModule/GRRCharts.js"></script>

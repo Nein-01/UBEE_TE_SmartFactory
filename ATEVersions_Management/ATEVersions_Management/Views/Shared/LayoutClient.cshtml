@@ -1,0 +1,328 @@
+﻿@using ATEVersions_Management.Models.HelperModels;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    @Styles.Render("~/Common/css")
+    @Styles.Render("~/Admin/css")
+    @Styles.Render("~/lib/supportcss")
+    <link href="~/Assets/Vendor/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <link href="~/Assets/CSS/ClientCSS/MyStyleSheet.css" rel="stylesheet" />
+    <link href="~/Assets/Vendor/fii-template/fii-theme.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/supportjs")
+    
+</head>
+<body id="page-top" class="">
+    <!-- Page Wrapper -->
+    <div id="wrapper" class="">
+
+        <div class="print-disable bg-info">
+            <ul class="navbar-nav collapse sidebar sidebar-dark toggled accordion" id="accordionSidebar">
+
+                <!-- Sidebar - Brand -->
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="@Url.Action("Index","Home")">
+                    <div class="sidebar-brand-icon ">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <div class="sidebar-brand-text mx-3">Menu</div>
+                </a>
+
+                <!-- Divider -->
+                <hr class="sidebar-divider my-0">
+
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- Heading -->
+                <div class="sidebar-heading text-light">
+                    ATE Manager
+                </div>
+
+                <!-- Nav Item - Version Menu -->
+                <li class="nav-item active">
+                    <a class="nav-link collapsed" href="@Url.Action("CltVersionIndex","ATEVersion")" aria-expanded="true">
+                        <i class="fas fa-fw fa-code-branch"></i>
+                        <span>Versions</span>
+                    </a>
+                </li>
+                <!-- Nav Item - Test Plan Menu -->
+                <li class="nav-item active">
+                    <a class="nav-link collapsed" href="@Url.Action("CltTestPlanIndex","TestPlan")" aria-expanded="true">
+                        <i class="fas fa-fw fa-file-pdf"></i>
+                        <span>Test Plans</span>
+                    </a>
+                </li>
+                <!-- Nav Item - CPK Menu -->
+                <li class="nav-item active">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCPK"
+                       aria-expanded="true">
+                        <i class="fas fa-fw fa-chart-bar"></i>
+                        <span>CPK System</span>
+                    </a>
+                    <div id="collapseCPK" class="collapse" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">CPK Functions:</h6>
+                            <a class="collapse-item" href="@Url.Action("CPKDBIndex","CPKSystem")">
+                                <i class="fas fa-fw fa-database"></i>
+                                <span>CPK From DB</span>
+                            </a>
+                            <a class="collapse-item" href="@Url.Action("CPKExcelIndex","CPKSystem")">
+                                <i class="fas fa-fw fa-file-excel"></i>
+                                <span>CPK From Excel</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTestTime" aria-expanded="true">
+                        <i class="fas fa-fw fa-clock"></i>
+                        <span>Test Time</span>
+                    </a>
+                    <div id="collapseTestTime" class="collapse" data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <h6 class="collapse-header">Test Time Functions:</h6>
+                            <a class="collapse-item" href="@Url.Action("ATETimeIndex","TestTimeSystem")">
+                                <i class="fas fa-fw fa-clock"></i>
+                                <span>ATE Time</span>
+                            </a>
+                            <a class="collapse-item" href="@Url.Action("TestTimeIndex","TestTimeSystem")">
+                                <i class="fas fa-fw fa-calculator"></i>
+                                <span>Equipment Estimate</span>
+                            </a>
+
+                        </div>
+                    </div>
+                </li>
+                <!-- Nav Item - FATP Monitor Menu -->
+                <li class="nav-item active">
+                    <a class="nav-link collapsed" href="@Url.Action("FATPMonitorIndex","FATPMonitor")" aria-expanded="true">
+                        <i class="fas fa-fw fa-desktop"></i>
+                        <span>FATP Monitor</span>
+                    </a>
+                </li>
+                <!-- Nav Item - Energy Saving Menu -->
+                <li class="nav-item active">
+                    <a class="nav-link collapsed" href="@Url.Action("EnergySavingIndex","EnergySaving")" aria-expanded="true">
+                        <i class="fas fa-fw fa-battery-three-quarters"></i>
+                        <span>Energy Saving</span>
+                    </a>
+                </li>
+                <!-- Sidebar Toggler (Sidebar) -->
+                <div class="text-center d-none d-md-inline">
+                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                </div>
+
+            </ul>
+        </div>
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Topbar -->
+            <nav class="fii-frame- bg-info print-disable navbar navbar-expand topbar static-top mb-">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-light rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+                <div class="container ">
+
+                    <a href="@Url.Action("Index","Home", new { area = "" })" class="navbar-brand text-light fw-bold">
+                        <i class="fas fa-atom"></i>
+                        <span>Smart Factory</span>
+                    </a>
+                    @*@Html.ActionLink("Smart Factory", "Index", "Home", new { area = "" }, new { @class = "navbar-brand text-light fw-bold" })*@
+                    <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li>
+                                <a href="@Url.Action("Index","Home")" class="nav-link text-light">
+                                    <i class="fa fa-home fa-fw "></i>
+                                    <span>Home</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Contact","Home")" class="nav-link text-light">
+                                    <i class="fa fa-phone-square-alt fa-fw "></i>
+                                    <span>Contact</span>
+                                </a>
+                            </li>
+                            @*<li>
+                        <a href="@Url.Action("TestLayout","Home")" class="nav-link text-light">
+                            <i class="fa fa-landmark fa-fw "></i>
+                            <span>Test Layout</span>
+                        </a>
+                    </li>*@
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+
+                    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                    <li class="nav-item dropdown no-arrow d-sm-none">
+                        @*<a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-search fa-fw"></i>
+                </a>*@
+                        <!-- Dropdown - Messages -->
+                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                             aria-labelledby="searchDropdown">
+                            <form class="form-inline mr-auto w-100 navbar-search">
+                                <div class="input-group">
+                                    <input type="text" class="form-control bg-light border-0 small"
+                                           placeholder="Search for..." aria-label="Search"
+                                           aria-describedby="basic-addon2">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-search fa-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+
+                    <!-- Nav Item - Alerts -->
+                    <li class="nav-item dropdown no-arrow mx-1">
+                        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-bell fa-fw text-light"></i>
+                            <!-- Counter - Alerts -->
+                            <span class="badge badge-danger badge-counter" id="notifyCounter">0</span>
+                        </a>
+                        <!-- Dropdown - Alerts -->
+                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="alertsDropdown">
+                            <h6 class="dropdown-header bg-danger">
+                                Notifications Center
+                            </h6>
+                            <div id="notifyList">
+
+                            </div>
+                            <input type="hidden" id="URL_AllNotify" value="@Url.Action("AllNotifyIndex", "Notification")" />
+                            <input type="hidden" id="UrlNotiChange" value="@Url.Action("NotifyATEList", "Notification")" />
+                            <input type="hidden" id="UrlATEEdit" value="@Url.Action("ATEListEdit", "AdmATEList", new {area = "Admin"})" />
+                            <input type="hidden" id="URL_GRRApprove" value="@Url.Action("GRRDetail", "AdmGRRSystem", new {area = "Admin"})" />
+
+                            <a class="dropdown-item text-center small text-gray-500" href="@Url.Action("AllNotifyIndex", "Notification")">Show All Alerts</a>
+                        </div>
+                    </li>
+
+                    <div class="topbar-divider d-none d-sm-block"></div>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle " href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-light fw-bold">@User.Identity.GetName() (@User.Identity.GetRoleName())</span>
+                                <label class=" col-form-label fw-bold">
+                                    <i class="fas fa-user rounded-circle p-1 bg-white text-black"></i>
+                                </label>
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="@Url.Action("UserInfor", "Account", new {userID = @User.Identity.GetUserId()})">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                @if (User.Identity.GetRoleCode() != 2)
+                                {
+                                    <a class="dropdown-item" href="@Url.Action("AdminIndex", "Dashboard", new { area = "Admin" })">
+                                        <i class="fas fa-tachometer-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Manager Dashboard
+                                    </a>
+                                }
+
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    }
+                    else
+                    {
+                        <!-- Nav Item - Login -->
+                        <li class="nav-item no-arrow">
+                            <a href="@Url.Action("Login","Account")" class="nav-link text-light">
+                                <i class="fas fa-fw fa-sign-in-alt"></i>
+                                <span class="mr-2 d-none d-lg-inline">Login</span>
+                            </a>
+                        </li>
+                    }
+
+
+                </ul>
+                
+            </nav>
+            @*<img class="w-100" style="" src="~/Assets/Vendor/fii-template/fii-theme/fii-frame-horizonal.png" alt="">*@
+            <!-- End of Topbar -->
+
+            <!-- Notification Message Tranfering -->
+            @Html.Partial("_PartialNotification")
+            <!-- Main Content -->
+            <div id="content" class="fii-container-">
+                <!-- Begin Page Content -->
+                <div class="container-fluid h-100">
+
+                    @RenderBody()
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+            <footer class="my-footer bg-info print-disable">
+                <div class="container my-auto">
+                    <div class=" font-weight-bold text-center text-light my-auto">
+                        <span>Copyright &copy; FUYU_UBEE_TE 2023 - @DateTime.Now.Year</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- End of Content Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="@Url.Action("Logout","Account")">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Global JS Section -->
+        <script src="~/Assets/Vendor/fii-template/fii-theme.js"></script>
+        @Scripts.Render("~/bundles/commonjs")
+        @Scripts.Render("~/Admin/js")
+        @Scripts.Render("~/Common/myjs")
+        @RenderSection("scripts", required: false)
+    </div>
+</body>
+</html>

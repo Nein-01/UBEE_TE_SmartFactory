@@ -1,0 +1,35 @@
+-- ========= PROCEDURES =========
+GO -- Procedure to insert message record
+CREATE PROCEDURE proMESSAGE_SENDER_MESSAGE_RECIPIENT_InsertMessageRecord(
+	@senderID int,
+	@recipientID int,
+	@messageType nvarchar(50),
+	@messageContent nvarchar(max),
+	@deviceIP nvarchar(50)
+)
+AS
+BEGIN
+	-- 
+	DECLARE @tmpID AS TABLE(tmpMESSAGE_ID INT)
+    INSERT INTO dbo.MESSAGE_SENDER(SENDER_ID, MESSAGE_TYPE, MESSAGE_CONTENT, DEVICE_NAME_IP, SEND_DATE) 
+    OUTPUT INSERTED.MESSAGE_ID 
+	VALUES(@senderID, @messageType, @messageContent, @deviceIP, GETDATE())
+	-- 
+END
+
+-- ====== TEST ======
+GO 
+DECLARE @tblTestIDs AS TABLE (ID INT IDENTITY, TFIELD NVARCHAR(50))
+DECLARE @tblOutputIDs AS TABLE (ID INT)
+DECLARE @iSingleID INT
+INSERT INTO @tblTestIDs(TFIELD)
+OUTPUT INSERTED.ID INTO @tblOutputIDs
+VALUES (N'TEST MESSAGE')
+SELECT @iSingleID = ID FROM @tblOutputIDs
+SELECT @iSingleID
+
+
+GO -- ===
+
+SELECT * FROM STATION_INFORMATION WHERE MACHINE_NAME LIKE '%180%'
+UPDATE STATION_INFORMATION SET STATUS = 0 WHERE MACHINE_NAME LIKE '%142%'

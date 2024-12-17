@@ -1,0 +1,62 @@
+﻿@using ATEVersions_Management.Models.HelperModels
+@{
+    ViewBag.Title = "Admin Dashboard";
+    //Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = "~/Views/Shared/_LayoutFiiTheme.cshtml";
+}
+<h1 class="fii-content-title fii-font-fantasy rounded-1 mb-4 fw-bold text-center text-warning">ADMIN DASHBOARD</h1>
+<div class="row justify-content-center">
+    
+    <div class="content d-flex flex-column flex-column-fluid mb-2 col-md-3">
+        <div class="card shadow  text-center border-left-primary border-bottom-primary">
+            <a href="@Url.Action("ProgramIndex","AdmProgram")" class=" p-4">
+                <i class="fa fa-code fa-fw fa-6x"></i><br />
+                <span class="text-lg fw-bold">Programs</span>
+            </a>
+        </div>
+    </div>
+    <div class="content d-flex flex-column flex-column-fluid mb-2 col-md-3">
+        <div class="card shadow  text-center border-left-info border-bottom-info">
+            <a href="@Url.Action("VersionIndex","AdmVersion")" class="text-info p-4">
+                <i class="fa fa-code-branch fa-fw fa-6x"></i><br />
+                <span class="text-lg fw-bold">Versions</span>
+            </a>
+        </div>
+    </div>
+    <div class="content d-flex flex-column flex-column-fluid mb-2 col-md-3">
+        <div class="card shadow  text-center border-left-orange border-bottom-orange">
+            <a href="@Url.Action("ATEListIndex","AdmATEList")" class="text-orange p-4">
+                <i class="fa fa-file-alt fa-fw fa-6x"></i><br />
+                <span class="text-lg fw-bold">ATE Checklists</span>
+            </a>
+        </div>
+    </div>
+    <div class="content d-flex flex-column flex-column-fluid mb-2 col-md-3">
+        <div class="card shadow  text-center border-left-danger border-bottom-danger">
+            <a href="@Url.Action("TestPlanIndex","AdmTestPlan")" class="text-danger p-4">
+                <i class="fa fa-file-pdf fa-fw fa-6x"></i><br />
+                <span class="text-lg fw-bold">ATE Test Plans</span>
+            </a>
+        </div>
+    </div>
+    <div class="content d-flex flex-column flex-column-fluid mb-2 col-md-3">
+        <div class="card shadow  text-center border-left-secondary border-bottom-secondary">
+            <a href="@Url.Action("GRRIndex","AdmGRRSystem")" class="text-secondary p-4">
+                <i class="fa fa-chart-pie fa-fw fa-6x"></i><br />
+                <span class="text-lg fw-bold">GRR Report</span>
+            </a>
+        </div>
+    </div>
+    @if (User.Identity.GetRoleName() == "Admin")
+    {
+        <div class="content d-flex flex-column flex-column-fluid mb-2 col-md-3">
+            <div class="card shadow  text-center border-left-warning border-bottom-warning">
+                <a href="@Url.Action("UserIndex","AdmUser")" class=" text-warning p-4">
+                    <i class="fa fa-user fa-fw fa-6x"></i><br />
+                    <span class="text-lg fw-bold">Users</span>
+                </a>
+            </div>
+        </div>
+    }
+
+</div>

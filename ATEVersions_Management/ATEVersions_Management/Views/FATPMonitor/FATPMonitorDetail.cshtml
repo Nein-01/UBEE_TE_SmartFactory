@@ -1,0 +1,151 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model FATPTableDTO
+@{
+    ViewBag.Title = "FATP Monitor Detail";
+    Layout = "~/Views/Shared/LayoutClient.cshtml";
+
+    string statusColor = "success";
+    string statusMsg = Model.LastestResult;
+    if(statusMsg != "PASS")
+    {
+        statusColor = "danger";
+    }
+    if(statusMsg == "User_St")
+    {
+        statusColor = "yellow";
+    }
+
+    double timeSpan = Model.TimeSpan;
+    if (timeSpan >= 30)
+    {
+        statusMsg += "(Offline)";
+        statusColor = "secondary";
+    }
+    if (timeSpan >= 15 && timeSpan < 30)
+    {
+        statusMsg += "(Wait...)";
+        statusColor = "warning";
+    }
+}
+
+<div> 
+    <div align="center">
+        <div class="rounded py-2 bg-yellow w-25">
+            <h3 class="font-weight-bold text-center text-blue">@Model.LINE - @Model.MODEL - @Model.STATION</h3>            
+        </div>
+    </div>
+    <div class="row m-0 p-0 rounded justify-content-between">                    
+        <div class="col-sm-2 p-1 bg-gray-200 rounded">
+            
+            <div class="text-black div-scrollable-sm">
+                <pre>@Model.ERROR_LIST</pre>
+            </div>
+            <div class="mt-1">
+                <table class="text-black text-center table-bordered w-100">
+                    <thead>
+                        <tr>
+                            <th class="bg-success">PASS</th>
+                            <th class="bg-danger">FAIL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="bg-success">@Model.PASS_NUM</td>
+                            <td class="bg-danger">@Model.FAIL_NUM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-7 m-0 p-0">
+            <div class="bg-gray-200 rounded h-5">
+                <table class="text-black table-bordered w-100">
+                    <thead>                        
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold text-center">ATE_PC</td>
+                            <td class="text-blue fw-bold text-center">@Model.ATE_PC</td>
+                            <td class="fw-bold text-center">ATE_IP</td>
+                            <td class="text-blue fw-bold text-center">@Model.ATE_IP</td>
+                            <td class="fw-bold text-center">ATE_MAC</td>
+                            <td class="text-blue fw-bold text-center">@Model.ATE_MAC</td>
+                        </tr>                        
+                    </tbody>
+                </table>
+            </div>
+            <div class="h-90 bg-@statusColor justify-content-center align-items-center d-flex flex-column">
+                <h1 class="text-white text-sp-lg">
+                    @statusMsg
+                </h1>
+            </div>
+            <div class="h-5 bg-gray-200 rounded">
+                <table class="text-black table-bordered w-100">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold text-center">Updated At:</td>
+                            <td class="text-blue fw-bold text-center">@Model.POST_DATE</td>
+                            <td class="fw-bold text-center">Time range:</td>
+                            <td class="text-blue fw-bold text-center">@Model.TimeSpan minutes</td>                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="col-sm-3 m-0 p-0 rounded bg-gray-200">
+            <div class="text-black p-1" align="center">
+                <h6 class="fw-bold">Counters Usage</h6>
+                <table class=" table-bordered-black w-100">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.DE_COUNTERS)
+            {
+                            <tr>
+                                <td width="150">@item.CounterName</td>
+                                @{
+                    string counterColor = "success";
+                    if (item.IsAbnormal)
+                    {
+                        counterColor = "danger";
+                    }
+                }
+                                <td class="bg-@counterColor">@item.CounterNum</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>            
+            <div class="text-black p-1 rounded " align="center">
+                <h6 class="fw-bold">Equipments</h6>
+                <table class=" table-bordered-black w-100">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        @if (Model.DE_EQUIPMENTS.Count == 0)
+        {
+                            <tr>
+                                <td class="text-center">No Equipments!</td>
+                            </tr>
+                        }
+                        else
+    {
+        foreach (var item in Model.DE_EQUIPMENTS)
+        {
+                                <tr>
+                                    <td>@item.EquipName</td>
+                                    <td>@item.EquipSN</td>
+                                </tr>
+                            }
+    }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,273 @@
+﻿
+@using ATEVersions_Management.Models.DTOModels
+@model FATPTableDTO
+@{  
+    string cpkStatusColor = "";
+    string resultColor = "success";
+    string resultMsg = Model.LastestResult;
+    if (resultMsg != "PASS")
+    {
+        resultColor = "danger";
+    }
+    if (resultMsg == "User_St")
+    {
+        resultColor = "warning";
+    }
+    if (Model.LockInfo.STATUS == true)
+    {
+        resultColor = "warning";
+        resultMsg = "LOCKED";
+    }
+    //
+    double timeSpan = Model.TimeSpanDataSent;
+    if (timeSpan >= 120)
+    {
+        resultMsg += "\n(Offline)";
+        resultColor = "secondary";
+    }
+    else if (timeSpan >= 15 && timeSpan < 120)
+    {
+        resultMsg += "\n(Pending)";
+        resultColor = "warning";
+    }
+    //
+    string rateColor = "success";
+    if (Model.FailRate >= 10 && Model.FailRate < 20)
+    {
+        rateColor = "warning";
+    }
+    if (Model.FailRate >= 20)
+    {
+        rateColor = "danger";
+    }
+    //
+    string timeSpanColor = "blue";
+    if(Model.TimeSpanNotSync >= 5 || Model.TimeSpanNotSync < -5)
+    {
+        timeSpanColor = "danger";
+    }
+    //
+
+}
+
+<div>    
+    <div class="row m-0 p-0 rounded ">
+        <div class="col-sm-3 p-0 m-0 bg-gray-200 rounded">
+            <div class="m-1">
+                <table class="text-black text-center table-bordered-black w-100">
+                    <thead>
+                        <tr>
+                            <th class="w-30 bg-success">PASS</th>
+                            <th class="w-30 bg-danger">FAIL</th>
+                            <th class="w-30 bg-">RATE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="bg-success">@Model.PASS_NUM</td>
+                            <td class="bg-danger">@Model.FAIL_NUM</td>
+                            <td class="fw-bold text-center text-@rateColor">
+                                @Model.FailRate%
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="m-1">
+                <table class=" table-bordered-black w-100 text-black">
+                    <thead>
+                        <tr>
+                            <th class="w-50">Top Error</th>
+                            <th>Repeat</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @foreach (KeyValuePair<string, int> error in Model.ErrorStatistic)
+                        {
+                            <tr>
+                                <td class="">@error.Key</td>
+                                <td class="">@error.Value</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="text-black div-scrollable-sm">
+                <pre>@Model.ERROR_LIST</pre>
+            </div>
+            <div class=" ">
+                <table class="table-bordered-black w-100 text-black">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold w-50">Current OP:</td>
+
+                            <td class="fw-bold">@Model.OP_ID</td>
+
+                        </tr>                        
+                    </tbody>
+                </table>                
+            </div>
+        </div>
+        <div class="col-sm-5 m-0 p-0">
+            <div class="h-10 bg-gray-200 rounded table-responsive p-1">
+                <table class="text-black  w-100">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold w-50">Last Locked By:</td>
+                            
+                            <td class="fw-bold">Last Unlocked By:</td>
+                            
+                        </tr> 
+                        <tr>
+                            <td class="text-orange fw-bold">@Model.LockInfo.ROOT_CAUSE</td>                            
+                            <td class="text-orange fw-bold">@Model.LockInfo.UNLOCK_BY</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex flex-column justify-content-center align-items-center h-75 bg-@resultColor ">
+                <h1 class="text-white text-lg-80">
+                    <span class="pre-line">@resultMsg</span>                    
+                </h1>
+            </div>  
+            <div class="h-15 bg-gray-200 rounded table-responsive">
+                <table class="text-black table-bordered w-100">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold">ATE_PC:</td>
+                            <td class="text-blue fw-bold">@Model.ATE_PC</td>
+                            <td class="fw-bold">On Server:</td>
+                            <td class="text-blue fw-bold">@Model.POST_DATE</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">ATE_IP:</td>
+                            <td class="text-blue fw-bold">@Model.ATE_IP</td>
+                            <td class="fw-bold">On Line:</td>
+                            <td class="text-blue fw-bold">@Model.PC_DATE</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">ATE_MAC:</td>
+                            <td class="text-blue fw-bold">@Model.ATE_MAC</td>                            
+                            <td class="fw-bold">Range:</td>
+                            <td class="text-@timeSpanColor fw-bold">@Model.TimeSpanNotSync minutes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-sm-4 m-0 p-0 rounded bg-gray-200">
+            <div class="text-black p-1" align="center">
+                <h6 class="fw-bold">Counters Usage</h6>
+                <table class=" table-bordered-black w-100">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.DE_COUNTERS)
+                        {
+                            <tr>
+                                <td class="w-50">@item.CounterName</td>
+                                @{
+                                    string counterColor = "success";
+                                    if (item.IsAbnormal)
+                                    {
+                                        counterColor = "danger";
+                                    }
+                                }
+                                <td class="bg-@counterColor">@item.CounterNum</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-black p-1 rounded " align="center">
+                <h6 class="fw-bold">Equipments</h6>
+                <table class=" table-bordered-black w-100">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        @if (Model.DE_EQUIPMENTS.Count == 0)
+                        {
+                            <tr>
+                                <td class="text-center">No Equipments!</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var item in Model.DE_EQUIPMENTS)
+                            {
+                                <tr>
+                                    <td>@item.EquipName</td>
+                                    <td>@item.EquipSN</td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-black p-1 rounded " align="center">
+                <h6 class="fw-bold">Last Calculated CPKs</h6>                
+                <div class="table-responsive div-scrollable-sm">
+                    <table class=" table-bordered-black w-100">
+                        <thead>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                @if (Model.CpkLowestItem != null)
+                                {
+                                    if (double.Parse(Model.CpkLowestItem[1]) < 0.9)
+                                    {
+                                        cpkStatusColor = "danger";
+                                    }
+                                    if (double.Parse(Model.CpkLowestItem[1]) > 0.9 && double.Parse(Model.CpkLowestItem[1]) < 1.33)
+                                    {
+                                        cpkStatusColor = "warning";
+                                    }
+                                    <td class="text-center fw-bold p-1" colspan="2">LOWEST: <span class="">@Model.CpkLowestItem[0]</span> | <span class="text-bg-@cpkStatusColor p-1 rounded">@Model.CpkLowestItem[1]</span> </td>
+                                }
+                            </tr>
+                            @if (Model.CpkResults.Count == 0)
+                            {
+                                <tr>
+                                    <td class="text-center">No CPK Results!</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (KeyValuePair<string, string> cpk in Model.CpkResults)
+                                {
+                                    cpkStatusColor = "";
+                                    if (double.Parse(cpk.Value) < 0.9)
+                                    {
+                                        cpkStatusColor = "danger";
+                                    }
+                                    if(double.Parse(cpk.Value) > 0.9 && double.Parse(cpk.Value) < 1.33)
+                                    {
+                                        cpkStatusColor = "warning";
+                                    }
+                                    <tr>
+                                        <td class="">@cpk.Key</td>
+                                        <td class="fw-bold text-center text-bg-@cpkStatusColor">@cpk.Value</td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>

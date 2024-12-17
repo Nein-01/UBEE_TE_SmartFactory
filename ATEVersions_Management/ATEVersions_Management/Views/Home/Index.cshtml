@@ -1,0 +1,221 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@using ATEVersions_Management.Models.HelperModels
+@using ATEVersions_Management.Models.ATEVersionModels
+@model IEnumerable<VersionDTO>
+@{
+    ViewBag.Title = "Smart Factory";
+    //Layout = "~/Views/Shared/LayoutClient.cshtml";
+    Layout = "~/Views/Shared/_LayoutFiiTheme.cshtml";
+}
+
+<div class="fii-container-bg h-100 w-100 ">
+
+    <div class="fii-frame-subcontent h-100">
+        <!-- begin::index menu items -->
+        <div class=" d-flex flex-wrap p-3">
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem"
+                   href="http://10.220.99.166/SMTDATA" target="_blank">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="~/Assets/Vendor/fii-template/fii-theme/fii-icon-automation.png" />
+                        <div class="fii-title-index fw-bold">
+
+                            <span class="">SMT Data Analysis</span>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem"
+                   href="@Url.Action("CltVersionIndex","ATEVersion")">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="/Assets/Vendor/fii-template/fii-theme/fii-icon-version.png" />
+                        <div class="fii-title-index fw-bold">
+                            <span>
+                                ATE Program Versions Management
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem"
+                   href="@Url.Action("CltTestPlanIndex","TestPlan")">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="~/Assets/Vendor/fii-template/fii-theme/fii-icon-testplan.png" />
+                        <div class="fii-title-index fw-bold">
+                            <span>
+                                ATE MFG Test Plans Doc Management
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem"
+                   href="@Url.Action("EnergySavingIndex","EnergySaving")">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="~/Assets/Vendor/fii-template/fii-theme/fii-icon-ehs.png" />
+                        <div class="fii-title-index fw-bold">
+                            <span>
+                                ATE Energy Control
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem"
+                   href="@Url.Action("ATETimeIndex","TestTimeSystem")">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="~/Assets/Vendor/fii-template/fii-theme/fii-icon-atetime.png" />
+                        <div class="fii-title-index fw-bold">
+                            <span>
+                                ATE Test Time Analysis
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem"
+                   href="@Url.Action("FATPMonitorIndex","FATPMonitor")">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="~/Assets/Vendor/fii-template/fii-theme/fii-icon-fatp.png" />
+                        <div class="fii-title-index fw-bold">
+
+                            <span class="">FATP Status Analysis</span>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem"
+                   href="@Url.Action("CPKDBIndex","CPKSystem")">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="~/Assets/Vendor/fii-template/fii-theme/fii-icon-cpk.png" />
+                        <div class="fii-title-index fw-bold">
+
+                            <span class="">CPK Analyzing System</span>
+
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem"
+                   href="@Url.Action("GRRModuleIndex","GRRModule")">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="~/Assets/Vendor/fii-template/fii-theme/fii-icon-grr.png" />
+                        <div class="fii-title-index fw-bold">
+
+                            <span class="">GR&R Reports</span>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem"
+                   href="@Url.Action("TestTimeIndex","TestTimeSystem")">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="~/Assets/Vendor/fii-template/fii-theme/fii-icon-estimate.png" />
+                        <div class="fii-title-index fw-bold">
+
+                            <span class="">Test Equipment Estimate</span>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem"
+                   href="https://fiisw-cns.myfiinet.com/customer/customer-detail?factory=F16" target="_blank">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="~/Assets/Vendor/fii-template/fii-theme/fii-icon-product.png" />
+                        <div class="fii-title-index fw-bold">
+
+                            <span class="">Tester Reason Analysis</span>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem"
+                   href="https://fiisw-cns.myfiinet.com/paperless/" target="_blank">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="~/Assets/Vendor/fii-template/fii-theme/fii-icon-paperless.png" />
+                        <div class="fii-title-index fw-bold">
+
+                            <span class="">Paperless Checklist Statistic</span>
+
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem"
+                   href="https://fiisw-cns.myfiinet.com/" target="_blank">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="~/Assets/Vendor/fii-template/fii-theme/fii-icon-hr.png" />
+                        <div class="fii-title-index fw-bold">
+                            <span class="">Engineer Management</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem indeveloping" data-toggle="modal" data-target="#notifyModal"
+                   href="#" target="">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="~/Assets/Vendor/fii-template/fii-theme/fii-icon-tms.png" />
+                        <div class="fii-title-index fw-bold">
+                            <span class="">OBA Management System</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="fii-frame-index m-1">
+                <a class="fii-frame-index-inneritem indeveloping" data-toggle="modal" data-target="#notifyModal"
+                   href="#" target="">
+                    <div class="w-100" align="center">
+                        <img class="fii-icon" src="~/Assets/Vendor/fii-template/fii-theme/fii-icon-copyic.png" />
+                        <div class="fii-title-index fw-bold">
+                            <span class="">Copy IC Management System</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!-- begin::index menu items -->
+    </div>
+</div>
+
+<!-- Modal Version List -->
+<div class="modal fade " id="notifyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="" class="fw-bold text-blue">
+                    
+                </h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="row modal-body ">
+                <h3 class="fw-bold text-center text-info" id="">
+                    THIS MODULE IS IN DEVELOPING STAGE!
+                </h3>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

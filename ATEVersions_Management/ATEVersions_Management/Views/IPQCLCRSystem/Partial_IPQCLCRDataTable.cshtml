@@ -1,0 +1,31 @@
+﻿@using System.Data;
+@{ 
+    DataTable DtblLCRData = ViewBag.DtblLCRData;
+    int no = 0;
+}
+
+<table id="tableLCRData" class="table table-bordered text-black">
+    <thead>
+        <tr class="bg-info text-center">
+            <th>NO</th>
+            @foreach (DataColumn col in DtblLCRData.Columns)
+            {
+                <th> @col.ColumnName </th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DataRow row in DtblLCRData.Rows)
+        {
+            no++;
+            <tr class="text-center">
+                <td>@no</td>
+                @foreach (DataColumn col in DtblLCRData.Columns)
+                {
+                    <td>@row[col.ColumnName]</td>
+                }
+                
+            </tr>        
+        }
+        </tbody>
+</table>

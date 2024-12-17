@@ -1,0 +1,131 @@
+﻿@using ATEVersions_Management.Models.CPKModels
+@using ATEVersions_Management.Models.DTOModels
+@model IEnumerable<CPKModelStationContent>
+@{
+    ViewBag.Title = "CPK DB Index";
+    //Layout = "~/Views/Shared/LayoutClient.cshtml";
+    Layout = "~/Views/Shared/_LayoutFiiTheme.cshtml";
+}
+<!-- Page level script section -->
+<script src="~/Assets/Vendor/html2canvas/html2canvas.min.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/highcharts.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/highcharts-more.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/modules/accessibility.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/modules/histogram-bellcurve.js"></script>
+
+<!-- Page Content -->
+<div class="fii-container- row justify-content-center mb-2 h-100 w-100">
+
+    <!--<div class="card-header py-3 printDisable" align="center">
+    <h3 class="m-0 font-weight-bold text-center text-info mb-2">Model And Station</h3>
+    <div class="fl">
+        <label class="text-center text-black">Model:</label>
+        <select id="cboCPKModel" class="text-center">
+            <option value="0">--- Select ---</option>
+        </select>
+        <label class="text-center text-black">Station:</label>
+        <select id="cboCPKStation">
+            <option value="0">--- Select ---</option>
+        </select>-->
+    @*<button type="button" id="btnGetFATPData" class="btn btn-sm btn-outline-info mb-1"
+                onclick="GetDataTableFATP()">
+            <i class="fas fa-undo"></i>
+            <span>Reload</span>
+        </button>*@
+    <!--</div>
+    <div id="divtTabCPKModel" class="d-flex scrollbar-linerblue div-scrollableX-vw-100 p-1 bg-night">
+
+    </div>
+            </div>-->
+
+
+    <div class="row ">
+        <div class="col-sm-2 ">
+            <div class="fii-frame-rectangle d-flex justify-content-center p-2">
+                <button type="button" id="btnCPKModelOnline" class="btn btn- fii-btn fii-btn-success w-50">
+                    <span>Online</span>
+                </button>
+                <button type="button" id="btnCPKModelOffline" class="btn btn- fii-btn fii-btn-secondary w-50">
+                    <span>Offline</span>
+                </button>
+            </div>
+            <div class="fii-frame-card d-flex justify-content-center w-100 p-2">
+                <div id="divTabCPKModel" class="m-auto ">
+
+                </div>
+                <div id="divTabCPKOfflineModel" class="fii-form d-none w-100 ">
+                    <div class="input-group ">
+                        <div class="input-group-prepend ">
+                            <span class="input-group-text fw-bold">MODEL</span>
+                        </div>
+                        <select id="cboCPKModel" class="btn fii-form-select-default ">
+                            <option value="0">--- All ---</option>
+                        </select>
+                    </div>
+                    <div class="tab-cpkmodel-offline">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-10 fii-frame-subcontent p-1">
+            <div id="divFiiInputField" class="fii-form d-flex justify-content-center ">
+                <div class="input-group justify-content-center">
+                    <!-- datepicker control -->
+                    <div class="input-group-prepend ">
+                        <span class="input-group-text  text-"><i class="fas fa-calendar"></i></span>
+                    </div>
+                    <input type="text" id="timeSpan" class="form-control text-center fw-bold">
+                    <!-- textbox display model pcs -->
+                    <div class="input-group-prepend">
+                        <span class="input-group-text fw-bold text-">QTY</span>
+                    </div>
+                    <input type="text" id="txtCPKNum" class="form-control fw-bold w-5 text-center text-" value="" style="max-width:10%;" disabled>
+                    <!-- combobox select model MO -->
+                    <div class="input-group-prepend">
+                        <span class="input-group-text fw-bold text-">MO</span>
+                    </div>
+                    <select id="cboCPKMO" class="btn fii-form-select-default ">
+                        <option value="0">--- All ---</option>
+                    </select>
+                    <!-- combobox select model ATE_PC -->
+                    <div class="input-group-prepend">
+                        <span class="input-group-text fw-bold text-">PC</span>
+                    </div>
+                    <select id="cboCPKPC" class="btn fii-form-select-default ">
+                        <option value="0">--- All ---</option>
+                    </select>
+                </div>                
+            </div>
+            <div id="divTableModelStationItem" class="table-responsive d-flex flex-column justify-content-center align-items-center  mt-1">
+                <div class="fii-nodata">
+                    <i class="fa fa-meh"></i>
+                    <span>NO DATA TO DISPLAY!</span>
+                </div>
+            </div>
+            <div id="divCPKChartSection" class="d-flex justify-content-center">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div>
+    <!-- Global AJAX Calling URLs -->
+    <input type="hidden" id="chartSectionUrl" value="@Url.Action("CPKChartSection")" />
+    <input type="hidden" id="URL_GET_CPKOnOffModelList" value="@Url.Action("GET_CPKOnOffModelList")" />
+    <input type="hidden" id="URL_GET_ListCPKModelStation" value="@Url.Action("GET_ListCPKModelStation")" />
+    <input type="hidden" id="URL_GET_CPKModelList" value="@Url.Action("GET_CPKModelList")" />
+    <input type="hidden" id="URL_GET_CPKStationList" value="@Url.Action("GET_CPKStationList")" />
+    <input type="hidden" id="URL_GET_PartialTableCPKModelStationItem" value="@Url.Action("PartialTableCPKModelStationItem")" />
+    <input type="hidden" id="URL_GET_ListMoByModel" value="@Url.Action("ListMoByModel")" />
+    <input type="hidden" id="URL_GET_PCList" value="@Url.Action("GET_PCList")" />
+    <!-- Global Variable Keepers -->
+    <input type="hidden" id="VAR_Model" value="" />
+    <input type="hidden" id="VAR_Station" value="" />
+</div>
+<!-- Page Scripts -->
+
+<script src="~/Assets/JS/MyJS/CPKModule/CPKDBFuncs.js"></script>

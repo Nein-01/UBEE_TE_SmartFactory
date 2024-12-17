@@ -1,0 +1,178 @@
+﻿@model ATEVersions_Management.Models.ATEVersionModels.PROGRAM
+@using ATEVersions_Management.Models.HelperModels
+@{
+    ViewBag.Title = "Detail: " + Model.ProgramName;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="form-horizontal row justify-content-center">   
+    <!--begin::Content -->
+    <div class="content d-flex flex-column flex-column-fluid col-xl-6">
+        <!--begin::Post-->
+        <div class="card shadow d-flex flex-column-fluid ">
+            <div class="card-header py-3">
+                <h3 class="m-0 font-weight-bold text-primary">Program Detail Information</h3>
+            </div>
+            <!--begin::Card body-->
+            <div class="card-body border-top p-9">
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.ProgramID)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.ProgramID)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.ProgramName)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.ProgramName)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.ModelName)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.ModelName)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.ProjectType)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.ProjectType)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.DevelopTool)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.DevelopTool)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.Status)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @switch (Model.Status)
+                        {
+                            case 0:<span class="text-danger">Disable</span> break;
+                            case 1: <span class="text-success">Enable</span>break;
+                        }
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Tracking section-->
+                <h4 class="row mb-2 font-weight-bold text-primary border p-2">Tracking changes</h4>
+                <!--end::Tracking section-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.CreatedAt)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.CreatedAt)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.UpdatedAt)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        <span>@Html.DisplayFor(model => model.UpdatedAt)</span>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.UpdatedBy)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        <span>@Html.DisplayFor(model => model.UpdatedBy)</span>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Action group-->
+                <div align="center">
+                    <a href="@Url.Action("ProgramIndex", "AdmProgram")">
+                        <i class="fas fa-fw fa-arrow-circle-left"></i>
+                        <span>Program List</span>
+                    </a> |
+                    @if (User.Identity.GetRoleName() != "Checker" && User.Identity.GetRoleName() != "Approver")
+                    {
+                        <a href="@Url.Action("ProgramEdit", "AdmProgram", new { id = Model.ProgramID })">
+                            <i class="fas fa-fw fa-pen-square"></i>
+                            <span>Edit</span>
+                        </a>
+                    }
+                    |
+                    <a href="@Url.Action("VersionIndex", "AdmVersion", new {prgId = Model.ProgramID})">
+                        <span>Version List</span>
+                        <i class="fas fa-fw fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+                <!--end::Action group-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Post-->
+
+    </div>
+    <!--end::Content-->
+</div>

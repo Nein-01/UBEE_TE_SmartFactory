@@ -1,0 +1,113 @@
+﻿
+@using ATEVersions_Management.Models.HelperModels
+@{
+    ViewBag.Title = "Admin Version Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    IEnumerable<System.Web.Mvc.SelectListItem> prgSelector = ViewBag.ProgramList;
+}
+
+<!-- DataTables -->
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3 d-flex d-block printDisable">
+        <h3 class="m-0 font-weight-bold text-primary">Version Index</h3>
+    </div>
+    <div class="ml-4 d-flex d-block printDisable">
+        @if (User.Identity.GetRoleName() != "Checker" && User.Identity.GetRoleName() != "Approver")
+        {
+
+            @Html.ActionLink("Create New", "VersionCreate", "", new { @class = "btn btn-outline-primary" })
+
+
+        }
+        <a href="@Url.Action("VersionImport","AdmVersion")" class="btn btn-outline-info">
+            <i class="fas fa-file-import"></i>
+            Import
+        </a>
+
+        <a href="#" class="btn btn-outline-success" data-toggle="modal" data-target="#excelModal" onclick="">
+            <i class="fas fa-file-excel"></i>
+            Export
+        </a>
+        @Html.DropDownList("selectModels", prgSelector, new { @id = "selectModels", @class = "form-select-sm" })
+
+    </div>
+    <div class="card-body">
+        <div class="table-responsive" id="divTableVersions">
+
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- Form to delete action -->
+            <form action="@Url.Action("VersionDelete","AdmVersion")" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure want to delete this record?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form Data -->
+                    <input type="hidden" name="id" class="idValModal" />
+                    <label>Version ID: <span class="idTxtModal"></span></label><br />
+                    <label>Version name: <span class="nameTxtModal"></span> </label>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    @*<a id="deleteBtn" class="btn btn-primary" href="#">Delete</a>*@
+                    <input type="submit" value="Delete" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Export Excel Modal -->
+<div class="modal fade" id="excelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="@Url.Action("VersionToExcel", "ATEVersion",new { area = ""})" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" align="center">
+                        Prepare to export data
+                    </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="row modal-body " align="center">
+                    <div>
+                        <!--begin::Label-->
+                        <h4 class=" fw-bold fs-6 p-2">
+                            <span>Select Program</span>
+
+                        </h4>
+                        <!--end::Label-->
+                        @Html.DropDownList("prgName", prgSelector, "-- All --", new { @class = "form-select" })
+                    </div>
+
+                </div>
+                <div class="modal-footer" align="center">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <input type="submit" value="Export" class="btn btn-success" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- JavaScript Getting Vals -->
+<div>
+    <input type="hidden" id="Var_SiteArea" class="" value="Admin" />
+    <input type="hidden" id="URL_GETTableVersions" class="" value="@Url.Action("_AdmPartTableVersions","AdmVersion")" />
+    <input type="hidden" id="Var_ModelKeeper" class="" value="@ViewBag.ModelKeeper" />
+</div>
+<script src="~/Assets/JS/AdminJS/helperIndexModals.js"></script>
+<script src="~/Assets/JS/MyJS/ATEVersions/ATEVersionsCommonFuncs.js"></script>

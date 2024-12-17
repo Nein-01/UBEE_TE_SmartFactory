@@ -1,0 +1,62 @@
+﻿@using ATEVersions_Management.Models.AccountModels
+@model MyLogin
+@{
+    ViewBag.Title = "Identification";
+    //Layout = "~/Views/Shared/LayoutClient.cshtml";
+    Layout = "~/Views/Shared/_LayoutFiiTheme.cshtml";
+
+}
+
+@using (Html.BeginForm(new {ReturnUrl = ViewBag.ReturnUrl}))
+{
+    @Html.AntiForgeryToken()
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-5 col-md-9">
+
+                <div class="fii-frame-content bg-opacity-100 o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        
+                        <div class="fii-form p-5">
+                            <div class="text-center">
+                                <h1 class="fii-content-title fii-font-fantasy h4 rounded-1 fw-bold text-light mb-4">IDENTIFICATION</h1>
+                                <p class="text-danger">@ViewBag.Notify</p>
+                            </div>
+                                    
+                            <div class="form-group row">                                            
+                                @Html.EditorFor(model=>model.Username, new { htmlAttributes = new { @class = "form-control form-control-user to-upper-text fw-bold", placeholder = "Username" } })
+                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group row">
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control form-control-user fw-bold", placeholder = "Password" } })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group row">
+                                <input type="submit" class="btn btn-info btn-user btn-block fw-bold" value="Login" />
+                            </div>                                                                               
+                                    
+                            <hr>                                                                        
+                        </div>
+                            
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @ViewBag.Error
+</div>
+
+<script src="~/Assets/JS/FrameworkJS/jquery-3.4.1.min.js"></script>
+<script>
+    $(window).on('load', function ()
+    {        
+        $('#sidebarToggleTop').addClass('collapse');
+    });
+</script>

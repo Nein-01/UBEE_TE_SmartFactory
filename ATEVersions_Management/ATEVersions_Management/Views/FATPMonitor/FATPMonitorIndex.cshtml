@@ -1,0 +1,89 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model IEnumerable<FATPTableDTO>
+@{
+    ViewBag.Title = "FATP Monitoring";
+    //Layout = "~/Views/Shared/LayoutClient.cshtml";
+    Layout = "~/Views/Shared/_LayoutFiiTheme.cshtml";
+
+    List<string> FATPLine = ViewBag.FATPLine;
+}
+
+@*<ul class="nav nav-tabs nav-tabs-fatp d-flex justify-content-center mb-1" role="tablist">
+    @foreach (string line in FATPLine)
+    {
+        string tabID = "tab"+line, tabPane = "tpane"+line;
+        <li class="nav-item m-auto">
+            <button type="button" id="@tabID" class="nav-link "
+                    data-bs-toggle="tab" data-bs-target="#@tabPane"
+                    role="tab" aria-controls="@tabPane" aria-selected="true"
+                    onclick="">
+                @line
+            </button>
+        </li>
+    }
+        
+</ul>*@
+
+<div class="row mb-2 justify-content-center">
+    <div class="card ">
+        <div class="card-header py-3 print-disable">           
+
+        </div>
+        <!-- Tab links -->
+        <div id="tabFATPLine" class="">
+            
+
+        </div>
+        <div id="tabFATPLineStation" class="">
+
+        </div>
+        <div class="card-body">
+            <!-- DataTables -->
+            <div id="DivTableFATP" class="table-responsive">
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divTestFATPLine" class="tab d-flex align-items-center justify-content-center mb-1">
+
+</div>
+<div id="divTestFATPStation" class="">
+
+</div>
+<!-- FATP Detail Modal-->
+<div class="modal fade BasicModal-lg " id="FATPDetailModal" tabindex="-1" role="dialog" aria-labelledby="FATPDetailModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content bg-black">
+            <div class="modal-header ">
+                <h4 class="modal- fw-bold text-center text-orange text-" id="spanFATPStation"></h4>
+                <button class="close text-white" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div align="center" id="FATPDetailModalBody">                    
+                    <div id="divFATPDetailModal" >
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div>
+    <input type="hidden" id="URL_GETDataTableFATP" value="@Url.Action("_PartFATPTableData")" />
+    <input type="hidden" id="URL_GETFATPDetail" value="@Url.Action("_PartFATPDetail")" />
+    <input type="hidden" id="URL_GET_AllFATPLine" value="@Url.Action("GET_AllFATPLine")" />
+    <input type="hidden" id="URL_GET_AllTabFATPLine" value="@Url.Action("GET_AllTabFATPLine")" />
+    <input type="hidden" id="URL_GET_AllFATPLineStation" value="@Url.Action("GET_AllFATPLineStation")" />
+    <input type="hidden" id="URL_GET_AllTabFATPLineStation" value="@Url.Action("GET_AllTabFATPLineStation")" />
+    <input type="hidden" id="URL_GET_AllFATPLineModel" value="@Url.Action("GET_AllFATPLineModel")" />
+    <input type="hidden" id="URL_GET_ChangeFATPLockStatus" value="@Url.Action("GET_ChangeFATPLockStatus")" />
+    <input type="hidden" id="URL_SET_ResetFAILNUMbyFAILBUFFER" value="@Url.Action("SET_ResetFAILNUMbyFAILBUFFER")" />
+</div>
+
+<!-- Page level script -->
+<script src="~/Assets/JS/MyJS/FATPModule/FATPCommonFuncs.js"></script>

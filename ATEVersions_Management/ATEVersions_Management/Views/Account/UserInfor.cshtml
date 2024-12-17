@@ -1,0 +1,124 @@
+﻿@model ATEVersions_Management.Models.ATEVersionModels.USER
+
+@{
+    ViewBag.Title = "User: " + Model.UserName;
+    Layout = "~/Views/Shared/LayoutClient.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<div class="form-horizontal row justify-content-center">
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.UserID)
+    <!--begin::Content -->
+    <div class="content d-flex flex-column flex-column-fluid col-xl-6">
+        <!--begin::Post-->
+        <div class="card shadow d-flex flex-column-fluid ">
+            <div class="card-header py-3">
+                <h3 class="m-0 font-weight-bold text-primary">@Model.UserName - @Model.FullName</h3>
+            </div>
+            <!--begin::Card body-->
+            <div class="card-body border-top p-9">
+                <!--begin::Display group-->
+                <div class="row mb-2 justify-content-center">
+                    <!--begin::Label-->
+                    <label class="col-sm-3 col-form-label fw-bold fs-6">
+                        <span>@Html.DisplayNameFor(model => model.ROLE.RoleName)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-sm-4 col-form-label fv-row">
+                        <span class="text-bg-info text-gray-100 fw-bold p-1 rounded-2">@Model.ROLE.RoleName</span>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2 justify-content-center">
+                    <!--begin::Label-->
+                    <label class="col-sm-3 col-form-label fw-bold fs-6">
+                        <span>@Html.DisplayNameFor(model => model.UserName)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-sm-4 col-form-label fv-row ">
+                        <span class="text-bg-primary text-gray-100 fw-bold p-1 rounded-2">@Model.UserName</span>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Input group-->
+                <div class="row mb-2 justify-content-center">
+                    <!--begin::Label-->
+                    <label class="col-sm-3 col-form-label fw-bold fs-6">
+                        <span>@Html.DisplayNameFor(model => model.FullName)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-sm-4 fv-row">
+                        @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-2 justify-content-center">
+                    <!--begin::Label-->
+                    <label class="col-sm-3 col-form-label fw-bold fs-6">
+                        <span>@Html.DisplayNameFor(model => model.Email)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-sm-4 fv-row">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-2 justify-content-center">
+                    <!--begin::Label-->
+                    <label class="col-sm-3 col-form-label fw-bold fs-6">
+                        <span>@Html.DisplayNameFor(model => model.PhoneNumber)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-sm-4 fv-row ">
+                        @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger text-wrap" })
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Action group-->
+                <div class="form-group">
+                    <div class="col-md-offset-2" align="center">
+                        <input type="submit" value="Update" class="btn btn-outline-primary" />
+                        <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                    </div>
+                </div>
+                <div align="center">
+                    <a href="@Url.Action("Index", "Home")">
+                        <i class="fas fa-fw fa-arrow-circle-left"></i>
+                        <span>Home Page</span>
+                    </a>|
+                    <a href="@Url.Action("ChangePW", "Account")">
+                        <i class="fas fa-fw fa-user-lock"></i>
+                        <span>Change Password</span>
+                    </a>
+                </div>
+                <!--end::Action group-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Post-->
+
+
+    </div>
+    <!--end::Content-->
+</div>
+}

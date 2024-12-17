@@ -1,0 +1,82 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@{
+    ViewBag.Title = "Test Time Index";
+    //Layout = "~/Views/Shared/LayoutClient.cshtml";
+    Layout = "~/Views/Shared/_LayoutFiiTheme.cshtml";
+
+    DateTime fromDate = DateTime.Now.AddDays(-1);
+    string strFromDate = fromDate.ToString("yyyy-MM-dd") + "T" + fromDate.ToString("07:30");
+    DateTime toDate = DateTime.Now;
+    string strToDate = toDate.ToString("yyyy-MM-dd") + "T" + toDate.ToString("07:30");
+
+    List<string> listLine = ViewBag.ListLines;
+
+}
+
+<div class="row justify-content-center d-flex text-black mb-2" align="center">
+    <div class="input-group w-25 m-1 d-flex justify-content-center ">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+        </div>
+        <input type="text" id="timeSpan" class="form-control form-control-sm w-60 text-center text-black">
+        <button id="btnTimeSpan" class=" btn btn-sm btn-primary" onclick="GET_TETestData()">
+            <i class="fa fa-table"></i>
+            Estimate
+        </button>        
+    </div>
+    @*<form target="_blank">        
+        <label>From: </label>
+        <input type="datetime-local" id="fromDay" value="@strFromDate" />
+        <label>To: </label>
+        <input type="datetime-local" id="toDay" value="@strToDate" />
+        <br />
+        <button type="button" class="btn btn-outline-info" onclick="GET_TETestData()">
+            <i class="fas fa-list-ul"></i>
+            <span>Load All Lines</span>
+        </button>
+
+    </form>*@
+    <h5 class="mt-2 text-white">(Row will be calculated when all fields are entered)</h5>
+</div>
+<!-- Tab links -->
+<ul class="nav nav-tabs d-flex justify-content-center mb-1" role="tablist">
+    @foreach (var line in listLine)
+    {
+        string tabID = "tab" + line, tpaneID = "tpane" + line;
+        <li class="nav-item m-auto">
+            <button type="button" id="@tabID" class="nav-link tabLinks"
+                    data-bs-toggle="tab" data-bs-target="#@tpaneID"
+                    role="tab" aria-controls="@tpaneID" aria-selected="true"
+                    onclick="tabSelected(event,'@line')">
+                @line
+            </button>
+        </li>
+    }
+
+</ul>
+<!-- Tab Contents -->
+<div id="tabContentContainer" class="fii-container-blank border-left-blue border-bottom-blue mb-2">
+</div>
+<div class="loaderDiv" align="center">
+    <img src="~/Images/loaderGifs/Walk.gif" />
+    <h4 class="text-white fw-bold">Loading...</h4>
+</div>
+<div id="containerNewProductEstimate" class="">
+    <div id="buttonsNewProductEstimate" class="mb-2 d-flex">
+        <button class="btn btn-info fw-bold" onclick="appendNewProductEstimate()">New Product Estimate</button>
+
+    </div>
+</div>
+<div>
+    <input type="hidden" id="URL_GET_TETestData" value="@Url.Action("GET_TETestData")" />
+    <input type="hidden" id="URL_POST_ReplaceTETestData" value="@Url.Action("POST_ReplaceTETestData")" />
+</div>
+<script>
+    var $loaderDiv = $('.loaderDiv').hide();
+    var URL_GET_TETestData = $('#URL_GET_TETestData').val();
+    var URL_POST_ReplaceTETestData = $('#URL_POST_ReplaceTETestData').val();
+    var _listModelStation;
+    var _listLine = @Html.Raw(Json.Encode(listLine));
+
+</script>
+<script src="~/Assets/JS/MyJS/TestTimeSystem/TestTimeEquipment.js"></script>

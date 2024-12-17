@@ -1,0 +1,36 @@
+==============================
+Module: MQTTConnector
+Function: MQTT_MessageSystem_SendNoticeMessage
+8/26/2024 4:22:10 PM
+Error detail: Exception connecting to the broker
+==============================
+==============================
+Module: MQTTConnector
+Function: MQTT_MessageSystem_SendNoticeMessage
+8/26/2024 4:26:51 PM
+Error detail: Exception connecting to the broker
+==============================
+==============================
+Module: MQTTConnector
+Function: MQTT_MessageSystem_SendNoticeMessage
+8/26/2024 4:29:37 PM
+Error detail: Exception connecting to the broker
+==============================
+==============================
+Module: MQTTConnector
+Function: MQTT_MessageSystem_SendNoticeMessage
+8/26/2024 8:36:38 PM
+Error detail: Exception connecting to the broker
+==============================
+==============================
+Module: MQTTConnector
+Function: MQTT_MessageSystem_SendNoticeMessage
+8/26/2024 8:36:52 PM
+Error detail: Exception connecting to the broker
+==============================
+==============================
+Module: MQTTConnector
+Function: MQTT_MessageSystem_SendNoticeMessage
+8/26/2024 8:37:28 PM
+Error detail: Exception connecting to the broker
+==============================

@@ -1,0 +1,177 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model IEnumerable<FATPTableDTO>
+@using ATEVersions_Management.Models.HelperModels
+@{
+    string[] listColor = { "blue","primary", "info", "success" };
+    List<string> listModelInLineStation = TempData["listModelInLineStation"] as List<string>;
+    int modelNum = listModelInLineStation.Count;
+}
+<div class="d-flex align-items-center justify-content-center">
+    @if (modelNum > 0)
+    {
+        <label class="p-1 m-1 fw-bold rounded bg-secondary text-white text-center">Models: </label>
+        for (int c = 0, i = 0; i < modelNum; i++, c++)
+        {
+            if (c == 3)
+            {
+                c = 0;
+            }
+            <label class="p-1 m-1 fw-bold rounded bg-@listColor[c] text-white text-center">@listModelInLineStation[i]</label>
+        }
+    }
+
+</div>
+<table id="DataTableFATP" class="table table-bordered text-black">
+    <thead>
+        <tr class="bg-blue-opa75 text-white">
+            <th>@Html.DisplayNameFor(model => model.ATE_PC)</th>
+            <th>@Html.DisplayNameFor(model => model.ATE_IP)</th>
+            <th>@Html.DisplayNameFor(model => model.ATE_MAC)</th>            
+            <th>@Html.DisplayNameFor(model => model.MODEL)</th>
+            <th>@Html.DisplayNameFor(model => model.PASS_NUM)</th>
+            <th>@Html.DisplayNameFor(model => model.FAIL_NUM)</th>
+            <th>Rate</th>
+            <th>@Html.DisplayNameFor(model => model.POST_DATE)</th>            
+            <th>Lastest Result</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @{
+                    string nColor = "", abColor = "fw-bold text-danger";
+                    string colorPC = nColor;
+                    string colorIP = nColor;
+                    string colorMAC = nColor;
+                    if (item.AbnormalPC)
+                    {
+                        colorPC = abColor;
+                    }
+                    if (item.AbnormalIP)
+                    {
+                        colorIP = abColor;
+                    }
+                    if (item.AbnormalMAC)
+                    {
+                        colorMAC = abColor;
+                    }
+                }
+                <td class="@colorPC">@Html.DisplayFor(modelItem => item.ATE_PC)</td>
+                <td class="@colorIP">@Html.DisplayFor(modelItem => item.ATE_IP)</td>
+                <td class="@colorMAC">@Html.DisplayFor(modelItem => item.ATE_MAC)</td>
+                <td>@Html.DisplayFor(modelItem => item.MODEL)</td>
+                <td>@Html.DisplayFor(modelItem => item.PASS_NUM)</td>
+                <td>@Html.DisplayFor(modelItem => item.FAIL_NUM)</td>
+                @{
+                    string statusTooltip = "";
+                    string statusColor = "success";
+                    string statusMessage = "Normal";
+
+                    string rateColor = "success";
+                    if (item.FailRate >= 10 && item.FailRate < 20)
+                    {
+                        rateColor = "warning";
+                        statusMessage = "Warning";
+                        statusColor = "warning";
+
+                    }
+                    if (item.FailRate >= 20)
+                    {
+                        rateColor = "danger";
+                    }
+                }
+                <td class="text-center ">
+                    <span class="fw-bold rounded p-1 badge-@rateColor">@Html.DisplayFor(modelItem => item.FailRate)%</span>
+                </td>
+                @{
+
+
+                    double timeSpan = item.TimeSpanDataSent;
+                    string IsActive = timeSpan + " minutes";
+                    string activeColor = "success";
+                    if (timeSpan >= 120)
+                    {
+                        activeColor = "secondary";
+                    }
+                    if (timeSpan >= 15 && timeSpan < 120)
+                    {
+                        activeColor = "warning";
+                    }
+                }
+                <td class="fw-bold text-@activeColor">
+                    @Html.DisplayFor(modelItem => item.POST_DATE)
+                </td>                
+                @{
+
+                    string resultColor = "success";
+                    string resultMsg = item.LastestResult;
+                    if (resultMsg != "PASS")
+                    {
+                        resultColor = "danger";
+                    }
+                    if (resultMsg == "User_St")
+                    {
+                        resultColor = "warning";
+                    }
+                    string btnLockStatusTitle = "Lock";
+                    string btnLockStatusIcon = "lock";
+                    int lockStatus = 1;
+                    if (item.LockInfo.STATUS == true)
+                    {
+                        resultColor = "warning";
+                        resultMsg = "LOCKED";
+                        btnLockStatusTitle = "Unlock";
+                        btnLockStatusIcon = "lock-open";
+                        lockStatus = 0;
+                    }
+                }
+                <td class="fw-bold text-@resultColor">@resultMsg</td>
+                @{
+                    if (!string.IsNullOrEmpty(item.StatusMessage))
+                    {
+                        statusTooltip = "tooltip-container";
+                        statusColor = "danger";
+                        statusMessage = "Abnormal";
+                    }
+                }
+                <td class="text-center">
+                    <div class=" @statusTooltip">
+                        <span class="fw-bold rounded p-1 badge-@statusColor"> @statusMessage </span>
+                        <span class=" tooltip-text breakLine">@Html.DisplayFor(modelItem => item.StatusMessage)</span>
+                    </div>
+                </td>
+                <td align="center">
+                    <a href="#" onclick="GetFATPDetail('@item.ID','@item.LINE - @item.MODEL - @item.STATION')"
+                       class="btn btn-sm btn-outline-info mb-1"
+                       data-toggle="modal" data-target="#FATPDetailModal"
+                       title="Detail">
+                        <i class="fas fa-laptop"></i>
+                    </a>
+                    @if (User.Identity.GetRoleCode() != 2)
+                    {
+                        <a href="#" onclick="ChangeFATPLockStatus('@User.Identity.GetUserName()_@User.Identity.GetName()','@item.LINE','@item.STATION','@item.MODEL','@item.ATE_PC',@lockStatus)"
+                           class="btn btn-sm btn-outline-info mb-1"
+                           title="@btnLockStatusTitle">
+                            <i class="fas fa-@btnLockStatusIcon"></i>
+                        </a>
+                        string resetStatus = "outline-info";
+                        if(item.FAIL_NUM != 0 && item.FAIL_NUM_BUFFER == 0)
+                        {
+                            resetStatus = "warning";
+                        }
+                        <a href="#" onclick="SetResetFAILNUMbyFAILBUFFER('@item.ATE_PC','@item.ATE_IP','@item.MODEL','@item.LINE','@item.STATION')"
+                           class="btn btn-sm btn-@resetStatus mb-1"
+                           title="Refresh">
+                            <i class="fas fa-undo"></i>
+                        </a>
+                    }
+
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

@@ -1,0 +1,188 @@
+﻿@model ATEVersions_Management.Models.ATEVersionModels.USER
+
+@{
+    ViewBag.Title = "User Detail";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="form-horizontal row justify-content-center">
+    <!--begin::Content -->
+    <div class="content d-flex flex-column flex-column-fluid col-xl-6">
+        <!--begin::Post-->
+        <div class="card shadow d-flex flex-column-fluid ">
+            <div class="card-header py-3">
+                <h3 class="m-0 font-weight-bold text-primary">User Detail Information</h3>
+            </div>
+            <!--begin::Card body-->
+            <div class="card-body border-top p-9">
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.ROLE.RoleName)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        <span class="text-bg-info text-gray-100 fw-bold p-1 rounded-2">@Model.ROLE.RoleName</span>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.UserName)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        <span class="text-bg-primary text-gray-100 fw-bold p-1 rounded-2">@Model.UserName</span>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.FullName)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.FullName)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.Department)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.Department)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.Email)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.Email)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.PhoneNumber)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.PhoneNumber)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.Status)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @switch (Model.Status)
+                        {
+                            case 0:<span class="text-danger">Disable</span> break;
+                            case 1: <span class="text-success">Enable</span>break;
+                        }
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Tracking section-->
+                <h4 class="row mb-2 font-weight-bold text-primary border p-2">Tracking changes</h4>
+                <!--end::Tracking section-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.CreatedAt)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.CreatedAt)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.UpdatedAt)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        <span>@Html.DisplayFor(model => model.UpdatedAt)</span>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.UpdatedBy)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 col-form-label fv-row border border-left-primary">
+                        <span>@Html.DisplayFor(model => model.UpdatedBy)</span>
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Action group-->
+                <div align="center">
+                    <a href="@Url.Action("UserIndex", "AdmUser")">
+                        <i class="fas fa-fw fa-arrow-circle-left"></i>
+                        <span>User List</span>
+                    </a> |
+                    <a href="@Url.Action("UserEdit", "AdmUser", new { id = Model.UserID })">
+                        <i class="fas fa-fw fa-pen-square"></i>
+                        <span>Edit</span>
+                    </a> |
+                    <a href="@Url.Action("ResetPW", "AdmUser", new { userID = Model.UserID })">
+                        <i class="fas fa-fw fa-user-lock"></i>
+                        <span>Reset password</span>
+                    </a>
+                </div>
+                <!--end::Action group-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Post-->
+
+    </div>
+    <!--end::Content-->
+</div>

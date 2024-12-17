@@ -1,0 +1,44 @@
+﻿@using ATEVersions_Management.Models.CPKModels
+@model CPKCalculate
+@{
+    ViewBag.Title = ViewBag.ModelName + "-" + ViewBag.StationName;
+    Layout = "~/Views/Shared/LayoutClient.cshtml";
+    List<string> pcbSNList = Model.PcbSNList;
+    List<double> dataSet = Model.DataSet;
+    int listSize = dataSet.Count;
+}
+<div class="row justify-content-center d-flex">
+    <form action="@Url.Action("CPKPcbSNCheck","CPKSystem")" target="_blank">
+        <label>Model: </label>
+        <input type="text" name="model" value="@ViewBag.ModelName" />
+        <label>Station: </label>
+        <input type="text" name="station" value="@ViewBag.StationName" />
+        <label>PCB_SN: </label>
+        <input type="text" name="pcbSN" />
+        <input type="submit" value="Check" />
+    </form>
+</div>
+<h4 class="text-center font-weight-bold text-black ">Model: @ViewBag.ModelName - Station: @ViewBag.StationName</h4>
+<div class="row mb-6 justify-content-center">
+    <h5 class="text-center font-weight-bold text-black "> Item: @Model.ItemName - SpecL: @Model.SpecL- SpecH: @Model.SpecH</h5>
+    <div class="table-responsive">
+        <table class="table table-bordered text-black" id="dataTable">
+            <thead>
+                <tr>
+                    <th>PCB_SN</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @for (int i = 0; i < listSize; i++)
+                {
+                    <tr>
+                        <td>@pcbSNList[i]</td>
+                        <td>@dataSet[i]</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

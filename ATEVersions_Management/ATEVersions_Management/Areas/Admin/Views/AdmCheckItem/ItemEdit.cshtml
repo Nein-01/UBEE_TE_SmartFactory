@@ -1,0 +1,79 @@
+﻿@model ATEVersions_Management.Models.ATEVersionModels.CHECKLIST_ITEM
+
+@{
+    ViewBag.Title = "Edit Item No." + Model.ItemID;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal row justify-content-center">
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.ItemID)
+    <!--begin::Content -->
+    <div class="content d-flex flex-column flex-column-fluid col-xl-6">
+        <!--begin::Post-->
+        <div class="card shadow d-flex flex-column-fluid ">
+            <div class="card-header py-3">
+                <h3 class="m-0 font-weight-bold text-primary">Update Item Information</h3>
+            </div>
+            <!--begin::Card body-->
+            <div class="card-body border-top p-9">
+                <!--begin::Input group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6">
+                        <span>@Html.DisplayNameFor(model => model.ItemName)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 fv-row">
+                        <textarea name="ItemName" class="form-control" style="height:200px">@Model.ItemName</textarea>
+                        @*@Html.EditorFor(model => model.ItemName, new { htmlAttributes = new { @class = "form-control", required = "required" } })*@
+                        @Html.ValidationMessageFor(model => model.ItemName, "", new { @class = "text-danger" })
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Input group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-lg-4 col-form-label fw-bold fs-6">
+                        <span>@Html.DisplayNameFor(model => model.CheckMethod)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-lg-8 fv-row">
+                        <textarea name="CheckMethod" class="form-control" style="height:200px">@Model.CheckMethod</textarea>
+                        @*@Html.EditorFor(model => model.CheckMethod, new { htmlAttributes = new { @class = "form-control", required = "required" } })*@
+                        @Html.ValidationMessageFor(model => model.CheckMethod, "", new { @class = "text-danger" })
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Input group-->
+                <!--begin::Action group-->
+                <div class="form-group">
+                    <div class="col-md-offset-2" align="center">
+                        <input type="submit" value="Update" class="btn btn-outline-primary" />
+                        <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                    </div>
+                </div>
+                <div align="center">
+                    <a href="@Url.Action("CheckItemIndex", "AdmCheckItem")">
+                        <i class="fas fa-fw fa-arrow-circle-left"></i>
+                        <span>Checklist Item List</span>
+                    </a>
+                </div>
+                <!--end::Action group-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Post-->
+
+    </div>
+    <!--end::Content-->
+</div>
+}

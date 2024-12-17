@@ -1,0 +1,685 @@
+﻿@model ATEVersions_Management.Models.ATEVersionModels.ATE_CHECKLIST
+@using ATEVersions_Management.Models.ATEVersionModels
+@using ATEVersions_Management.Models.HelperModels
+@{
+    ViewBag.Title = "Edit Checklist: " + Model.VERSION.PROGRAM.ModelName + "_" + Model.VERSION.VersionName;
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    List<CHECKLIST_ITEM> checkItems = ViewBag.ChecklistItems;
+}
+
+<script src="~/Assets/JS/AdminJS/ajax_ATEResult.js"></script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal row mb-4 justify-content-center">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.CheckListID, new { @id = "ateID" })
+        <!--begin::Content Edit Data -->
+        <div class="content d-flex flex-column flex-column-fluid col-xl-6">
+            <!--begin::Post-->
+            <div class="card shadow d-flex flex-column-fluid ">
+                <div class="card-header py-3">
+                    <h3 class="m-0 font-weight-bold text-primary">Update ATE Checklist</h3>
+                </div>
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.VERSION.PROGRAM.ModelName)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 col-form-label fv-row">
+                            <span class="text-bg-primary text-gray-100 fw-bold p-1 rounded-2">@Model.VERSION.PROGRAM.ModelName</span>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.VERSION.VersionName)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 col-form-label fv-row">
+                            <span class="text-bg-primary text-gray-100 fw-bold p-1 rounded-2">@Model.VERSION.VersionName</span>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.CheckListCode)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @if (User.Identity.GetRoleName() != "Checker" && User.Identity.GetRoleName() != "Approver")
+                            {
+                                @Html.EditorFor(model => model.CheckListCode, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                <!--begin::Col-->
+                                <div class="col-lg-10 col-form-label form-control border border-left-primary">
+                                    @Html.DisplayFor(model => model.CheckListCode)
+                                </div>
+                                <!--end::Col-->
+                            }
+
+                            @Html.ValidationMessageFor(model => model.CheckListCode, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.ProductHW_SW)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @if (User.Identity.GetRoleName() != "Checker" && User.Identity.GetRoleName() != "Approver")
+                            {
+                                @Html.EditorFor(model => model.ProductHW_SW, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                <!--begin::Col-->
+                                <div class="col-lg-10 col-form-label form-control border border-left-primary">
+                                    @Html.DisplayFor(model => model.ProductHW_SW)
+                                </div>
+                                <!--end::Col-->
+                            }
+                            @Html.ValidationMessageFor(model => model.ProductHW_SW, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.StoredTime)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @if (User.Identity.GetRoleName() != "Checker" && User.Identity.GetRoleName() != "Approver")
+                            {
+                                @Html.EditorFor(model => model.StoredTime, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            else
+                            {
+                                <!--begin::Col-->
+                                <div class="col-lg-10 col-form-label form-control border border-left-primary">
+                                    @Html.DisplayFor(model => model.StoredTime)
+                                </div>
+                                <!--end::Col-->
+                            }
+                            @Html.ValidationMessageFor(model => model.StoredTime, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.Status)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+
+                            @switch (Model.Status)
+                            {
+                                case 1:
+                                    <span class="badge badge-warning col-form-label text-lg">Prepared</span>
+                                    break;
+                                case 2:
+                                    <span class="badge badge-info col-form-label text-lg">Checked</span>
+                                    break;
+                                case 3:
+                                    <span class="badge badge-success col-form-label text-lg">Approved</span>
+                                    break;
+                            }
+                            <br />
+                            @switch (User.Identity.GetRoleName())
+                            {
+                                case "Admin":
+                                    @Html.RadioButtonFor(model => model.Status, 1)
+                                    <label class="col-form-label badge text-light text-bg-warning">
+                                        Prepare
+                                    </label>
+                                    @Html.RadioButtonFor(model => model.Status, 2)
+                                    <label class="col-form-label badge text-light text-bg-info">
+                                        Check
+                                    </label>
+                                    @Html.RadioButtonFor(model => model.Status, 3)
+                                    <label class="col-form-label badge text-bg-success">
+                                        Approve
+                                    </label>
+                                    break;
+                                case "Checker":
+                                    @Html.RadioButtonFor(model => model.Status, 1)
+                                    <label class="col-form-label badge text-light text-bg-warning">
+                                        Prepare
+                                    </label>
+                                    @Html.RadioButtonFor(model => model.Status, 2, new { @checked = "checked" })
+                                    <label class="col-form-label badge text-light text-bg-info">
+                                        Check
+                                    </label>
+                                    break;
+                                case "Approver":
+                                    @Html.RadioButtonFor(model => model.Status, 1)
+                                    <label class="col-form-label badge text-light text-bg-warning">
+                                        Prepare
+                                    </label>
+                                    @Html.RadioButtonFor(model => model.Status, 2)
+                                    <label class="col-form-label badge text-light text-bg-info">
+                                        Check
+                                    </label>
+                                    @Html.RadioButtonFor(model => model.Status, 3, new { @checked = "checked" })
+                                    <label class="col-form-label badge text-bg-success">
+                                        Approve
+                                    </label>
+                                    break;
+                            }
+
+
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!--end::Col-->
+
+                    </div>
+                    <!--end::Input group-->
+                    <!-- || begin::Role apply section || -->
+                    @switch (User.Identity.GetRoleName())
+                    {
+                        case "Admin":
+                            <!--begin::Input group-->
+                            <div class="row mb-2">
+                                <!--begin::Label-->
+                                <label class="col-lg-4 col-form-label fw-bold fs-6">
+                                    <span>@Html.DisplayNameFor(model => model.PreparerNote)</span>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Col-->
+                                <div class="col-lg-8 fv-row">
+                                    @*@Html.EditorFor(model => model.PreparerNote, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    <textarea name="PreparerNote" class="form-control" style="height:100px">@Model.PreparerNote</textarea>
+                                    @Html.ValidationMessageFor(model => model.PreparerNote, "", new { @class = "text-danger" })
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="row mb-2">
+                                <!--begin::Label-->
+                                <label class="col-lg-4 col-form-label fw-bold fs-6">
+                                    <span>@Html.DisplayNameFor(model => model.CheckerNote)</span>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Col-->
+                                <div class="col-lg-8 fv-row">
+                                    @*@Html.EditorFor(model => model.PreparerNote, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    <textarea name="CheckerNote" class="form-control" style="height:100px">@Model.CheckerNote</textarea>
+                                    @Html.ValidationMessageFor(model => model.CheckerNote, "", new { @class = "text-danger" })
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                            <!--begin::Input group-->
+                            <div class="row mb-2">
+                                <!--begin::Label-->
+                                <label class="col-lg-4 col-form-label fw-bold fs-6">
+                                    <span>@Html.DisplayNameFor(model => model.ApproverNote)</span>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Col-->
+                                <div class="col-lg-8 fv-row">
+                                    @*@Html.EditorFor(model => model.PreparerNote, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    <textarea name="ApproverNote" class="form-control" style="height:100px">@Model.ApproverNote</textarea>
+                                    @Html.ValidationMessageFor(model => model.ApproverNote, "", new { @class = "text-danger" })
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                            <div class="form-group">
+                                <div class="col-md-offset-2" align="center">
+                                    <input type="submit" value="Update" class="btn btn-outline-primary" />
+                                    <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                                </div>
+                            </div>
+                            break;
+                        case "Preparer":
+                            <!--begin::Input group-->
+                            <div class="row mb-2">
+                                <!--begin::Label-->
+                                <label class="col-lg-4 col-form-label fw-bold fs-6">
+                                    <span>@Html.DisplayNameFor(model => model.PreparerNote)</span>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Col-->
+                                <div class="col-lg-8 fv-row">
+                                    @*@Html.EditorFor(model => model.PreparerNote, new { htmlAttributes = new { @class = "form-control" } })*@
+                                    <textarea name="PreparerNote" class="form-control" style="height:100px">@Model.PreparerNote</textarea>
+                                    @Html.ValidationMessageFor(model => model.PreparerNote, "", new { @class = "text-danger" })
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                            <div class="form-group">
+                                <div class="col-md-offset-2" align="center">
+                                    <input type="submit" value="Update" class="btn btn-outline-primary" />
+                                    <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                                </div>
+                            </div>
+                            break;
+                        case "Checker":
+                            <!--begin::Input group-->
+                            <div class="row mb-2">
+                                <!--begin::Label-->
+                                <label class="col-lg-4 col-form-label fw-bold fs-6">
+                                    <span>@Html.DisplayNameFor(model => model.CheckerNote)</span>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Col-->
+                                <div class="col-lg-8 fv-row">
+                                    @if (string.IsNullOrEmpty(Model.CheckerNote))
+                                    {
+                                        <textarea name="CheckerNote" class="form-control" style="height:100px">Checked</textarea>
+                                    }
+                                    else
+                                    {
+                                        <textarea name="CheckerNote" class="form-control" style="height:100px">@Model.CheckerNote</textarea>
+                                    }
+                                    @Html.ValidationMessageFor(model => model.CheckerNote, "", new { @class = "text-danger" })
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                            if (Model.Status == 1)
+                            {
+                                <div class="form-group">
+                                    <div class="col-md-offset-2" align="center">
+                                        <input type="submit" value="Update" class="btn btn-outline-primary" />
+                                        <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                                    </div>
+                                </div>
+                            }
+                            break;
+                        case "Approver":
+                            <!--begin::Input group-->
+                            <div class="row mb-2">
+                                <!--begin::Label-->
+                                <label class="col-lg-4 col-form-label fw-bold fs-6">
+                                    <span>@Html.DisplayNameFor(model => model.ApproverNote)</span>
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Col-->
+                                <div class="col-lg-8 fv-row">
+                                    @if (string.IsNullOrEmpty(Model.ApproverNote))
+                                    {
+                                        <textarea name="ApproverNote" class="form-control" style="height:100px">Approved</textarea>
+                                    }
+                                    else
+                                    {
+                                        <textarea name="ApproverNote" class="form-control" style="height:100px">@Model.ApproverNote</textarea>
+                                    }
+
+                                    @Html.ValidationMessageFor(model => model.ApproverNote, "", new { @class = "text-danger" })
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Input group-->
+                            if (Model.Status == 2)
+                            {
+                                <div class="form-group">
+                                    <div class="col-md-offset-2" align="center">
+                                        <input type="submit" value="Update" class="btn btn-outline-primary" />
+                                        <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                                    </div>
+                                </div>
+                            }
+
+                            break;
+                    }
+
+                    <!-- || end::Role apply section || -->
+                    <!--begin::Action group-->
+                    @*@if (Model.Status != 3)
+                    {
+                        <div class="form-group">
+                            <div class="col-md-offset-2" align="center">
+                                <input type="submit" value="Update" class="btn btn-outline-primary" />
+                                <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                            </div>
+                        </div>
+                    }*@
+
+                    <div align="center">
+                        <a href="@Url.Action("ATEListIndex", "AdmATEList")">
+                            <i class="fas fa-fw fa-arrow-circle-left"></i>
+                            <span>ATEList Index</span>
+                        </a> |
+                        <a href="@Url.Action("VersionDetail", "AdmVersion", new { id = Model.VersionID })">
+                            <i class="fas fa-fw fa-arrow-circle-right"></i>
+                            <span>@Model.VERSION.PROGRAM.ModelName _@Model.VERSION.VersionName</span>
+                        </a>
+
+                    </div>
+                    <!--end::Action group-->
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Post-->
+        </div>
+        <!--end::Content Edit Data-->
+        <!--begin::Content Sign Process-->
+        <div class="content d-flex flex-column flex-column-fluid col-xl-4">
+            <div class="card shadow d-flex flex-column-fluid ">
+                <div class="card-header py-3">
+                    <h3 class="m-0 font-weight-bold text-primary">Sign process</h3>
+                </div>
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-6 col-form-label fw-bold fs-6">
+                            <i class="fas fa-paper-plane rounded-circle p-2 bg-warning text-light"></i>
+                            <span>Preparer</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="border-left-primary" style="margin-left:25px;">
+                            <div class="col-lg-7 col-form-label fv-row" style="background-color:aliceblue;">
+                                @if (Model.IsPrepared != 0 && Model.IsPrepared.HasValue)
+                                {
+                                    <label style="font-size:small;">
+                                        <span class="fw-bold">
+                                            @Model.PreparedBy
+                                        </span>
+                                        <i class="fas fa-check-circle text-success"></i>
+                                    </label>
+                                    <p style="font-size: small;">
+                                        @Model.PreparerNote <br />
+                                        <span class="text-success fw-bold">@Model.PreparedAt</span>
+                                    </p>
+                                }
+                                else
+                                {
+                                    if (!string.IsNullOrEmpty(Model.PreparerNote))
+                                    {
+                                        <label style="font-size:small;">
+                                            <span class="fw-bold">
+                                                @Model.PreparedBy
+                                            </span>
+                                            <i class="fas fa-exclamation-circle text-warning"></i>
+                                        </label>
+                                        <p style="font-size: small;">
+                                            @Model.PreparerNote <br />
+                                            <span class="text-warning fw-bold">@Model.PreparedAt</span>
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <label style="font-size:small;">
+                                            <span class="fw-bold">
+                                                Waiting for Preparer...
+                                            </span>
+                                            <i class="fas fa-exclamation-circle text-warning"></i>
+                                        </label>
+                                    }
+
+
+                                }
+
+                            </div>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-6 col-form-label fw-bold fs-6">
+                            <i class="fas fa-user-edit rounded-circle p-2 bg-info text-light"></i>
+                            <span>Checker</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="border-left-primary" style="margin-left:25px;">
+                            <div class="col-lg-7 col-form-label fv-row" style="background-color:aliceblue;">
+                                @if (Model.IsChecked != 0 && Model.IsChecked.HasValue)
+                                {
+                                    <label style="font-size:small;">
+                                        <span class="fw-bold">
+                                            @Model.CheckedBy
+                                        </span>
+                                        <i class="fas fa-check-circle text-success"></i>
+                                    </label>
+                                    <p style="font-size: small;">
+                                        @Model.CheckerNote <br />
+                                        <span class="text-success fw-bold">@Model.CheckedAt</span>
+                                    </p>
+                                }
+                                else
+                                {
+                                    if (!string.IsNullOrEmpty(Model.CheckerNote))
+                                    {
+                                        <label style="font-size:small;">
+                                            <span class="fw-bold">
+                                                @Model.CheckedBy
+                                            </span>
+                                            <i class="fas fa-exclamation-circle text-warning"></i>
+                                        </label>
+                                        <p style="font-size: small;">
+                                            @Model.CheckerNote <br />
+                                            <span class="text-warning fw-bold">@Model.CheckedAt</span>
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <label style="font-size:small;">
+                                            <span class="fw-bold">
+                                                Waiting for checker...
+                                            </span>
+                                            <i class="fas fa-exclamation-circle text-warning"></i>
+                                        </label>
+                                    }
+
+
+                                }
+
+                            </div>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-6 col-form-label fw-bold fs-6">
+                            <i class="fas fa-user-check rounded-circle p-2 bg-success text-light"></i>
+                            <span>Approver</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="border-left-primary" style="margin-left:25px;">
+                            <div class="col-lg-7 col-form-label fv-row" style="background-color:aliceblue;">
+                                @if (Model.IsApproved != 0 && Model.IsApproved.HasValue)
+                                {
+                                    <label style="font-size:small;">
+                                        <span class="fw-bold">
+                                            @Model.ApprovedBy
+                                        </span>
+                                        <i class="fas fa-check-circle text-success"></i>
+                                    </label>
+                                    <p style="font-size: small;">
+                                        @Model.ApproverNote <br />
+                                        <span class="text-success fw-bold">@Model.ApprovedAt</span>
+                                    </p>
+                                }
+                                else
+                                {
+                                    if (!string.IsNullOrEmpty(Model.ApproverNote))
+                                    {
+                                        <label style="font-size:small;">
+                                            <span class="fw-bold">
+                                                @Model.ApprovedBy
+                                            </span>
+                                            <i class="fas fa-exclamation-circle text-warning"></i>
+                                        </label>
+                                        <p style="font-size: small;">
+                                            @Model.ApproverNote <br />
+                                            <span class="text-warning fw-bold">@Model.ApprovedAt</span>
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <label style="font-size:small;">
+                                            <span class="fw-bold">
+                                                Waiting for approver...
+                                            </span>
+                                            <i class="fas fa-exclamation-circle text-warning"></i>
+                                        </label>
+
+                                    }
+
+                                }
+
+                            </div>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                </div>
+            </div>
+        </div>
+        <!--end::Content-->
+    </div>
+}
+
+<div class="row mb-2">
+    <div class="card shadow d-flex flex-column-fluid">
+        <div class="card-header py-3">
+            <h3 class="m-0 font-weight-bold text-primary">Edit Checklist Item</h3>
+            <input type="hidden" id="ChangeResultUrl" value="@Url.Action("ChangeResult", "AdmATEList")" />
+            <input type="hidden" id="ChangeResultAllUrl" value="@Url.Action("ChangeResultAll", "AdmATEList")" />
+        </div>
+        <!--begin::Card body-->
+        <div class="card-body border-top p-9 table-responsive">
+            <table class="table table-bordered text-black">
+                <tr>
+                    <th>
+                        Check items
+                    </th>
+                    <th>
+                        Check method
+                    </th>
+                    <th>
+                        Result
+                    </th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>
+                        @if (User.Identity.GetRoleName() != "Approver" && User.Identity.GetRoleName() != "Preparer")
+                        {
+                            <select name="Result" id="fullResult">
+                                <option value="0">Unchecked</option>
+                                <option value="1">OK</option>
+                                <option value="2">NG</option>
+                            </select>
+                        }
+                    </th>
+                </tr>
+                @foreach (var item in Model.CHECKLIST_DETAIL)
+                {
+                    foreach (var ckitem in checkItems)
+                    {
+                        if (item.ItemID == ckitem.ItemID)
+                        {
+                            <tr>
+                                <td>
+                                    <span class="breakLine">@ckitem.ItemName</span>                                    
+                                </td>
+                                <td>
+                                    <span class="breakLine">@ckitem.CheckMethod</span>                                    
+                                </td>
+                                <td align="center">
+                                    @if (User.Identity.GetRoleName() != "Approver" && User.Identity.GetRoleName() != "Preparer")
+                                    {
+                                        switch (item.Result)
+                                        {
+                                            case null:
+                                            case 0:
+                                                <select name="Result" class="editResult" data-id="@item.ItemID">
+                                                    <option value="0" selected="selected">Unchecked</option>
+                                                    <option value="1">OK</option>
+                                                    <option value="2">NG</option>
+                                                </select>
+                                                break;
+                                            case 1:
+                                                <select name="Result" class="editResult" data-id="@item.ItemID">
+                                                    <option value="0">Unchecked</option>
+                                                    <option value="1" selected="selected">OK</option>
+                                                    <option value="2">NG</option>
+                                                </select>
+                                                break;
+                                            case 2:
+                                                <select name="Result" class="editResult" data-id="@item.ItemID">
+                                                    <option value="0">Unchecked</option>
+                                                    <option value="1">OK</option>
+                                                    <option value="2" selected="selected">NG</option>
+                                                </select>
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        switch (item.Result)
+                                        {
+                                            case null:
+                                            case 0:
+                                                <span>Unchecked</span>
+                                                break;
+                                            case 1:
+                                                <span>OK</span>
+                                                break;
+                                            case 2:
+                                                <span>NG</span>
+                                                break;
+                                        }
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    }
+
+                }
+
+            </table>
+        </div>
+    </div>
+</div>
+
+

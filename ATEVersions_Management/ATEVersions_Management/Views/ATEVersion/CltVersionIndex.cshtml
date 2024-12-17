@@ -1,0 +1,226 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@{
+    ViewBag.Title = "ATE Versions Management";
+    //Layout = "~/Views/Shared/LayoutClient.cshtml";
+    Layout = "~/Views/Shared/_LayoutFiiTheme.cshtml";
+    //
+    IEnumerable<System.Web.Mvc.SelectListItem> prgSelector = ViewBag.ProgramList;
+}
+
+<!-- Error message -->
+<div class="row justify-content-center text-center mb-2">
+    <span class="text-bg-danger rounded-2 fw-bold">@ViewBag.Message</span>
+</div>
+
+<!--<!-- Display items -->
+<!--<div class="row mb-2 justify-content-center">
+    <div class="card ">
+        <div class="card-body">
+            <h4 class="m-0 mb-1 p-1 rounded font-weight-bold text-primary text-center border-black">
+                <span>ATE Versions Management</span>
+            </h4>
+            <div class="d-flex justify-content-center mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+                <input type="text" id="txtKeyWord" class="form-control form-control-sm w-25"
+                       placeholder="Enter keyword...">
+            </div>
+            <div id="divHeaderVERSION" class=" text-black mb-1">
+                <div class="col-sm-12 rounded header">
+                    <div class="header__title mt-1">
+                        <span>SUMMARIZE</span>
+                        <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#excelModal" onclick="">
+                            <i class="fas fa-file-excel"></i>
+                            Export
+                        </button>
+                    </div>
+                    <div class="header__total d-flex justify-content-center">
+                        <div class="header__item bg-success " onclick="">
+                            <span class="total version-normal" onclick="">0</span>
+                            <span class="name">NORMAL</span>
+                        </div>
+
+                        <div class="header__item bg-danger" onclick="">
+                            <span class="total version-abnormal" onclick="">0</span>
+                            <span class="name">ABNORMAL</span>
+                        </div>
+
+                        <div class="header__item bg-secondary" onclick="">
+                                <span class="total version-na" onclick="">N/A</span>
+                                <span class="name">N/A</span>
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+            <div id="divShowVersion" class="capsule-wrapper rounded text-black border-black p-2">
+
+            </div>
+        </div>
+    </div>
+</div>-->
+<!-- #region ======== New Layout ======== -->
+<div id="" class="">
+
+    <div id="divHeaderVERSION" class="fii-border text-black mb-1">
+        <h4 class="fii-content-title fii-font-fantasy text-center text-warning">
+            <span>ATE PROGRAM VERSION MANAGEMENT</span>
+        </h4>
+        <div class="fii-form d-flex justify-content-center mb-1">
+            <div class="input-group-prepend ">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+            </div>
+            <input type="text" id="txtKeyWord" class="form-control fw-bold"
+                   placeholder="Keyword...">
+        </div>
+        <div class="fii-border header rounded p-2">
+            <div class="header__title mt-1">
+                <span class="text-white">SUMMARIZE</span>
+                <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#excelModal" onclick="">
+                    <i class="fas fa-file-excel"></i>
+                    Export
+                </button>
+            </div>
+            <div class="header__total d-flex justify-content-center">
+                <div class="header__item bg-success " onclick="">
+                    <span class="total version-normal" onclick="">0</span>
+                    <span class="name">NORMAL</span>
+                </div>
+
+                <div class="header__item bg-danger" onclick="">
+                    <span class="total version-abnormal" onclick="">0</span>
+                    <span class="name">ABNORMAL</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="containerAllProgram" class="d-flex ">
+    <div id="" class="header fii-border rounded w-40">
+        <div class="fii-chart-title text-center">
+            <span class="text-white">CABLE</span>
+        </div>
+        <div id="containerProgramCABLE" class=" ">
+            <div class="fii-loader d-flex justify-content-center align-items-center">
+                <img src="/Images/loaderGifs/Blue-tick.gif" width="60" />
+            </div>
+        </div>
+    </div>
+    <div id="" class="header fii-border rounded ml-auto w-40">
+        <div class="fii-chart-title text-center">
+            <span class="text-white">GPON</span>
+        </div>
+        <div id="containerProgramGPON" class=" ">
+            <div class="fii-loader d-flex justify-content-center align-items-center">
+                <img src="/Images/loaderGifs/Blue-tick.gif" width="60" />
+            </div>
+        </div>
+    </div>
+    <div id="" class="header fii-border rounded ml-auto w-40">
+        <div class="fii-chart-title text-center">
+            <span class="text-white">WIRELESS</span>
+        </div>
+        <div id="containerProgramWIRELESS" class=" ">
+            <div class="fii-loader d-flex justify-content-center align-items-center">
+                <img src="/Images/loaderGifs/Blue-tick.gif" width="60" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- #endregion ======== New Layout ======== -->
+<!-- Modal Version List -->
+<div class="modal fade BasicModal-lg" id="versionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modalLblVersion" class="fw-bold text-blue">
+                    ...
+                </h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="row modal-body ">
+                <div id="divTableVersions" class="table-responsive table-scrollable-lg">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Version ATE List Detail -->
+<div class="modal fade BasicModal-lg" id="modalVersionAteList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modalLblVersionAteList" class="fw-bold text-blue">
+                    ...
+                </h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="row modal-body ">
+                <div id="divContentVersionAteList" class="table-responsive">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Export Excel Modal-->
+<div class="modal fade" id="excelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="@Url.Action("VersionToExcel", "ATEVersion")" method="post">
+                <div class="modal-header">
+                    <h4 class="fw-bold text-info" align="center">
+                        Prepare to export data
+                    </h4>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="row modal-body " align="center">
+                    <div>
+                        <!--begin::Label-->
+                        <label class=" fw-bold fs-6 p-2 text-black">
+                            <span>Select Model:</span>
+                        </label>
+                        <!--end::Label-->
+                        @Html.DropDownList("prgId", prgSelector, "-- All --", new { @class = "form-select" })
+                    </div>
+
+                </div>
+                <div class="modal-footer" align="center">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <input type="submit" value="Export" class="btn btn-success" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div>
+    @ViewBag.test
+    <input type="hidden" id="Var_SiteArea" class="" value="Client" />
+    <input type="hidden" id="URL_GETTableVersions" value="@Url.Action("VrsDataTable", "ATEVersion")" />
+    <input type="hidden" id="URL_GET_ListLatestVersionOnline" value="@Url.Action("GET_ListLatestVersionOnline")" />
+    <input type="hidden" id="URL_GET_ListLatestVersionOnlineByProjectType" value="@Url.Action("GET_ListLatestVersionOnlineByProjectType")" />
+    <input type="hidden" id="URL_GET_VersionATEListByID" value="@Url.Action("PartialVersionATEList")" />
+
+</div>
+<!-- Page Level Script-->
+<script src="~/Assets/JS/MyJS/ATEVersions/ATEVersionsCommonFuncs.js"></script>

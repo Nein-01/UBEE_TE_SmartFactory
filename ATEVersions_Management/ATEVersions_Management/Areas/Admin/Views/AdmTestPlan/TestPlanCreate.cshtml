@@ -1,0 +1,194 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model TestPlanDTO
+@using ATEVersions_Management.Models.HelperModels
+@{
+    ViewBag.Title = "New Test Plan";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    List<string> listModel = ViewBag.ListModel;
+    SelectList listProjectType = ViewBag.listProjectType as SelectList;
+}
+
+
+@using (Html.BeginForm("TestPlanCreate", "AdmTestPlan", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal row justify-content-center">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <!--begin::Content -->
+        <div class="content d-flex flex-column flex-column-fluid col-md-6">
+            <!--begin::Post-->
+            <div class="card shadow d-flex flex-column-fluid ">
+                <div class="card-header py-3">
+                    <h3 class="m-0 font-weight-bold text-primary">New Test Plan</h3>
+                </div>
+                <!--begin::Card body-->
+                <div class="card-body border-top ">
+                    <p class="text-danger text-center">@ViewBag.ErrorMessage</p>
+                    <!--begin::Input group-->
+                    <div class="row justify-content-center mb-2">
+                        <!--begin::Label-->
+                        <label class="col-sm-3 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.ModelName)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-sm-6 fv-row">
+                            @Html.EditorFor(model => model.ModelName, new { htmlAttributes = new { @class = "form-select upperText", required = "required", list = "ATEModelList" } })
+                            @Html.ValidationMessageFor(model => model.ModelName, "", new { @class = "text-danger" })
+                            <datalist id="ATEModelList">
+                                @foreach (var item in listModel)
+                                {
+                                    <option value="@item"></option>
+                                }
+                            </datalist>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row justify-content-center mb-2">
+                        <!--begin::Label-->
+                        <label class="col-sm-3 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.TestPlanVersion)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-sm-6 fv-row">
+                            @Html.EditorFor(model => model.TestPlanVersion, new { htmlAttributes = new { @class = "form-control upperText", Value = "V", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.TestPlanVersion, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row justify-content-center mb-2">
+                        <!--begin::Label-->
+                        <label class="col-sm-3 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.ProjectType)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-sm-6 fv-row">
+                            @Html.DropDownListFor(model => model.ProjectType, listProjectType, "--- Select type ---", htmlAttributes: new { @class = "form-select", @id = "" })
+                            @Html.ValidationMessageFor(model => model.ProjectType, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row justify-content-center mb-2">
+                        <!--begin::Label-->
+                        <label class="col-sm-3 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.Author)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-sm-6 fv-row">
+                            @Html.EditorFor(model => model.Author, new { htmlAttributes = new { @class = "form-control", Value = "", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row justify-content-center mb-2">
+                        <!--begin::Label-->
+                        <label class="col-sm-3 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.ModifyNote)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-sm-6 fv-row">
+
+                            <textarea name="ModifyNote" class="form-control" required="required" style="height:100px"></textarea>
+                            @Html.ValidationMessageFor(model => model.ModifyNote, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row justify-content-center mb-2">
+                        <!--begin::Label-->
+                        <label class="col-sm-3 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.ModifiedAt)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-sm-6 fv-row">
+                            <input type="datetime-local" name="ModifiedAt" class="form-control" />
+                            @Html.ValidationMessageFor(model => model.ModifiedAt, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row justify-content-center mb-2 ">
+                        <!--begin::Label-->
+                        <label class="col-sm-3 col-form-label fw-bold fs-6">
+                            <span>File</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-sm-6 fv-row">
+                            <input type="file" name="FileUpload"
+                                   accept=".pdf"
+                                   formenctype="multipart/form-data"
+                                   class="form-control" id="fileUpload"
+                                   required="required" />
+                            <a href="#" data-toggle="modal" data-target="#TestPlanPreviewModal">
+                                Preview
+                            </a>
+                            <p id="noticeFileError" class="text-danger"></p>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Action group-->
+                    <div class="form-group">
+                        <div class="col-md-offset-2" align="center">
+                            <input type="submit" id="btnSubmitTestPlan" value="Create" class="btn btn-outline-primary" />
+                            <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                        </div>
+                    </div>
+                    <div align="center">
+                        <a href="@Url.Action("TestPlanIndex", "AdmTestPlan")">
+                            <i class="fas fa-fw fa-arrow-circle-left"></i>
+                            <span>Test Plan List</span>
+                        </a>
+                    </div>
+                    <!--end::Action group-->
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Post-->
+
+        </div>
+        <!--end::Content-->
+    </div>
+}
+
+<!-- PDF file preview modal-->
+<div class="modal fade ChartModal" id="TestPlanPreviewModal" tabindex="-1" role="dialog" aria-labelledby="TestPlanPreviewModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div align="center" id="TestPlanPreviewModalBody">
+                    <iframe src="" id="FilePreviewSection" style="width:900px; height:800px"></iframe>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="~/Assets/JS/MyJS/TestPlanModule/TestPlanCommonFuncs.js"></script>

@@ -1,0 +1,161 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model IEnumerable<TestPlanDTO>
+@using ATEVersions_Management.Models.HelperModels
+@{
+    ViewBag.Title = "Admin Test Plan Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- DataTables -->
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3">
+        <h3 class="m-0 font-weight-bold text-primary">Test Plan Index</h3>
+
+        @if (User.Identity.GetRoleName() != "Checker" && User.Identity.GetRoleName() != "Approver")
+        {
+            <div style="padding-top:10px">
+                @Html.ActionLink("Create New", "TestPlanCreate", "", new { @class = "btn btn-outline-primary" })
+            </div>
+        }
+
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered text-black" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.ModelName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TestPlanVersion)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Author)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ModifiedAt)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ModifyNote)
+                        </th>
+                        <th>
+                            @*@Html.DisplayNameFor(model => model.StoredDir)*@
+                            File
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModelName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TestPlanVersion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Author)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ModifiedAt)
+                            </td>
+                            <td>
+                                <span class="breakLine">@Html.DisplayFor(modelItem => item.ModifyNote)</span> 
+                            </td>
+                            <td>
+                                <a href="#" title="Preview"
+                                   data-toggle="modal" data-target="#TestPlanPreviewModal"
+                                   onclick="GetTestPlanFileData('@item.StoredDir')">
+                                    <i class="fas fa-fw fa-file-pdf"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("TestPlanDetail", "AdmTestPlan", new { id = item.TestPlanID })" title="Detail">
+                                    <i class="fas fa-fw fa-info-circle"></i>
+                                </a>
+                                @if (User.Identity.GetUserId() == item.UserID)
+                                {
+                                    <a href="@Url.Action("TestPlanEdit", "AdmTestPlan", new { id = item.TestPlanID })" title="Edit">
+                                        <i class="fas fa-fw fa-pen-square"></i>
+                                    </a>
+                                    <a href="#" data-toggle="modal" data-target="#deleteModal" title="Delete"
+                                       onclick="DltConfirm(@item.TestPlanID,'@item.TestPlanVersion','@item.ModelName')">
+                                        <i class="fas fa-fw fa-trash"></i>
+                                    </a>
+
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- Delete Modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="@Url.Action("TestPlanDelete", "AdmTestPlan")" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure want to delete this record?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id" class="idValModal" />
+
+                    <label>Test Plan ID: <span class="idTxtModal"></span></label><br />
+                    <label>Test Plan Version: <span class="nameTxtModal"></span> </label>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <input type="submit" value="Delete" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- PDF file preview modal-->
+<div class="modal fade ChartModal" id="TestPlanPreviewModal" tabindex="-1" role="dialog" aria-labelledby="TestPlanPreviewModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div align="center" id="TestPlanPreviewModalBody">
+                    <iframe src="" id="FilePreviewSection" style="width:900px; height:800px"></iframe>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="~/Assets/JS/AdminJS/helperIndexModals.js"></script>
+<script>
+    var _filePath;
+</script>
+<script src="~/Assets/JS/MyJS/TestPlanModule/TestPlanCommonFuncs.js"></script>

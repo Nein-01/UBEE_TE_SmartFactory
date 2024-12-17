@@ -1,0 +1,130 @@
+﻿@model IEnumerable<ATEVersions_Management.Models.ATEVersionModels.ATE_CHECKLIST>
+@using ATEVersions_Management.Models.HelperModels
+@{
+    ViewBag.Title = "ATE Checklist Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<!-- DataTables -->
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3">
+        <h3 class="m-0 font-weight-bold text-primary">ATE Checklist Index</h3>
+        @if (User.Identity.GetRoleName() != "Checker" && User.Identity.GetRoleName() != "Approver")
+        {
+            <div style="padding-top:10px">
+                @Html.ActionLink("Create New", "ATEListCreate", "", new { @class = "btn btn-outline-primary" })
+            </div>
+        }
+        
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered text-black" id="dtblATEList" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.VERSION.PROGRAM.ModelName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.VERSION.VersionName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PreparedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CheckedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ApprovedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VERSION.PROGRAM.ModelName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.VERSION.VersionName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PreparedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CheckedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ApprovedBy)
+                            </td>
+                            <td>
+                                @switch (item.Status)
+                                {
+                                    case 0:<span class="text-danger fw-bold">Disable</span> break;
+                                    case 1: <span class="text-warning fw-bold">Prepared</span>break;
+                                    case 2: <span class="text-info fw-bold">Checked</span>break;
+                                    case 3: <span class="text-success fw-bold">Approved</span>break;
+                                }
+                            </td>
+
+                            <td>
+                                <a href="@Url.Action("ATEListDetail", "AdmATEList", new { id = item.CheckListID })" target="_blank">
+                                    <i class="fas fa-fw fa-info-circle"></i>
+                                </a>
+                                <a href="@Url.Action("ATEListEdit", "AdmATEList", new { id = item.CheckListID })">
+                                    <i class="fas fa-fw fa-pen-square"></i>
+                                </a>
+                                @if (User.Identity.GetRoleName() == "Admin" || User.Identity.GetRoleName() == "Preparer")
+                                {
+                                    <a href="#" data-toggle="modal" data-target="#deleteModal" onclick="DltConfirm(@item.CheckListID,'@item.VERSION.VersionName','@item.VERSION.PROGRAM.ModelName')">
+                                        <i class="fas fa-fw fa-trash"></i>
+                                    </a>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="@Url.Action("ATEListDelete","AdmATEList")" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are you sure want to delete this record?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id" class="idValModal" />
+
+                    <label>Item ID: <span class="idTxtModal"></span></label><br />
+                    <label>Item name: <span class="nameTxtModal"></span> </label>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="CancelBtn" data-dismiss="modal">Cancel</button>
+                    @*<a id="deleteBtn" class="btn btn-primary" href="#">Delete</a>*@
+                    <input type="submit" value="Delete" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Assets/JS/AdminJS/helperIndexModals.js"></script>

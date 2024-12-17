@@ -1,0 +1,146 @@
+﻿@model ATEVersions_Management.Models.ATEVersionModels.VERSION
+
+@{
+    ViewBag.Title = "Version Create";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    IEnumerable<System.Web.Mvc.SelectListItem> prgSelector = ViewBag.ProgramList;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal row justify-content-center">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <!--begin::Content -->
+        <div class="content d-flex flex-column flex-column-fluid col-xl-6">
+            <!--begin::Post-->
+            <div class="card shadow d-flex flex-column-fluid ">
+                <div class="card-header py-3">
+                    <h3 class="m-0 font-weight-bold text-center text-primary">New Version Information</h3>
+                </div>
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.PROGRAM.ModelName)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @Html.DropDownListFor(model => model.ProgramID, prgSelector, "-- Select model --", htmlAttributes: new { @class = "form-select", @id = "evtProgramList" })
+                            @Html.ValidationMessageFor(model => model.ProgramID, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.VersionName)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @Html.EditorFor(model => model.VersionName, new { htmlAttributes = new { @class = "form-control", @id = "verName" } })
+                            @Html.ValidationMessageFor(model => model.VersionName, "", new { @class = "text-danger" })
+                            <span class="text-danger">@ViewBag.Error</span>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.Engineer)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @Html.EditorFor(model => model.Engineer, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Engineer, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.ReleaseNote)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @*@Html.TextAreaFor(model => model.ReleaseNote, new { htmlAttributes = new { @class = "form-control" } })*@
+                            <textarea name="ReleaseNote" class="form-control" id="evtReleaseNote" required="required" style="height:100px">1. </textarea>
+                            @Html.ValidationMessageFor(model => model.ReleaseNote, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.BuildTime)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @*@Html.EditorFor(model => model.BuildTime, new { htmlAttributes = new { @class = "form-control" } })*@
+                            <input type="datetime-local" name="BuildTime" id="evtBuildTime" class="form-control" />
+                            @Html.ValidationMessageFor(model => model.BuildTime, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">
+                            <span>@Html.DisplayNameFor(model => model.ReleaseTime)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            @*@Html.EditorFor(model => model.ReleaseTime, new { htmlAttributes = new { @class = "form-control" } })*@
+                            <input type="datetime-local" name="ReleaseTime" id="evtReleaseTime" required="required" class="form-control" />
+                            @Html.ValidationMessageFor(model => model.ReleaseTime, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Action group-->
+                    <div class="form-group">
+                        <div class="col-md-offset-2" align="center">
+                            <input type="submit" value="Create" class="btn btn-outline-primary" />
+                            <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                        </div>
+                    </div>
+                    <div align="center">
+                        <a href="@Url.Action("VersionIndex", "AdmVersion")">
+                            <i class="fas fa-fw fa-arrow-circle-left"></i>
+                            <span>Version List</span>
+                        </a>
+                    </div>
+                    <!--end::Action group-->
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Post-->
+            
+
+        </div>
+        <!--end::Content-->
+    </div>
+}
+
+<script src="~/Assets/JS/AdminJS/admVersionHelper.js"></script>

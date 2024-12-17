@@ -1,0 +1,426 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model GRRTableDTO
+@using ATEVersions_Management.Models.HelperModels
+@{
+    ViewBag.Title = "GRR Module Detail";
+    //Layout = "~/Views/Shared/LayoutClient.cshtml";
+    Layout = "~/Views/Shared/_LayoutFiiTheme.cshtml";
+    //
+    int operNum = Model.GRR_Result.ListOperSamples.Count;
+    int sampleNum = Model.GRR_Result.ListOperSamples[0].OperSampleRanges.Length;
+    int trialNum = Model.GRR_Result.ListOperSamples[0].OperSamples[0].Length;
+    //
+    string var_FileExportName = "GRR_Report_" + Model.GageModel + "_" + Model.GageName + "_" + Model.PartName;
+    string idVal = "";
+    if (Model.Status == 2)
+    {
+        idVal = "tableGRRDetail";
+    }
+}
+
+<!-- Page level css -->
+<link href="~/Assets/Vendor/tableexport/tableexport.min.css" rel="stylesheet" />
+<!-- Page level scripts -->
+<script src="~/Assets/Vendor/tableexport/xlsx.core.min.js"></script>
+<script src="~/Assets/Vendor/tableexport/FileSaver.min.js"></script>
+<script src="~/Assets/Vendor/tableexport/tableexport.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/highcharts.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/highcharts-more.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/modules/accessibility.js"></script>
+
+<!-- Page content -->
+<div class="row justify-content-center">
+    <div class="col-sm-8 card">
+        <div class="table-responsive">
+            <table id="@idVal" class=" table-bordered-black text-black">
+                <thead>
+                    <tr>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-center">
+                        <td colspan="8">
+                            <h4 class="fw-bold m-3">FII-FUYU</h4>
+                        </td>
+                        <td>Date</td>
+                        <td class="text-blue">@Model.PreparedAt.Value.ToString("yyyy-MM-dd")</td>
+
+                    </tr>
+                    <tr class="text-center">
+                        <td colspan="8">
+                            <h4 class="fw-bold m-3">Gage Repeatability & Reproducibility Report</h4>
+                        </td>
+                        <td>Dept</td>
+                        <td class="text-blue">@Model.Dept</td>
+                    </tr>
+                    <tr class="text-center">
+                        <td colspan="2">Gage Name</td>
+                        <td colspan="2" class="text-blue">@Model.GageName</td>
+                        <td colspan="2">Part Name</td>
+                        <td colspan="2" class="text-blue table-cell-overflow table-cell-nowrap">
+                            @Model.PartName
+                        </td>
+                        <td rowspan="3">Operators</td>
+                        <td class="text-left text-blue">A: @Model.GRR_Result.ListOperSamples[0].OperName</td>
+                    </tr>
+                    <tr class="text-center">
+                        <td colspan="2">Gage No</td>
+                        <td colspan="2" class="text-blue">@Model.GageNo</td>
+                        <td colspan="2">Specification</td>
+                        <td colspan="2" class="text-blue">@Model.Specification</td>
+                        <td class="d-none"></td>
+                        <td class="text-left text-blue">B: @Model.GRR_Result.ListOperSamples[1].OperName</td>
+                    </tr>
+                    <tr class="text-center">
+                        <td colspan="2">Gage Model</td>
+                        <td colspan="2" class="text-blue">@Model.GageModel</td>
+                        <td colspan="2">Characteristic</td>
+                        <td colspan="2" class="text-blue">@Model.Characteristic</td>
+                        <td class="d-none"></td>
+                        <td class="text-left text-blue">C: @Model.GRR_Result.ListOperSamples[2].OperName</td>
+                    </tr>
+                    <tr class="text-center">
+                        <td></td>
+                        <td colspan="3" class="fw-bold">Operator A</td>
+                        <td colspan="3" class="fw-bold">Operator B</td>
+                        <td colspan="3" class="fw-bold">Operator C</td>
+                    </tr>
+
+                    <tr class="text-center">
+                        <td>Sample</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                    </tr>
+                    @for (int i = 0; i < sampleNum; i++)
+                    {
+                        <tr class="text-center">
+                            <td>@(i+1)</td>
+                            @for (int j = 0; j < operNum; j++)
+                            {
+                                for (int k = 0; k < trialNum; k++)
+                                {
+                                    <td class="text-blue">@Model.GRR_Result.ListOperSamples[j].OperSamples[i][k]</td>
+
+                                }
+                            }
+                        </tr>
+                    }
+                    <tr class="fw-bold">
+                        <td colspan="4" class="fw-bold">Repeatibility(EV):</td>
+                        <td colspan="1" class="text-blue">@Model.GRR_Result.EV</td>
+                        <td colspan="2" class="fw-bold">%EV:</td>
+                        <td colspan="3" class="text-blue">@Model.GRR_Result.PercentEV%</td>
+                    </tr>
+                    <tr class="fw-bold">
+                        <td colspan="4" class="fw-bold">Reproducibility(AV):</td>
+                        <td colspan="1" class="text-blue">@Model.GRR_Result.AV</td>
+                        <td colspan="2" class="fw-bold">%AV:</td>
+                        <td colspan="3" class="text-blue">@Model.GRR_Result.PercentAV%</td>
+                    </tr>
+                    <tr class="fw-bold">
+                        <td colspan="4" class="fw-bold">Gage Repeat&Reprod(R&R):</td>
+                        <td colspan="1" class="text-blue">@Model.GRR_Result.GRR</td>
+                        <td colspan="2" class="fw-bold">%RR:</td>
+                        <td colspan="3" class="text-blue">@Model.GRR_Result.PercentGRR%</td>
+                    </tr>
+                    <tr class="fw-bold">
+                        <td colspan="4" class="fw-bold">Part-To-Part(PV):</td>
+                        <td colspan="1" class="text-blue">@Model.GRR_Result.PV</td>
+                        <td colspan="2" class="fw-bold">%PV:</td>
+                        <td colspan="3" class="text-blue">@Model.GRR_Result.PercentPV%</td>
+                    </tr>
+                    <tr class="fw-bold text-center">
+                        <td colspan="10" class="">Total Variation(TV): <span class="text-blue">@Model.GRR_Result.TV</span> </td>
+                        @*<td colspan="1" class="text-blue">@Model.GRR_Result.TV</td>
+                        <td colspan="2" class="fw-bold">Grade(NDC):</td>
+                        <td colspan="3" class="text-blue">@Model.GRR_Result.NDC</td>*@
+                    </tr>
+                    @{
+                        string result = "%R&R of this system is ";
+                        double percentGRR = Model.GRR_Result.PercentGRR;
+                        if (percentGRR > 30)
+                        {
+                            result += percentGRR + "%>30%, so it's considered to be unacceptable and shoud be improved!";
+                        }
+                        else
+                        {
+                            result += percentGRR + "%<=30%, so it's considered to be an acceptable!";
+                        }
+
+                    }
+                    <tr class="fw-bold text-center">
+                        <td colspan="10">
+                            Result: <span class="text-blue">@result</span>
+                        </td>
+                    </tr>
+                    <tr class="fw-bold text-center">
+                        <td colspan="5">
+                            Prepared by: <span class="text-blue">@Model.PreparedBy</span>
+                        </td>
+                        <td colspan="5">
+                            @{
+                                string approver = "";
+                                if (Model.Status == 2)
+                                {
+                                    approver = Model.ApprovedBy;
+                                }
+                            }
+                            Approved by: <span class="text-blue">@approver</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="col-4 mx-auto">
+        <div class="card p-3">
+            <div>
+                <button type="button" class="btn btn-sm btn-outline-primary"
+                        data-toggle="modal" data-target="#GRRResultModal"
+                        onclick="GetGRRResultAtDetail('@Model.JSON_OperTestResult')">
+                    <i class="fas fa-fw fa-chart-line"></i>
+                    <span></span>
+                </button>
+                |
+                <a href="@Url.Action("GRRModuleIndex", "GRRModule")">
+                    <i class="fas fa-fw fa-arrow-circle-left"></i>
+                    <span>GR&R Index</span>
+                </a>
+            </div>
+        </div>
+        <div class="card p-3">
+            <!--begin::Input group-->
+            <div class="row mb-2">
+                <!--begin::Label-->
+                <label class="col-lg-6 col-form-label fw-bold fs-6">
+                    <i class="fas fa-paper-plane rounded-circle p-2 bg-warning text-light"></i>
+                    <span>Preparer</span>
+                </label>
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="border-left-primary" style="margin-left:25px;">
+                    <div class="col-lg-7 col-form-label fv-row" style="background-color:aliceblue;">
+                        @if (Model.Status != 0)
+                        {
+                            <label style="font-size:small;">
+                                <span class="fw-bold">
+                                    @Model.PreparedBy
+                                </span>
+                                <i class="fas fa-check-circle text-success"></i>
+                            </label>
+                            <p style="font-size: small;">
+                                @Model.PreparedNote <br />
+                                <span class="text-success fw-bold">@Model.PreparedAt</span>
+                            </p>
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(Model.PreparedNote))
+                            {
+                                <label style="font-size:small;">
+                                    <span class="fw-bold">
+                                        @Model.PreparedBy
+                                    </span>
+                                    <i class="fas fa-exclamation-circle text-warning"></i>
+                                </label>
+                                <p style="font-size: small;">
+                                    @Model.PreparedNote <br />
+                                    <span class="text-warning fw-bold">@Model.PreparedAt</span>
+                                </p>
+                            }
+                            else
+                            {
+                                <label style="font-size:small;">
+                                    <span class="fw-bold">
+                                        Waiting for Preparer...
+                                    </span>
+                                    <i class="fas fa-exclamation-circle text-warning"></i>
+                                </label>
+                            }
+
+
+                        }
+
+                    </div>
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-2">
+                <!--begin::Label-->
+                <label class="col-lg-6 col-form-label fw-bold fs-6">
+                    <i class="fas fa-user-check rounded-circle p-2 bg-success text-light"></i>
+                    <span>Approver</span>
+                </label>
+                <!--end::Label-->
+                <!--begin::Col-->
+                <div class="border-left-primary" style="margin-left:25px;">
+                    <div class="col-lg-7 col-form-label fv-row" style="background-color:aliceblue;">
+                        @if (Model.Status == 2)
+                        {
+                            <label style="font-size:small;">
+                                <span class="fw-bold">
+                                    @Model.ApprovedBy
+                                </span>
+                                <i class="fas fa-check-circle text-success"></i>
+                            </label>
+                            <p style="font-size: small;">
+                                @Model.ApproverNote <br />
+                                <span class="text-success fw-bold">@Model.ApprovedAt</span>
+                            </p>
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(Model.ApproverNote))
+                            {
+                                <label style="font-size:small;">
+                                    <span class="fw-bold">
+                                        @Model.ApprovedBy
+                                    </span>
+                                    <i class="fas fa-exclamation-circle text-warning"></i>
+                                </label>
+                                <p style="font-size: small;">
+                                    @Model.ApproverNote <br />
+                                    <span class="text-warning fw-bold">@Model.ApprovedAt</span>
+                                </p>
+                            }
+                            else
+                            {
+                                <label style="font-size:small;">
+                                    <span class="fw-bold">
+                                        Waiting for approver...
+                                    </span>
+                                    <i class="fas fa-exclamation-circle text-warning"></i>
+                                </label>
+
+                            }
+
+                        }
+
+                    </div>
+                </div>
+                <!--end::Col-->
+            </div>
+            <!--end::Input group-->
+        </div>
+
+        <div class="card d-flex flex-column-fluid ">
+            <div class="card-body border-top p-9">
+
+                <!--begin::Tracking section-->
+                <h4 class="row mb-2 font-weight-bold text-primary border p-2">Tracking changes</h4>
+                <!--end::Tracking section-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-sm-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.CreatedAt)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-sm-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.CreatedAt)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-sm-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.UpdatedAt)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-sm-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.UpdatedAt)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+                <!--begin::Display group-->
+                <div class="row mb-2">
+                    <!--begin::Label-->
+                    <label class="col-sm-4 col-form-label fw-bold fs-6 border">
+                        <span>@Html.DisplayNameFor(model => model.UpdatedBy)</span>
+                    </label>
+                    <!--end::Label-->
+                    <!--begin::Col-->
+                    <div class="col-sm-8 col-form-label fv-row border border-left-primary">
+                        @Html.DisplayFor(model => model.UpdatedBy)
+                    </div>
+                    <!--end::Col-->
+                </div>
+                <!--end::Display group-->
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <input type="hidden" id="URL_POSTGrrCalculateResult" value="@Url.Action("POSTGrrCalculateResult","AdmGRRSystem", new {area = "Admin"})" />
+    <input type="hidden" id="VAR_GRRFileName" value="@var_FileExportName" />
+</div>
+
+<!-- GRR Result Modal-->
+<div class="modal fade ChartModal" id="GRRResultModal" tabindex="-1" role="dialog" aria-labelledby="GRRResultModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="GRRResultModalTitle">
+                    GRR Variations of
+                    <span id="modalTilGRRPartName" class="text-black fw-bold"></span>
+                </h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-black">
+                        <tr>
+                            <td id="tdDataEV"></td>
+                            <td id="tdDataAV"></td>
+                            <td id="tdDataRR"></td>
+                            <td id="tdDataPV"></td>
+                            <td id="tdDataTV"></td>
+                        </tr>
+                        <tr>
+                            <td id="tdPercentEV"></td>
+                            <td id="tdPercentAV"></td>
+                            <td id="tdPercentRR"></td>
+                            <td id="tdPercentPV"></td>
+                            <td id="tdDataNDC"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="row d-flex">
+                    <div id="divChartOPInteraction" class="col-sm-6"></div>
+                    <div id="divChartVariationComponent" class="col-sm-6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var GRRFileName = $('#VAR_GRRFileName').val();
+    $('#tableGRRDetail').tableExport({
+        formats: ['xlsx'],
+        position: 'top',
+        bootstrap: true,
+        filename: GRRFileName
+    });
+</script>
+<!--Page level script-->
+<script src="~/Assets/JS/MyJS/GRRModule/GRRCommonFuncs.js"></script>
+<script src="~/Assets/JS/MyJS/GRRModule/GRRCharts.js"></script>

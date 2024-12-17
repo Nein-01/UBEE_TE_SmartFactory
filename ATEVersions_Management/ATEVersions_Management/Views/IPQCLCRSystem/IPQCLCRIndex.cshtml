@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "IPQC_LRC Index";
+    Layout = "~/Views/Shared/LayoutClient.cshtml";
+}
+
+<!-- Page content section -->
+<div class="row card ">
+    <div class="input-group m-1 d-flex justify-content-center ">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+        </div>
+        <input type="text" id="timeSpan" class="form-control form-control-sm text-center text-black w-25">
+        <button id="btnTimeSpan" class=" btn btn-sm btn-primary">
+            <i class="fa fa-chart-line"></i>
+            LCR Chart
+        </button>
+        <button id="btnLCRTable" class=" btn btn-sm btn-info" onclick="AJAX_GET_Partial_IPQCLCRDataTable()" data-toggle="modal" data-target="#modalLCRData">
+            <i class="fa fa-table"></i>
+            LCR Table
+        </button>
+    </div>
+
+    <div id="divLCRContainer">
+        <div id="divLCRChartSection" class="">
+
+        </div>
+        <div id="divLCRCalTotalSection" class="table-responsive">
+            <table class="table table-bordered text-center text-black ">
+                <thead>
+
+                </thead>
+                <tbody id="tbdLCRDayTotal">
+                </tbody>
+            </table>
+            <table class="table table-bordered text-center text-black ">
+                <thead>
+
+                </thead>
+                <tbody id="tbdLCRShiftTotal">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+</div>
+
+<!-- Modal LCR Datatable -->
+<div class="modal fade BasicModal-lg " id="modalLCRData" tabindex="-1" role="dialog" aria-labelledby="modalLCRDataLabeled"
+     aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <h4 class="modal-title fw-bold text-center text-success" id="spanLCRData">LCR MEASUREMENT RESULT TABLE</h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="mbdLCRData">
+                    <div id="divTblLCRData" class="table-responsive">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div>
+    <input type="hidden" id="URL_GET_LCRShiftData" value="@Url.Action("GET_LCRShiftData")" />
+    <input type="hidden" id="URL_GET_LCRDataInTimeRange" value="@Url.Action("GET_LCRDataInTimeRange")" />
+    <input type="hidden" id="URL_GET_Partial_IPQCLCRDataTable" value="@Url.Action("Partial_IPQCLCRDataTable")" />
+    <input type="hidden" id="URL_GET_LCRDataByMaterialId" value="@Url.Action("GET_LCRDataByMaterialId")" />
+</div>
+<!-- Page level script section -->
+<script src="~/Assets/Vendor/highcharts_js/highcharts.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/highcharts-more.js"></script>
+<script src="~/Assets/Vendor/highcharts_js/modules/accessibility.js"></script>
+<script src="~/Assets/JS/MyJS/LCRSystem/LCRSystenCommonFuncs.js"></script>

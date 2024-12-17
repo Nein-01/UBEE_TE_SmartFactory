@@ -1,0 +1,117 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model VersionDTO
+@{
+    ViewBag.Title = "Version Import";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    IEnumerable<System.Web.Mvc.SelectListItem> prgSelector = ViewBag.ProgramList;
+    List<VersionDTO> listVersion = ViewBag.Versions;
+    string tableName = ViewBag.TableName;
+}
+
+<form action="@Url.Action("VersionImport","AdmVersion")" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal row justify-content-center mb-2">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <!--begin::Content -->
+        <div class="content d-flex flex-column flex-column-fluid col-xl-8">
+            <!--begin::Post-->
+            <div class="card shadow d-flex flex-column-fluid ">
+                <div class="card-header py-3">
+                    <h3 class="m-0 font-weight-bold text-center text-primary">Import New Versions</h3>
+                </div>
+                <!--begin::Card body-->
+                <div class="card-body border-top p-9">
+                    <!--begin::Input group-->
+                    <div class="row mb-2 justify-content-center">
+                        <!--begin::Label-->
+                        <label class="col-md-3 col-form-label fw-bold fs-6 text-right">
+                            <span>@Html.DisplayNameFor(model => model.ModelName)</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-md-6 fv-row">
+                            @Html.DropDownListFor(model => model.ProgramID, prgSelector, "--- Select Model ---", htmlAttributes: new { @class = "form-select", @id = "evtProgramList" })
+                            @Html.ValidationMessageFor(model => model.ProgramID, "", new { @class = "text-danger" })
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-2 justify-content-center">
+                        <!--begin::Label-->
+                        <label class="col-md-3 col-form-label fw-bold fs-6 text-right">
+                            <span>File</span>
+                        </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-md-6 fv-row">
+                            <input type="file" name="uploadFile" formenctype="multipart/form-data" class="form-control" />
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Action group-->
+                    <div class="form-group">
+                        <div class="col-md-offset-2" align="center">
+                            @*<input type="submit" value="Upload" class="btn btn-outline-primary" />*@
+                            <button type="submit" class="btn btn-outline-primary">
+                                <i class="fas fa-download"></i>
+                                <span>Import</span>
+                            </button>
+                            <input type="reset" value="Reset" class="btn btn-outline-primary" />
+                        </div>
+                    </div>
+                    <div align="center">
+                        <a href="@Url.Action("VersionIndex", "AdmVersion")">
+                            <i class="fas fa-fw fa-arrow-circle-left"></i>
+                            <span>Version List</span>
+                        </a>
+                    </div>
+                    <!--end::Action group-->
+                </div>
+                <!--end::Card body-->
+            </div>
+            <!--end::Post-->
+        </div>
+        <!--end::Content-->
+    </div>
+</form>
+<div class="row mb-2">
+    <div class="card shadow d-flex flex-column-fluid">
+        <div class="card-header py-3">
+            <h4 class="m-0 font-weight-bold text-primary text-center">
+                Data from: @tableName
+            </h4>            
+        </div>
+        <!--begin::Card body-->
+        <div class="card-body border-top p-9 table-responsive">
+            <table class="table table-bordered text-black">                
+                <tr>
+                    <th>Model</th>
+                    <th>Version</th>
+                    <th>Engineer</th>
+                    <th>Build Time</th>
+                    <th>Release Time</th>
+                    <th>Release Note</th>
+                </tr>
+                @foreach (var item in listVersion)
+                {
+                    <tr>
+                        <td>@item.ModelName</td>
+                        <td>@item.VersionName</td>
+                        <td>@item.Engineer</td>
+                        <td>@Html.DisplayFor(model => item.BuildTime)</td>
+                        <td>@item.ReleaseTime</td>
+                        <td><span class="breakLine">@item.ReleaseNote</span> </td>
+
+
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>

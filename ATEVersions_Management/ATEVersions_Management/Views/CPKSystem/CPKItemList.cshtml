@@ -1,0 +1,71 @@
+﻿@using ATEVersions_Management.Models.CPKModels
+@using ATEVersions_Management.Models.DTOModels
+@model CPKModelStationContent
+@{
+    ViewBag.Title = Model.ModelName + "_" + Model.Station;
+    Layout = "~/Views/Shared/LayoutClient.cshtml";
+    int no = 0;
+    int count = 0;
+}
+
+<!-- Display items -->
+<!-- DataTables -->
+<div class="row mb-2 justify-content-center">
+    <div class="card ">
+        <div class="card-header py-3 printDisable">
+            <h3 class="m-0 font-weight-bold text-center text-info mb-2">@Model.ModelName @Model.Station List of @Model.ContentGroup.Count items </h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered text-black" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>
+                                Item
+                            </th>
+                            <th>
+                                SpecL
+                            </th>
+                            <th>
+                                SpecH
+                            </th>
+                            <th class="printDisable">
+                                Draw CPK
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>                        
+                        @foreach (var item in Model.ContentGroup)
+                        {
+
+                            <tr>
+                                <td>@{no = count + 1;} @no</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ItemName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SpecL)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.SpecH)
+                                </td>
+                                <td class="printDisable" align="center">
+                                    <a href="@Url.Action("CPKDrawing", "CPKSystem", new {model = Model.ModelName, station = Model.Station, pos = count, itemName = item.ItemName})" title="Draw item CPK" target="_blank">
+                                        <i class="fas fa-fw fa-chart-line text-info"></i>
+                                    </a>
+                                    <a href="@Url.Action("CPKItemData", "CPKSystem", new {model = Model.ModelName, station = Model.Station, pos = count})" title="Item's data" target="_blank" >
+                                        <i class="fas fa-fw fa-list-alt text-info"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            { count++; }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Assets/JS/FrameworkJS/jquery-3.4.1.min.js"></script>

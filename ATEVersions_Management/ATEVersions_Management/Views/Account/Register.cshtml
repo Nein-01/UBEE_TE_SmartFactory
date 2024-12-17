@@ -1,0 +1,70 @@
+﻿@using ATEVersions_Management.Models.AccountModels
+@model MyRegister
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/LayoutClient.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-7 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5 ">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->                          
+                        <div class=" p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                                <p class="text-danger">@ViewBag.Notify</p>
+                            </div>
+                            <form class="user">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        
+                                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control form-control-user", placeholder = "Username" } })
+                                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-6">
+                                        
+                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control form-control-user", placeholder = "Your name" } })
+                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                               
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        
+                                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control form-control-user", placeholder = "Password" } })
+                                        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-sm-6">                                        
+                                        @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control form-control-user", placeholder = "Confirm password" } })
+                                        @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <input type="submit" class="btn btn-primary btn-user btn-block" value="Register" />
+                                </div>                                                                
+                                <hr>                                
+                            </form>
+                            <hr>                            
+                            <div class="text-center">
+                                <a class="small" href="@Url.Action("Login","Account")">Already have an account? Login!</a>
+                            </div>
+                        </div>
+                   </div>
+                </div>
+            </div>
+            
+        </div>
+      
+    </div>    
+}
+<div>
+    @ViewBag.Error
+</div>
+
+

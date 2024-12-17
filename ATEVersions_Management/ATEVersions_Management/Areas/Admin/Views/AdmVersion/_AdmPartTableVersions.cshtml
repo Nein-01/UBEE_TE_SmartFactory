@@ -1,0 +1,130 @@
+﻿@using ATEVersions_Management.Models.DTOModels
+@model IEnumerable<VersionDTO>
+@using ATEVersions_Management.Models.HelperModels
+@{ 
+
+}
+
+<table class="table table-bordered text-black" id="dtblVersion" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ModelName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VersionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Engineer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BuildTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseNote)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.LastestVersionName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Usage)
+            </th>
+            <th class="printDisable">
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModelName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VersionName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Engineer)
+                </td>
+                <td>
+                    @if (item.BuildTime.HasValue)
+                    {
+                        @Html.DisplayFor(modelItem => item.BuildTime.Value)
+                    }
+                </td>
+                <td>
+                    @if (item.ReleaseTime.HasValue)
+                    {
+                        @Html.DisplayFor(modelItem => item.ReleaseTime.Value)
+                    }
+                </td>
+                <td>
+                    @{
+                        string releaseNote = "";
+                        if (!string.IsNullOrEmpty(item.ReleaseNote))
+                        {
+                            releaseNote = item.ReleaseNote.TrimStart();
+                        }
+                    }
+                    <span class="breakLine">@releaseNote</span>
+                </td>
+                <td class="text-center">
+                    @if (item.IsLastestDBVersion == 1)
+                    {
+                        if (item.IsLastest == 1)
+                        {
+                            <span class="fw-bold rounded p-1 badge-success">@Html.DisplayFor(modelItem => item.LastestVersionName)</span>
+                        }
+                        else
+                        {
+                            <span class="fw-bold rounded p-1 badge-danger">@Html.DisplayFor(modelItem => item.LastestVersionName)</span>
+                        }
+                    }
+
+                </td>
+                <td class="text-center">
+                    @if (item.Usage == 0)
+                    {
+                        <span class="fw-bold rounded p-1 badge-secondary">Unused</span>
+                    }
+                    @if (item.Usage == 1)
+                    {
+                        <span class="fw-bold rounded p-1 badge-success">In use</span>
+                    }
+                </td>
+                <td class="printDisable">
+                    <a href="@Url.Action("VersionDetail", "AdmVersion", new { id = item.VersionID })">
+                        <i class="fas fa-fw fa-info-circle"></i>
+                    </a>
+                    @if (User.Identity.GetRoleName() != "Checker" && User.Identity.GetRoleName() != "Approver")
+                    {
+
+                        <a href="@Url.Action("VersionEdit", "AdmVersion", new { id = item.VersionID })">
+                            <i class="fas fa-fw fa-pen-square"></i>
+                        </a>
+                        <a href="#" data-toggle="modal" data-target="#deleteModal" onclick="DltConfirm(@item.VersionID,'@item.VersionName','@item.ModelName')">
+                            <i class="fas fa-fw fa-trash"></i>
+                        </a>
+
+                    }
+                    <br />
+                    @if (item.IsATEListAvailable == 1)
+                    {
+                        if (item.IsATEListChecked == 0)
+                        {
+                            <span class="fw-bold text-warning">(Unchecked)</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="fw-bold text-danger">(No ATEList)</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
